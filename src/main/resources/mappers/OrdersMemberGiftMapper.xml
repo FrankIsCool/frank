@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxmaps.mms.mapper.OrdersMemberGiftMapper">
+  <resultMap id="BaseResultMap" type="com.sxmaps.mms.model.OrdersMemberGift">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="uid" jdbcType="BIGINT" property="uid" />
+    <result column="record_sn" jdbcType="VARCHAR" property="recordSn" />
+    <result column="order_sn" jdbcType="VARCHAR" property="orderSn" />
+    <result column="order_item_sn" jdbcType="VARCHAR" property="orderItemSn" />
+    <result column="receiver" jdbcType="VARCHAR" property="receiver" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="province_code" jdbcType="VARCHAR" property="provinceCode" />
+    <result column="province_name" jdbcType="VARCHAR" property="provinceName" />
+    <result column="city_code" jdbcType="VARCHAR" property="cityCode" />
+    <result column="city_name" jdbcType="VARCHAR" property="cityName" />
+    <result column="county_code" jdbcType="VARCHAR" property="countyCode" />
+    <result column="county_name" jdbcType="VARCHAR" property="countyName" />
+    <result column="street" jdbcType="VARCHAR" property="street" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="is_deal" jdbcType="INTEGER" property="isDeal" />
+    <result column="is_send" jdbcType="INTEGER" property="isSend" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="send_time" jdbcType="TIMESTAMP" property="sendTime" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+  </resultMap>
+  
+  <resultMap id="ExportMap" type="com.sxmaps.mms.vo.ExportOrderOnlineVO">
+    <result column="orderSn" jdbcType="VARCHAR" property="orderSn" />
+    <result column="orderCate" jdbcType="VARCHAR" property="orderCate" />
+    <result column="orderType" jdbcType="VARCHAR" property="orderType" />
+    <result column="createTime" jdbcType="VARCHAR" property="createTime" />
+    <result column="deal" jdbcType="VARCHAR" property="deal" />
+    <result column="audit" jdbcType="VARCHAR" property="audit" />
+    <result column="payTime" jdbcType="VARCHAR" property="payTime" />
+    <result column="auditTime" jdbcType="VARCHAR" property="auditTime" />
+    <result column="memberName" jdbcType="VARCHAR" property="memberName" />
+    <result column="memberPhone" jdbcType="VARCHAR" property="memberPhone" />
+    <result column="siteSn" jdbcType="VARCHAR" property="siteSn" />
+    <result column="memberIdCard" jdbcType="VARCHAR" property="memberIdCard" />
+    <result column="areaName" jdbcType="VARCHAR" property="areaName" />
+    <result column="cateDesc" jdbcType="VARCHAR" property="cateDesc" />
+    <result column="orderState" jdbcType="VARCHAR" property="orderState" />
+    <result column="serviceState" jdbcType="VARCHAR" property="serviceState" />
+    <result column="sellerName" jdbcType="VARCHAR" property="sellerName" />
+    <result column="lDept" jdbcType="VARCHAR" property="lDept" />
+    <result column="tDept" jdbcType="VARCHAR" property="tDept" />
+    <result column="sDept" jdbcType="VARCHAR" property="sDept" />
+    <result column="fDept" jdbcType="VARCHAR" property="fDept" />
+    <result column="dept" jdbcType="VARCHAR" property="dept" />
+    <result column="stationName" jdbcType="VARCHAR" property="stationName" />
+    <result column="stationTeacherName" jdbcType="VARCHAR" property="stationTeacherName" />
+    <result column="teacherName" jdbcType="VARCHAR" property="teacherName" />
+    <result column="levelTypeName" jdbcType="VARCHAR" property="levelTypeName" />
+    <result column="collegeName" jdbcType="VARCHAR" property="collegeName" />
+    <result column="departmentName" jdbcType="VARCHAR" property="departmentName" />
+    <result column="classTypeName" jdbcType="VARCHAR" property="classTypeName" />
+    <result column="productPrice" jdbcType="VARCHAR" property="productPrice" />
+    <result column="couponAmount" jdbcType="VARCHAR" property="couponAmount" />
+    <result column="paidAmount" jdbcType="VARCHAR" property="paidAmount" />
+    <result column="orderAmount" jdbcType="VARCHAR" property="orderAmount" />
+    <result column="hanselAmount" jdbcType="VARCHAR" property="hanselAmount" />
+    <result column="hanselSn" jdbcType="VARCHAR" property="hanselSn" />
+    <result column="hanselWay" jdbcType="VARCHAR" property="hanselWay" />
+    <result column="hanselPayTime" jdbcType="VARCHAR" property="hanselPayTime" />
+    <result column="receiver" jdbcType="VARCHAR" property="receiver" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="feesDesc" jdbcType="VARCHAR" property="feesDesc" />
+    <result column="feesWay" jdbcType="VARCHAR" property="feesWay" />
+    <result column="feesPay" jdbcType="VARCHAR" property="feesPay" />
+    <result column="fees" jdbcType="VARCHAR" property="fees" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <!--  一对多 嵌套结果查询   -->
+   <collection ofType="java.lang.String" property="totalRemark">
+    <result column="totalRemark" jdbcType="VARCHAR" property="totalRemark" />
+   </collection>  
+  </resultMap>
+  
+  	<select id="qryOrdersMemberGiftList" parameterType="com.sxmaps.mms.vo.req.ReqQryOrdersMemberGiftListVO" resultType="com.sxmaps.mms.vo.resp.RespQryOrdersMemberGiftListVO">
+  	SELECT
+  		g.uid,
+		o.member_name memberName,
+		CONCAT(LEFT(o.member_phone, 3),'****',RIGHT(o.member_phone, 4)) memberPhone,
+		i.order_item_sn orderSn,
+		DATE_FORMAT(o.order_time,'%Y-%m-%d %H:%i:%s') orderTime,
+		g.province_code provinceCode,
+		g.province_name provinceName,
+		g.city_code cityCode,
+		g.city_name cityName,
+		g.county_code countyCode,
+		g.county_name countyName,
+		g.street,
+		DATE_FORMAT(g.create_time,'%Y-%m-%d %H:%i:%s') createTime,
+		g.receiver,
+		g.phone,
+		g.email,
+		g.address
+	FROM
+		orders_member_gift g
+		INNER JOIN orders_item i ON i.order_item_sn = g.order_item_sn
+		INNER JOIN orders o ON o.order_sn = i.order_sn
+	WHERE
+		g.state = 1
+		AND g.is_deal = 1
+		AND IFNULL(o.refund_state,0) = 0
+	<if test="memberPhone != null and memberPhone != '' ">
+		AND o.member_phone like CONCAT('%',#{memberPhone},'%')
+	</if>
+	<if test="memberName != null and memberName != '' ">
+		AND o.member_name like CONCAT('%',#{memberName},'%')
+	</if>
+	<if test="createStartTime != null and createStartTime != '' ">
+		AND g.create_time &gt; #{createStartTime}
+	</if>
+	<if test="createEndTime != null and createEndTime != '' ">
+		AND g.create_time &lt; #{createEndTime}
+	</if>
+	<if test="orderStartTime != null and orderStartTime != '' ">
+		AND o.order_time &gt; #{orderStartTime}
+	</if>
+	<if test="orderEndTime != null and orderEndTime != '' ">
+		AND o.order_time &lt; #{orderEndTime}
+	</if>
+	<if test="step != null and step != '' ">
+		AND o.step = #{step}
+	</if>
+	<if test="receiver != null and receiver != '' ">
+		AND g.receiver like CONCAT('%',#{receiver},'%')
+	</if>
+	<if test="phone != null and phone != '' ">
+		AND g.phone like CONCAT('%',#{phone},'%')
+	</if>
+		ORDER BY g.create_time DESC
+  	</select>
+  	
+  	<select id="exportOrdersMemberGift" parameterType="com.sxmaps.mms.vo.req.ReqQryOrdersMemberGiftListVO" resultMap="ExportMap">
+		  	SELECT 
+			  a.orderSn,
+			  a.orderCate,
+			  a.orderType,
+			  a.createTime,
+			  a.dealName deal,
+			  a.audit,
+			  a.payTime,
+			  a.auditTime,
+			  a.memberName,
+			  a.memberPhone,
+			  a.siteSn,
+			  a.memberIdCard,
+			  a.areaName,
+			  a.cateDesc,
+			  a.orderState,
+			  a.sellerName,
+			  a.receiver,
+			  a.phone,
+			  a.address,
+			  a.email,
+			  a.fn,
+			  IFNULL(IF(
+		   		 a.len &gt;= 3,
+		    	SUBSTRING_INDEX(a.fn, '/', - 1),
+		    	NULL
+		  	),IF(
+      			a.siteSn = 'zdzy001',
+     			 '中端自营咨询组 ',
+      			IF(
+        		a.siteSn = 'hdzy001',
+       			 '后端自营咨询组',
+        		a.sellerGroupName
+    			))) lDept,
+			  IF(
+			    a.len &gt;= 2,
+			    SUBSTRING_INDEX(
+			      SUBSTRING_INDEX(a.fn, '/', 3),
+			      '/',
+			      - 1
+			    ),
+			    ''
+			  ) tDept,
+			  IF(
+			    a.len &gt;= 1,
+			    SUBSTRING_INDEX(
+			      SUBSTRING_INDEX(a.fn, '/', 2),
+			      '/',
+			      - 1
+			    ),
+			    ''
+			  ) sDept,
+			  SUBSTRING_INDEX(a.fn, '/', 1) fDept,
+			  a.dept,
+			  a.stationName,
+			  a.stationTeacherName,
+			  a.levelTypeName,
+			  a.collegeName,
+			  a.departmentName,
+			  a.classTypeName,
+			  a.productPrice,
+			  a.couponAmount,
+			  a.paidAmount,
+			  a.orderAmount,
+			  IFNULL(
+			    ROUND((e.hanselAmount * a.percent), 2),
+			    ''
+			  ) hanselAmount,
+			  e.hanselSn,
+			  e.hanselWay,
+			  e.hanselPayTime,
+			  d.total totalRemark,
+			  c.fees,
+			  a.feesPay,
+			  a.feesWay,
+			  a.feesDesc,
+			  a.remark 
+			FROM
+			  (SELECT 
+			    a.*,
+			    f.feesPay,
+			  	f.feesDesc,
+			  	f.feesWay
+			  FROM
+			    (SELECT 
+			      o.uid orderId,
+			      o.order_sn sn,
+			      i.uid itemId,
+			      i.order_item_sn orderSn,
+			      DATE_FORMAT(
+			        o.order_time,
+			        '%Y-%m-%d %H:%i:%s'
+			      ) auditTime,
+			      DATE_FORMAT(
+			        o.create_time,
+			        '%Y-%m-%d %H:%i:%s'
+			      ) createTime,
+			      DATE_FORMAT(
+			        IFNULL(o.pay_time, o.order_time),
+			        '%Y-%m-%d %H:%i:%s'
+			      ) payTime,
+			      CASE
+			        o.order_cate 
+			        WHEN '1' 
+			        THEN '中端自营' 
+			        WHEN '2' 
+			        THEN '升学教育' 
+			        WHEN '3' 
+			        THEN '流量转化' 
+			        WHEN '4' 
+			        THEN '后端自营' 
+			        WHEN '5' 
+			        THEN '无归属' 
+			        ELSE '中端自营' 
+			      END orderCate,
+			      o.cate,
+			      CASE
+			        o.cate 
+			        WHEN '1' 
+			        THEN '在线录单' 
+			        WHEN '2' 
+			        THEN 'iPad录单' 
+			        WHEN '3' 
+			        THEN '第三方学员' 
+			        ELSE '' 
+			      END cateDesc,
+			      CASE
+			        o.order_type 
+			        WHEN 'COMMON' 
+			        THEN '成交单' 
+			        WHEN 'HANSEL' 
+			        THEN '定金单' 
+			        WHEN 'COUNSEL' 
+			        THEN '咨询单' 
+			        ELSE '成交单' 
+			      END orderType,
+			      CASE
+			        o.step 
+			        WHEN '1' 
+			        THEN '待付款' 
+			        WHEN '2' 
+			        THEN '已付首付' 
+			        WHEN '3' 
+			        THEN '未完善信息' 
+			        WHEN '4' 
+			        THEN '未签署协议' 
+			        WHEN '5' 
+			        THEN '未录视频/未审核' 
+			        WHEN '6' 
+			        THEN '未评价/未审核' 
+			        WHEN '7' 
+			        THEN '已完成' 
+			        ELSE '已完成' 
+			      END orderState,
+			      o.member_name memberName,
+			      CONCAT(
+			        LEFT(o.member_phone, 3),
+			        '****',
+			        RIGHT(o.member_phone, 4)
+			      ) memberPhone,
+			      IFNULL(o.site_sn, 'wgs001') siteSn,
+			      o.member_idcard memberIdcard,
+			      o.seller_uid sellerUid,
+			      o.station_teacher_uid,
+			      o.seller_name sellerName,
+			      o.seller_dept_name sellerGroupName,
+			      o.station_name stationName,
+			      o.station_teacher_name stationTeacherName,
+			      o.order_deal_name dealName,
+			      i.level_type_name levelTypeName,
+			      i.college_name collegeName,
+			      i.department_name departmentName,
+			      i.class_type_name classTypeName,
+			      i.product_price productPrice,
+			      (i.product_price - i.paid_amount) couponAmount,
+			      i.paid_amount paidAmount,
+			      g.receiver,
+			      g.phone,
+			      g.address,
+			      g.email,
+			      IFNULL(o.hansel_amount,0) hanselAmount,
+			      (o.paid_amount+IFNULL(o.hansel_amount,0)) orderAmount,
+			      ROUND(IF((i.paid_amount / (o.paid_amount+IFNULL(o.hansel_amount,0))) &gt;=1,1,(i.paid_amount / (o.paid_amount+IFNULL(o.hansel_amount,0)))),12) percent,
+			      o.last_order_id,
+			      o.remark,
+			      o.ex_dept_name dept,
+			      SUBSTRING_INDEX(o.seller_dept_fn, '/', -4) fn,
+			      IFNULL(
+			        (
+			          LENGTH(o.seller_dept_fn) - LENGTH(REPLACE(o.seller_dept_fn, '/', ''))
+			        ),
+			        0
+			      ) len,
+			      c.audit_name audit,
+			      m.area_name areaName 
+			    FROM
+			      orders_item i,
+			      orders_member_contract c,
+			      orders o,
+			      member m,
+			      orders_member_gift g 
+			    WHERE 1=1
+			       AND c.order_item_id = i.uid 
+			      AND i.order_uid = o.uid 
+			      AND o.member_uid = m.uid 
+			      AND g.order_item_sn = i.order_item_sn
+			      and g.state = 1
+			      and g.is_deal = 1
+			      AND c.state = '1' 
+			      AND o.service_state = '1' 
+			      AND o.order_type = 'COMMON' 
+			      <if test="step != null and step != '' ">
+			      AND o.step = #{step}
+			      </if>
+			      <if test="(createStartTime!=null and createStartTime!='' ) and (createEndTime!=null and createEndTime!='' )">
+					AND g.create_time BETWEEN CONCAT(#{createStartTime},' 00:00:00') AND CONCAT(#{createEndTime},' 23:59:59')
+				</if>
+				<if test="(orderStartTime!=null and orderStartTime!='' ) and (orderEndTime!=null and orderEndTime!='' )">
+					AND o.order_time BETWEEN CONCAT(#{orderStartTime},' 00:00:00') AND CONCAT(#{orderEndTime},' 23:59:59')
+				</if>
+				<if test="memberName != null and memberName != '' ">
+			      AND m.true_name like CONCAT('%',#{memberName},'%')
+			      </if>
+			      <if test="memberPhone != null and memberPhone != '' ">
+			      AND m.cellphone like CONCAT('%',#{memberPhone},'%')
+			      </if>
+			      <if test="receiver != null and receiver != '' ">
+			      AND g.receiver like CONCAT('%',#{receiver},'%')
+			      </if>
+			      <if test="phone != null and phone != '' ">
+			      AND g.phone like CONCAT('%',#{phone},'%')
+			      </if>
+			      ) a
+			    LEFT JOIN 
+			    (SELECT 
+			      f.order_sn orderSn,
+			      f.order_item_id,
+			      SUM(f.cost_fee) feesPay,
+			      r.pay_desc feesWay,
+			      IFNULL(
+			        GROUP_CONCAT(
+			          f.cost_desc,
+			          ':',
+			          f.cost_fee 
+			          ORDER BY f.cost_uid
+			        ),
+			        ''
+			      ) feesDesc 
+			    FROM
+			      orders_member_pay_record r,
+			      orders_item_fees f 
+			    WHERE r.order_uid = f.order_id 
+			      AND r.state = '1' 
+			      AND r.pay_state = 'PAID' 
+			      AND FIND_IN_SET(f.cost_uid, r.item_fees_uid) 
+			    GROUP BY f.order_item_id) f 
+			    ON f.order_item_id = a.itemId
+			    ) a 
+			  LEFT JOIN 
+			    (SELECT 
+	      a.* 
+	    FROM
+	      (
+        (SELECT 
+          p.order_sn,
+          p.uid,
+          CONCAT(
+            '支付方式:',
+            p.pay_desc,
+            ';支付金额:',
+            p.paid_amount,
+            ';支付流水号:',
+            p.pay_sn,
+            ';支付时间:',
+            DATE_FORMAT(
+              p.paid_time,
+              '%Y-%m-%d %H:%i:%s'
+            )
+          ) total 
+        FROM
+          orders_pay_record p,
+          orders o 
+        WHERE o.order_sn = p.order_sn 
+          AND p.pay_state = 'PAID' 
+          AND FIND_IN_SET(
+            p.order_type,
+            'COMMON,REFUND,REPAY'
+          ) 
+          AND p.state = '1' 
+          AND p.order_uid &gt; 500000 
+          AND o.order_type = 'COMMON' 
+           AND o.step = '7' 
+           AND o.order_state = 'PAID'
+          AND o.uid &gt; 500000) 
+      ) a) d 
+			    ON d.order_sn = a.sn 
+			  LEFT JOIN 
+			    (SELECT 
+			      p.order_sn,
+			      CONCAT(
+			        '支付方式:',
+			        p.pay_desc,
+			        '支付金额:',
+			        p.pay_amount,
+			        '支付流水:',
+			        p.pay_sn,
+			        '支付时间:',
+			        DATE_FORMAT(p.pay_time, '%Y-%m-%d %H:%i:%s'),
+			        ''
+			      ) fees 
+			    FROM
+			      orders_member_pay_record p 
+			    WHERE p.state = '1' 
+			      AND p.pay_state = 'PAID' 
+			      AND p.order_uid &gt; 500000) c 
+			    ON c.order_sn = a.sn 
+			    LEFT JOIN 
+		    (SELECT 
+		      o.uid orderId,
+		      o.last_order_id,
+		      IFNULL(p.pay_sn, '') hanselSn,
+		      IFNULL(p.paid_amount, '') hanselAmount,
+		      p.pay_desc hanselWay,
+		      DATE_FORMAT(
+		        p.paid_time,
+		        '%Y-%m-%d %H:%i:%s'
+		      ) hanselPayTime 
+		    FROM
+		      orders o,
+		      orders_pay_record p 
+		    WHERE p.order_uid = o.uid 
+		      AND o.order_state = 'PAID' 
+		      AND o.order_type = 'HANSEL' 
+		      AND p.pay_state = 'PAID' 
+		      AND p.order_type = 'HANSEL' 
+		      AND p.order_uid &gt; 500000) e 
+		    ON a.last_order_id = e.orderId 
+  </select>
+</mapper>

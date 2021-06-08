@@ -1,9 +1,10 @@
 package com.sxmaps.my.common;
 
+import com.sxmaps.my.enums.ApiExceptionEnum;
 import lombok.Data;
 
 /**
- * 类：
+ * 类：统一返回对象
  * 内容：
  * 创建人：付帅
  * 时间：2021/6/8
@@ -32,7 +33,9 @@ public class JsonMessage<T> {
     public static JsonMessage createErrorMessage(String errorCode, String errorMsg) {
         return createErrorMessage(errorCode, errorMsg, null);
     }
-
+    public static JsonMessage createErrorMessage(ApiExceptionEnum exceptionEnum) {
+        return createErrorMessage(exceptionEnum.getExceptionCode(), exceptionEnum.getExceptionDesc(), null);
+    }
     public static JsonMessage createErrorMessage(String errorCode, String errorMsg, Object msgData) {
         JsonMessage responseMsg = new JsonMessage();
         responseMsg.setCode(errorCode);

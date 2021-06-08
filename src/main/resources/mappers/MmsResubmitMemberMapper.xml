@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxmaps.mms.mapper.MmsResubmitMemberMapper">
+    <resultMap id="BaseResultMap" type="com.sxmaps.mms.model.MmsResubmitMember">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="uid" jdbcType="BIGINT" property="uid"/>
+        <result column="member_uid" jdbcType="VARCHAR" property="memberUid"/>
+        <result column="true_name" jdbcType="VARCHAR" property="trueName"/>
+        <result column="member_phone" jdbcType="VARCHAR" property="memberPhone"/>
+        <result column="order_time" jdbcType="TIMESTAMP" property="orderTime"/>
+        <result column="area_name" jdbcType="VARCHAR" property="areaName"/>
+        <result column="college_uid" jdbcType="BIGINT" property="collegeUid"/>
+        <result column="college_name" jdbcType="VARCHAR" property="collegeName"/>
+        <result column="department_uid" jdbcType="BIGINT" property="departmentUid"/>
+        <result column="department_name" jdbcType="VARCHAR" property="departmentName"/>
+        <result column="level_type_uid" jdbcType="BIGINT" property="levelTypeUid"/>
+        <result column="level_type_name" jdbcType="VARCHAR" property="levelTypeName"/>
+        <result column="teacher_uid" jdbcType="VARCHAR" property="teacherUid"/>
+        <result column="teacher_name" jdbcType="VARCHAR" property="teacherName"/>
+        <result column="distribution_state" jdbcType="INTEGER" property="distributionState"/>
+        <result column="consult_id" jdbcType="VARCHAR" property="consultId"/>
+        <result column="consult_name" jdbcType="VARCHAR" property="consultName"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="member_type" jdbcType="VARCHAR" property="memberType"/>
+        <result column="first_update_time" jdbcType="TIMESTAMP" property="firstUpdateTime"/>
+    </resultMap>
+
+    <sql id="unino_member">
+        SELECT
+            mrm.`uid` uid,
+            mrm.`member_uid` memberUid,
+            m.`true_name` trueName,
+            CONCAT(LEFT ( m.`cellphone`, 3 ),'****',RIGHT ( m.`cellphone`, 4 )) cellPhone,
+            m.`province_name` provinceName,
+            mrm.member_type memberType,
+            m.city_name cityName,
+            m.county_name countyName,
+            mrm.`order_time` orderTime,
+            m.`area_name` areaName,
+            mrm.`college_name`,
+            mrm.`department_uid`,
+            mrm.`department_name`,
+            mrm.`level_type_name`,
+            mrm.`create_time` createTime,
+            mrm.`distribution_state` distributionState,
+            mrm.`update_time` updateTime,
+            mrm.`consult_name` consultName,
+            mrm.`change_type` changeType,
+            mrm.`wx_chart` wxChart,
+            mrm.`teacher_name` teacherName
+        FROM
+            `member` m,
+            `mms_resubmit_member` mrm
+            LEFT JOIN `mms_member_type` b ON b.`resubmit_uid` = mrm.`uid`
+        where
+        m.uid = mrm.member_uid
+        <if test="trueName != null and trueName != ''">
+            and m.true_name LIKE CONCAT('%',#{trueName},'%')
+        </if>
+        <if test="cellPhone != null and cellPhone != ''">
+            and m.cellphone = #{cellPhone}
+        </if>
+        <if test="collegeUid != null and collegeUid != ''">
+            and mrm.college_uid = #{collegeUid}
+        </if>
+        <if test="departmentName != null and departmentName != ''">
+            and mrm.department_name = #{departmentName}
+        </if>
+        <if test="levelTypeUid != null  and levelTypeUid != ''">
+            and mrm.level_type_uid = #{levelTypeUid}
+        </if>
+        <if test="distributionState != null">
+            and mrm.distribution_state = #{distributionState}
+        </if>
+        <if test="areaName != null and areaName != ''">
+            and mrm.area_name LIKE CONCAT('%',#{areaName},'%')
+        </if>
+        <if test="startOrderTime != null and startOrderTime != '' and endOrderTime != null and endOrderTime != ''">
+            and mrm.order_time BETWEEN #{startOrderTime} AND #{endOrderTime}
+        </if>
+        <if test="startAssignTime != null and startAssignTime != '' and endAssignTime != null and endAssignTime != ''">
+            and mrm.update_time BETWEEN #{startAssignTime} AND #{endAssignTime}
+        </if>
+        <if test="consultId != null and consultId != ''">
+            and mrm.consult_id = #{consultId}
+        </if>
+        <if test="startCreateTime != null and startCreateTime != ''">
+            <![CDATA[ AND DATE_FORMAT(mrm.`create_time`, '%Y-%m-%d %H:%i:%s') >= DATE_FORMAT(#{startCreateTime}, '%Y-%m-%d %H:%i:%s')]]>
+        </if>
+        <if test="endCreateTime != null and endCreateTime != ''">
+            <![CDATA[ AND DATE_FORMAT(mrm.`create_time`, '%Y-%m-%d %H:%i:%s') <= DATE_FORMAT(#{endCreateTime}, '%Y-%m-%d %H:%i:%s')]]>
+        </if>
+        <if test="provinceCode != null and provinceCode != ''">
+            AND m.`province_code` = #{provinceCode}
+        </if>
+        <if test="cityCode != null and cityCode != ''">
+            AND m.`city_code` = #{cityCode}
+        </if>
+        <if test="countyCode != null and countyCode != ''">
+            AND m.`county_code` = #{countyCode}
+        </if>
+    </sql>
+
+
+    <select id="getResubmitUid" resultType="map">
+        SELECT `uid` uid,`member_uid` memberUid FROM `mms_resubmit_member`
+        <where>member_uid in
+            <foreach collection="memberUids" index="index" item="memberId" open="(" close=")" separator=",">
+                #{memberId}
+            </foreach>
+        </where>
+    </select>
+
+    <select id="resubmitMemberMapper" resultType="com.sxmaps.mms.vo.resp.ResqResubmitVO"
+            parameterType="com.sxmaps.mms.vo.req.ReqResubmitPageVO">
+        <include refid="unino_member"/>
+        <if test="wxChart != null and wxChart != -1">
+            and mrm.wx_chart = #{wxChart}
+        </if>
+        <if test="changeType != null and changeType != -1">
+            and mrm.change_type = #{changeType}
+        </if>
+        GROUP BY mrm.`uid`
+        <if test='type == 3'>
+            UNION ALL
+            <include refid="unino_member"/>
+            AND ISNULL(mrm.`member_type`) GROUP BY mrm.uid
+        </if>
+    </select>
+
+
+    <update id="updateConsultInfo" parameterType="com.sxmaps.mms.vo.req.ReqDistributionVO">
+        UPDATE
+            `mms_resubmit_member`
+        SET
+            `change_type` = 0,
+            `wx_chart` = 0,
+            `distribution_state` = 2,
+            `consult_id` = #{userId},
+            consult_name = #{userName},
+            update_time = NOW()
+        <where>
+            uid in
+            <if test="memberList != null and !memberList.isEmpty()">
+                <foreach collection="memberList" index="index" item="member" open="(" close=")" separator=",">
+                    #{member.uid}
+                </foreach>
+            </if>
+        </where>
+    </update>
+
+    <select id="getResubmitUids" resultType="string">
+  		select member_uid from mms_resubmit_member where member_uid = #{memberUid} limit 1
+  </select>
+
+
+    <select id="importMemberMapper" resultType="com.sxmaps.mms.vo.resp.RespExcelResubmitVO"
+            parameterType="com.sxmaps.mms.vo.req.ReqResubmitPageVO">
+        <include refid="unino_member"/>
+        <if test="memberTypes != null and !memberTypes.isEmpty()">
+            AND b.member_type in
+            <foreach collection="memberTypes" index="index" item="item"
+                     open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY mrm.`uid`
+        <if test='type == 3'>
+            UNION ALL
+            <include refid="unino_member"/>
+            AND ISNULL(mrm.`member_type`) GROUP BY mrm.uid
+        </if>
+    </select>
+</mapper>

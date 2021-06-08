@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxmaps.mms.mapper.MmsScoreOpinionMapMapper">
+	<resultMap id="BaseResultMap" type="com.sxmaps.mms.model.MmsScoreOpinionMap">
+		<!-- WARNING - @mbg.generated -->
+		<id column="uid" jdbcType="BIGINT" property="uid" />
+		<result column="score_uid" jdbcType="BIGINT" property="scoreUid" />
+		<result column="opinion_uid" jdbcType="BIGINT" property="opinionUid" />
+	</resultMap>
+	<!-- 查询星级点评信息 -->
+	<select id="qryScoreByOpinion" resultType="com.sxmaps.mms.vo.resp.RespScoreOpinionMapVO"
+		parameterType="com.sxmaps.mms.vo.req.ReqScoreVO">
+		SELECT
+		b.opinion_uid AS
+		opinionUid,a.views AS
+		views,c.score_key AS
+		scoreKey,c.score_name AS
+		scoreName,b.score_uid AS
+		scoreUid
+		FROM
+		mms_opinion a
+		INNER JOIN
+		mms_score_opinion_map b ON a.uid =
+		b.opinion_uid
+		INNER JOIN
+		mms_score_star c ON b.score_uid = c.uid WHERE
+		c.state='1' AND
+		c.score_key=#{scoreKey,jdbcType=DOUBLE}
+	</select>
+	<resultMap type="com.sxmaps.mms.vo.resp.RespScoreOpinionListVO"
+		id="OpinionMap">
+		<id column="uid" jdbcType="BIGINT" property="uid" />
+		<result column="score_key" jdbcType="DOUBLE" property="scoreKey" />
+		<result column="score_name" jdbcType="VARCHAR" property="scoreName" />
+		<collection property="OpinionList" column="{scoreUid=uid}"
+			javaType="ArrayList" ofType="com.sxmaps.mms.vo.resp.RespOpinionListVO"
+			select="qryScore">
+		</collection>
+	</resultMap>
+
+	<resultMap type="com.sxmaps.mms.vo.resp.RespOpinionListVO"
+		id="ScoreMap">
+		<id column="uid" jdbcType="BIGINT" property="opinionUid" />
+		<result column="score_uid" jdbcType="BIGINT" property="scoreUid" />
+		<result column="views" jdbcType="VARCHAR" property="views" />
+	</resultMap>
+
+	<!-- 查询星级信息 -->
+	<select id="qryScoreOpinionList" resultMap="OpinionMap">
+		SELECT
+		a.uid,
+		a.score_key,
+		a.score_name
+		FROM
+		mms_score_star a
+	</select>
+	<!-- 查询点评信息 -->
+	<select id="qryScore" resultMap="ScoreMap">
+		SELECT
+		a.uid,
+		a.views,
+		b.score_uid
+		FROM
+		mms_opinion a
+		INNER JOIN mms_score_opinion_map b ON a.uid =
+		b.opinion_uid
+		AND a.state = '1'
+		WHERE
+		b.score_uid =#{scoreUid,jdbcType=DOUBLE}
+	</select>
+</mapper>

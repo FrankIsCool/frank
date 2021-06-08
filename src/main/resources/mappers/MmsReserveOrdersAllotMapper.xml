@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxmaps.mms.mapper.MmsReserveOrdersAllotMapper">
+  <resultMap id="BaseResultMap" type="com.sxmaps.mms.model.MmsReserveOrdersAllot">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="uid" jdbcType="BIGINT" property="uid" />
+    <result column="order_sn" jdbcType="VARCHAR" property="orderSn" />
+    <result column="order_uid" jdbcType="BIGINT" property="orderUid" />
+    <result column="order_item_sn" jdbcType="VARCHAR" property="orderItemSn" />
+    <result column="order_item_uid" jdbcType="BIGINT" property="orderItemUid" />
+    <result column="dept_code" jdbcType="VARCHAR" property="deptCode" />
+    <result column="group_code" jdbcType="VARCHAR" property="groupCode" />
+    <result column="position_code" jdbcType="VARCHAR" property="positionCode" />
+    <result column="handler_uid" jdbcType="VARCHAR" property="handlerUid" />
+    <result column="handler_name" jdbcType="VARCHAR" property="handlerName" />
+    <result column="operator_uid" jdbcType="VARCHAR" property="operatorUid" />
+    <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
+    <result column="op_dept_code" jdbcType="VARCHAR" property="opDeptCode" />
+    <result column="op_po_code" jdbcType="VARCHAR" property="opPoCode" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="college_uid" jdbcType="BIGINT" property="collegeUid" />
+    <result column="college_name" jdbcType="VARCHAR" property="collegeName" />
+  </resultMap>
+	
+	<select id="qryPageReserveOrders" resultType="com.sxmaps.mms.vo.resp.RespReserveOrdersAllotVO">
+		SELECT
+		a.uid,
+		a.order_sn AS orderSn,
+		a.order_uid AS orderUid,
+		a.order_item_sn AS orderItemSn,
+		a.order_item_uid AS orderItemUid,
+		a.dept_code AS deptCode,
+		a.group_code AS groupCode,
+		a.position_code AS positionCode,
+		a.handler_uid AS handlerUid,
+		a.handler_name AS handlerName,
+		a.operator_uid AS operatorUid,
+		a.operator_name AS operatorName,
+		a.op_dept_code AS opDeptCode,
+		a.op_po_code AS opPoCode,
+		a.create_time AS createTime,
+		a.update_time AS updateTime,
+		a.college_uid AS collegeUid,
+		a.college_name AS collegeName,
+		a.state
+		FROM
+		mms_reserve_orders_allot a
+		WHERE
+		a.state = '1'
+	</select>
+	
+	<select id="queryUserName" parameterType="String" resultType="String">
+		SELECT user_name from auth_user WHERE user_id = #{uid}
+	</select>
+</mapper>

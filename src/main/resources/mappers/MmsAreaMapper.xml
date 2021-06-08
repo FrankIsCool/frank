@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxmaps.mms.mapper.MmsAreaMapper">
+    <cache/>
+	<resultMap id="BaseResultMap" type="com.sxmaps.mms.model.MmsArea">
+		<!-- WARNING - @mbg.generated -->
+		<id column="uid" jdbcType="BIGINT" property="uid" />
+		<result column="code_id" jdbcType="VARCHAR" property="codeId" />
+		<result column="area_name" jdbcType="VARCHAR" property="areaName" />
+		<result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+	</resultMap>
+
+	<!-- 查询省市区 -->
+	<select id="qryCity" resultType="java.util.Map" useCache="true">
+		SELECT
+		a.code_id regionCode,
+		a.area_name regionName
+		FROM
+		mms_area a
+		WHERE a.area_name REGEXP '市$' 
+	</select>
+	
+	<!-- 查询省市区 -->
+	<select id="qryByParentId" resultType="com.sxmaps.mms.vo.resp.RespAreaVO">
+		SELECT
+		a.code_id,
+		a.area_name,
+		a.parent_id
+		FROM
+		mms_area a
+		WHERE a.parent_id =
+		#{parentId,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 根据codeId查询省市区 -->
+	<select id="qryByCodeId" resultType="com.sxmaps.mms.vo.resp.RespAreaVO">
+		SELECT
+		a.code_id,
+		a.area_name,
+		a.parent_id
+		FROM
+		mms_area a
+		WHERE a.code_id =
+		#{codeId,jdbcType=VARCHAR}
+	</select>
+
+	<resultMap id="areaListMap" type="com.sxmaps.mms.vo.resp.RespAreaListVO">
+		<id column="uid" jdbcType="BIGINT" property="uid" />
+		<result column="code_id" jdbcType="VARCHAR" property="codeId" />
+		<result column="area_name" jdbcType="VARCHAR" property="areaName" />
+		<result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+		<collection property="cityList" column="{codeId=code_id}"
+			javaType="ArrayList" ofType="com.sxmaps.mms.vo.resp.RespCityListVO"
+			select="selectCityList">
+		</collection>
+	</resultMap>
+
+	<resultMap id="cityListMap" type="com.sxmaps.mms.vo.resp.RespCityListVO">
+		<id column="uid" jdbcType="BIGINT" property="uid" />
+		<result column="code_id" jdbcType="VARCHAR" property="codeId" />
+		<result column="area_name" jdbcType="VARCHAR" property="areaName" />
+		<result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+		<collection property="countyList" column="{parentId=code_id}"
+			javaType="ArrayList" ofType="com.sxmaps.mms.vo.resp.RespCountyListVO"
+			select="selectCountyList">
+		</collection>
+	</resultMap>
+
+	<resultMap id="countyListMap" type="com.sxmaps.mms.vo.resp.RespCountyListVO">
+		<id column="uid" jdbcType="BIGINT" property="uid" />
+		<result column="code_id" jdbcType="VARCHAR" property="codeId" />
+		<result column="area_name" jdbcType="VARCHAR" property="areaName" />
+		<result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+	</resultMap>
+
+	<!-- 查询所有的省市区 -->
+	<select id="qryAreaList" resultMap="areaListMap">
+		SELECT
+		a.uid,
+		a.code_id,
+		a.area_name,
+		a.parent_id
+		FROM
+		mms_area a
+		WHERE
+		a.parent_id = '0'
+	</select>
+	<!-- 查询所有区信息 -->
+	<select id="selectCityList" resultMap="cityListMap">
+		SELECT
+		a.uid,
+		a.code_id,
+		a.area_name,
+		a.parent_id
+		FROM
+		mms_area a
+		WHERE
+		a.parent_id
+		= #{codeId}
+	</select>
+	<!-- 查询所有的区信息 -->
+	<select id="selectCountyList" resultMap="countyListMap">
+		SELECT
+		a.uid,
+		a.code_id,
+		a.area_name,
+		a.parent_id
+		FROM
+		mms_area a
+		WHERE
+		a.parent_id = #{parentId}
+	</select>
+	
+	<select id="qryAreaIdByAreaName" resultType="com.sxmaps.mms.vo.resp.RespAreaVO" parameterType="com.sxmaps.mms.vo.req.ReqQryAreaIdByAreaNameVO">
+	SELECT
+		area_name areaName,
+		code_id codeId,
+		parent_id parentId
+	FROM
+		mms_area
+	WHERE
+		area_name like CONCAT('%',#{areaName},'%')
+	LIMIT 1
+	</select>
+
+    <select id="qryProvince" resultType="com.sxmaps.mms.vo.resp.RespAreaVO">
+        SELECT `code_id` codeId,`area_name` areaName FROM `mms_area` WHERE parent_id = 0
+    </select>
+</mapper>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxmaps.mms.mapper.MmsCampusMapper">
+  <resultMap id="BaseResultMap" type="com.sxmaps.mms.model.MmsCampus">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="uid" jdbcType="BIGINT" property="uid" />
+    <result column="campus_code" jdbcType="VARCHAR" property="campusCode" />
+    <result column="campus_name" jdbcType="VARCHAR" property="campusName" />
+    <result column="dept_code" jdbcType="VARCHAR" property="deptCode" />
+    <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="photo" jdbcType="VARCHAR" property="photo" />
+    <result column="province_code" jdbcType="VARCHAR" property="provinceCode" />
+    <result column="province_name" jdbcType="VARCHAR" property="provinceName" />
+    <result column="city_code" jdbcType="VARCHAR" property="cityCode" />
+    <result column="city_name" jdbcType="VARCHAR" property="cityName" />
+    <result column="county_code" jdbcType="VARCHAR" property="countyCode" />
+    <result column="county_name" jdbcType="VARCHAR" property="countyName" />
+    <result column="street" jdbcType="VARCHAR" property="street" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="coordinate" jdbcType="VARCHAR" property="coordinate" />
+    <result column="operator_uid" jdbcType="VARCHAR" property="operatorUid" />
+    <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="dept_item" jdbcType="VARCHAR" property="deptItem" />
+  </resultMap>
+	<!-- 分校模糊查询 -->
+	<select id="qryInfoCampus" resultType="com.sxmaps.mms.vo.resp.RespCampusVO">
+		SELECT
+		a.uid,
+		a.campus_code
+		AS campusCode,
+		a.campus_name AS campusName,
+		a.dept_code AS deptCode,
+		a.dept_name AS deptName,
+		a.phone AS phone,
+		a.photo,
+		a.province_code AS
+		provinceCode,
+		a.province_name AS provinceName,
+		a.city_code AS cityCode,
+		a.city_name AS cityName,
+		a.county_code AS
+		countyCode,
+		a.county_name AS
+		countyName,
+		a.street AS street,
+		a.address AS
+		address,
+		a.coordinate AS
+		coordinate,
+		a.operator_uid AS operatorUid,
+		a.operator_name AS
+		operatorName,
+		a.create_time AS createTime,
+		a.update_time AS updateTime,
+		a.state
+		FROM
+		mms_campus a
+		WHERE
+		a.state = '1'
+	</select>
+
+	<!-- 查询分校名称是否存在 -->
+	<select id="qryCampusName" parameterType="com.sxmaps.mms.vo.req.ReqCampusCodeVO" resultType="java.lang.Integer">
+		SELECT count(1) FROM mms_campus a WHERE
+		a.campus_name=#{campusName,jdbcType=VARCHAR}
+		<if test="uid != null and uid!=''">
+			AND a.uid!=#{uid,jdbcType=BIGINT}
+		</if>
+	</select>
+	<!-- 查询部门是否存在 -->
+	<select id="qryDeptCode" parameterType="com.sxmaps.mms.vo.req.ReqDeptCodeVO" resultType="java.lang.Integer">
+		SELECT count(1) FROM mms_campus a WHERE
+		a.dept_code=#{deptCode,jdbcType=VARCHAR}
+		<if test="uid != null and uid!=''">
+			AND a.uid!=#{uid,jdbcType=BIGINT}
+		</if>
+	</select>
+	<!-- 根据部门ID查询分校列表 -->
+	<select id="qryDeptSchool" parameterType="com.sxmaps.mms.vo.req.ReqDeptCodeExistVO" resultType="com.sxmaps.mms.vo.resp.RespCampusVO">
+		SELECT
+		a.uid,
+		a.campus_code AS
+		campusCode,
+		a.campus_name AS
+		campusName,
+		a.dept_code AS deptCode,
+		a.dept_name AS deptName,
+		a.state
+		FROM
+		mms_campus a
+		WHERE
+		a.state ='1' AND
+		a.dept_code=#{deptCode}
+	</select>
+
+	<!-- 查询分校列表 -->
+	<select id="queryCampus" resultType="com.sxmaps.mms.vo.resp.RespCampusVO">
+		SELECT
+		a.uid,
+		a.address,
+		a.campus_code AS campusCode,
+		a.campus_name AS campusName,
+		a.dept_code AS
+		deptCode,
+		a.dept_name AS deptName,
+		a.state
+		FROM
+		mms_campus a
+		WHERE
+		a.state =
+		'1'
+	</select>
+
+	<select id="qryCampusById" parameterType="com.sxmaps.mms.vo.req.ReqMmsQueryVO" resultType="com.sxmaps.mms.vo.resp.RespCampusVO">
+		SELECT
+		a.uid,
+		a.campus_code AS campusCode,
+		a.campus_name AS
+		campusName,
+		a.dept_code AS deptCode,
+		a.dept_name AS deptName,
+		a.phone
+		AS
+		phone,
+		a.photo AS photo,
+		a.province_code AS provinceCode,
+		a.province_name AS provinceName,
+		a.city_code AS cityCode,
+		a.city_name AS
+		cityName,
+		a.county_code AS
+		countyCode,
+		a.county_name AS countyName,
+		a.street AS street,
+		a.address AS
+		address,
+		a.coordinate AS coordinate,
+		a.operator_uid AS operatorUid,
+		a.operator_name AS operatorName,
+		a.create_time AS createTime,
+		a.update_time AS updateTime,
+		a.state,
+		a.dept_item AS deptItem
+		FROM
+		mms_campus a
+		WHERE
+		a.state = '1'
+		AND a.uid=#{uid,jdbcType=BIGINT}
+	</select>
+	
+	<select id="qrySchoolByUser" parameterType="String" resultType="com.sxmaps.mms.vo.resp.RespCampusVO">
+		<!--  SELECT
+			m.uid,
+			m.campus_name campusName,
+			m.campus_code campusCode,
+			m.address,
+			d.dept_id deptCode,
+			d.dept_name deptName
+		FROM
+			mms_campus m
+		LEFT JOIN (
+			SELECT
+				dept_id,
+				dept_name
+			FROM
+				auth_dept_sx
+			WHERE
+				FIND_IN_SET(
+					dept_id,
+					queryChildDept (#{deptId})
+				)
+		) d ON d.dept_id = m.dept_code  -->
+		SELECT
+			m.uid,
+			m.campus_name campusName,
+			m.campus_code campusCode,
+			m.address,
+			m.dept_code deptCode,
+			m.dept_name deptName
+		FROM
+			mms_campus m
+		WHERE
+			m.dept_code IN 
+		<foreach collection="deptList" item="deptId" index="index" open="(" close=")" separator=",">
+			#{deptId}
+		</foreach>
+	</select>
+	
+	<select id="queryDeptList" resultType="com.sxmaps.mms.model.AuthSxDept">
+		SELECT dept_id deptId,parent_id parentId FROM auth_dept_sx
+	</select>
+</mapper>

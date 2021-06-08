@@ -1,0 +1,704 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxmaps.mms.mapper.PerformanceMapper">
+	<!-- -->
+	<select id="performanceChartPerMonth" parameterType="com.sxmaps.mms.vo.req.ReqPerformanceChartVO" resultType="com.sxmaps.mms.vo.resp.RespPerformancePerMonthVO">
+	SELECT 
+	  CONVERT(
+	    IFNULL(SUM(i.paid_amount), 0),
+	    DECIMAL (10, 2)
+	  ) data,
+	  DATE_FORMAT(o.order_time, '%m-%d') date
+	FROM
+	  orders_member_prop p,
+	  orders_item i,
+	  orders o,
+	  mms_campus c 
+	WHERE p.order_item_id = i.uid 
+	  AND o.uid = i.order_uid 
+	  AND o.station_uid = c.campus_code 
+	  AND o.step = '7' 
+	  AND o.service_state = '1' 
+	  AND o.order_state = 'PAID' 
+	  AND o.cate = '2' 
+	  AND o.order_time BETWEEN CONCAT(#{beginTime},' 00:00:00') AND CONCAT(#{endTime},' 23:59:59')
+	GROUP BY DATE_FORMAT(
+	    o.order_time,
+	    '%Y-%m-%d'
+	  )
+	<!-- SELECT
+		DATE_FORMAT(IFNULL(o.order_time,o.create_time), '%m-%d') date,
+		SUM(o.paid_amount) data
+	FROM
+		orders o
+	INNER JOIN mms_campus c ON o.station_uid = c.campus_code
+	WHERE o.step = '7'
+	AND o.cate = '2'
+	AND o.order_state = 'PAID'
+	AND IFNULL(o.order_time,o.create_time) BETWEEN CONCAT(#{beginTime},' 00:00:00') AND CONCAT(#{endTime},' 23:59:59')
+	 AND c.campus_name = '测试分校' 
+	GROUP BY
+		DATE_FORMAT(o.create_time, '%y-%m-%d') -->
+	</select>
+	
+	<select id="churnRatePerMonth" parameterType="com.sxmaps.mms.vo.req.ReqPerformanceChartVO" resultType="com.sxmaps.mms.vo.resp.RespPerformancePerMonthVO">
+	SELECT
+		a.date date,
+		a.num,
+		b.num,
+		IFNULL(b.num / a.num,0) data
+	FROM
+		(
+			SELECT
+				DATE_FORMAT(o.create_time, '%m-%d') date,
+				COUNT(1) num
+			FROM
+				orders o
+			WHERE
+			     o.step = '7'
+				AND o.cate = '2'
+				AND IFNULL(o.order_time,o.create_time) BETWEEN CONCAT(#{beginTime},' 00:00:00') AND CONCAT(#{endTime},' 23:59:59')
+				AND o.service_state = '1'
+				AND o.order_cate != '1'
+			GROUP BY
+				DATE_FORMAT(IFNULL(o.order_time,o.create_time), '%y-%m-%d')
+		) a
+	LEFT JOIN (
+		SELECT
+			DATE_FORMAT(IFNULL(o.order_time,o.create_time), '%m-%d') date,
+			COUNT(1) num
+		FROM
+			orders o
+		WHERE
+			 o.step = '7'
+			AND o.cate = '2'
+			AND o.service_state = '1'
+			AND o.order_type = 'COUNSEL'
+			AND o.order_cate != '1'
+			AND IFNULL(o.order_time,o.create_time) BETWEEN CONCAT(#{beginTime},' 00:00:00') AND CONCAT(#{endTime},' 23:59:59')
+		GROUP BY
+			DATE_FORMAT(IFNULL(o.order_time,o.create_time), '%y-%m-%d')
+	) b ON a.date = b.date
+	order by date
+	
+	</select>
+	
+	<select id="performanceCountByPayway" parameterType="com.sxmaps.mms.vo.req.ReqPerformanceByCampusVO" resultType="com.sxmaps.mms.vo.resp.RespPerformancePerMonthVO">
+	SELECT 
+	  a.pay_way date,
+	  CONVERT(
+    IFNULL(SUM(a.paid_amount), 0),
+    DECIMAL (10, 2)) data 
+	FROM
+	  (
+	    (SELECT 
+	      r.order_sn,
+	      r.pay_way,
+	      r.paid_amount 
+	    FROM
+	      orders_pay_record r,
+	      (SELECT 
+	        p.order_sn 
+	      FROM
+	        orders_member_prop p,
+	        orders_item i,
+	        orders o,
+	        mms_campus c 
+	      WHERE p.order_item_id = i.uid 
+	        AND o.uid = i.order_uid 
+	        AND o.station_uid = c.campus_code 
+	        AND o.step = '7' 
+	        AND o.service_state = '1' 
+	        AND o.order_state = 'PAID' 
+	        AND o.order_type = 'COMMON' 
+	        AND o.cate = '2' 
+	        AND o.order_time BETWEEN CONCAT(#{startTime},' 00:00:00') AND CONCAT(#{endTime},' 23:59:59')
+	        <if test="campusCode != null and campusCode != '' ">
+			AND c.dept_code = #{campusCode}
+		  </if> 
+	      GROUP BY order_sn) a 
+	    WHERE a.order_sn = r.order_sn 
+	      AND r.pay_state = 'PAID'
+	      AND !ISNULL(r.pay_way)
+	      ) 
+	    UNION
+	    ALL 
+	    (SELECT 
+	      r.order_sn,
+	      r.pay_way,
+	      r.paid_amount 
+	    FROM
+	      orders_pay_record r,
+	      (SELECT 
+	        p.order_sn,
+	        o.last_order_id 
+	      FROM
+	        orders_member_prop p,
+	        orders_item i,
+	        orders o,
+	        mms_campus c 
+	      WHERE p.order_item_id = i.uid 
+	        AND o.uid = i.order_uid 
+	        AND o.station_uid = c.campus_code 
+	        AND o.step = '7' 
+	        AND o.service_state = '1' 
+	        AND o.order_state = 'PAID' 
+	        AND o.order_type = 'COMMON' 
+	        AND o.cate = '2' 
+	        AND o.order_time BETWEEN CONCAT(#{startTime},' 00:00:00') AND CONCAT(#{endTime},' 23:59:59')
+	        <if test="campusCode != null and campusCode != '' ">
+			AND c.dept_code = #{campusCode}
+		   </if> 
+	      GROUP BY order_sn) a 
+	    WHERE a.last_order_id = r.order_uid 
+	      AND r.pay_state = 'PAID' 
+	      AND r.order_type = 'HANSEL'
+	      AND !ISNULL(r.pay_way)
+	      )
+	  ) a 
+	GROUP BY a.pay_way 
+	</select>
+	
+	<select id="performanceCountByMonth" parameterType="com.sxmaps.mms.vo.req.ReqPerformanceCountByMonthVO" resultType="com.sxmaps.mms.vo.resp.RespPerformancePerMonthVO">
+	SELECT 
+	  CONVERT(
+    IFNULL(SUM(i.paid_amount), 0),
+    DECIMAL (10, 2)) data,
+	  DATE_FORMAT(
+	    o.order_time,
+	    '%y-%m'
+	  ) date 
+	FROM
+	  orders_member_prop p,
+	  orders_item i,
+	  orders o,
+	  mms_campus c 
+	WHERE p.order_item_id = i.uid 
+	  AND o.uid = i.order_uid 
+	  AND o.station_uid = c.campus_code 
+	  AND o.step = '7' 
+	  AND o.service_state = '1' 
+	  AND o.order_type = 'COMMON' 
+	  AND o.order_state = 'PAID' 
+	  AND o.cate = '2' 
+	  <if test="campusCode != null and campusCode != '' ">
+	  AND c.dept_code = #{campusCode}
+	  </if> 
+	GROUP BY date
+	</select>
+	
+	<select id="performanceRankingByStation" resultType="com.sxmaps.mms.vo.resp.RespPerformanceRankingVO" parameterType="com.sxmaps.mms.vo.req.ReqPerformanceRankingVO">
+	SELECT
+		x.*, (@rowNum :=@rowNum + 1) AS rank
+	FROM
+		(
+			SELECT
+				c.campus_name campusName,
+				IFNULL(a.sumAmount,0)+IFNULL(e.sumAmount,0) sumAmount,
+				IFNULL(a.count,0) commonCount,
+				IFNULL(b.count,0) hanselCount,
+				IFNULL(d.count,0) counselCount,
+				IFNULL(e.count,0) ownCount,
+				IFNULL(a.count,0) / IF(IFNULL(a.count,0)+IFNULL(b.count,0)+IFNULL(d.count,0)=0,1,IFNULL(a.count,0)+IFNULL(b.count,0)+IFNULL(d.count,0)) commonRate
+			FROM
+				mms_campus c
+			LEFT JOIN (
+				SELECT
+					o.station_uid,
+					SUM(o.paid_amount+o.hansel_amount) sumAmount,
+					COUNT(o.uid) count
+				FROM orders o
+				WHERE o.step = '7'
+				AND o.cate = '2'
+				AND o.order_type = 'COMMON'
+				AND o.order_state = 'PAID'
+				AND o.service_state = '1'
+				AND o.order_cate != '1'
+				AND IFNULL(o.order_time,o.create_time) BETWEEN CONCAT(#{startTime},' 00:00:00') AND CONCAT(#{endTime},' 23:59:59')
+				GROUP BY o.station_uid
+			) a ON c.campus_code = a.station_uid
+			LEFT JOIN (
+				SELECT
+					o.station_uid,
+					SUM(o.paid_amount) sumAmount,
+					COUNT(o.uid) count
+				FROM orders o 
+				WHERE o.step = '7'
+				AND o.cate = '2'
+				AND o.service_state = '1'
+				AND o.order_type = 'HANSEL'
+				AND o.order_cate != '1'
+				AND IFNULL(o.order_time,o.create_time) BETWEEN CONCAT(#{startTime},' 00:00:00') AND CONCAT(#{endTime},' 23:59:59')
+				GROUP BY o.station_uid
+			) b ON b.station_uid = c.campus_code
+			LEFT JOIN (
+				SELECT
+					o.station_uid,
+					SUM(o.paid_amount) sumAmount,
+					COUNT(o.uid) count
+				FROM orders o
+				WHERE o.step = '7'
+				AND o.cate = '2'
+				AND o.service_state = '1'
+				AND o.order_type = 'COUNSEL'              
+				AND o.order_cate != '1'
+				AND IFNULL(o.order_time,o.create_time) BETWEEN CONCAT(#{startTime},' 00:00:00') AND CONCAT(#{endTime},' 23:59:59')
+				GROUP BY o.station_uid
+			) d ON c.campus_code = d.station_uid
+			LEFT JOIN (
+				SELECT
+					o.station_uid,
+					SUM(o.paid_amount+o.hansel_amount) sumAmount,
+					COUNT(o.uid) count
+				FROM orders o
+				WHERE o.step = '7'
+				AND o.cate = '2'
+				AND o.order_cate = '1'
+				AND o.service_state = '1'
+				AND o.order_type = 'COMMON'
+				AND o.order_state = 'PAID'
+				AND IFNULL(o.order_time,o.create_time) BETWEEN CONCAT(#{startTime},' 00:00:00') AND CONCAT(#{endTime},' 23:59:59')
+				GROUP BY o.station_uid
+			) e ON c.campus_code = e.station_uid
+			<!--  ORDER BY sumAmount DESC   -->
+			<if test="orderBy != null and orderBy == 'SUMAMOUNT' ">
+			ORDER BY sumAmount
+			</if>
+			<if test="orderBy != null and orderBy == 'COMMONCOUNT' ">
+			ORDER BY commonCount
+			</if>
+			<if test="orderBy != null and orderBy == 'HANSELCOUNT' ">
+			ORDER BY hanselCount
+			</if>
+			<if test="orderBy != null and orderBy == 'COUNSELCOUNT' ">
+			ORDER BY counselCount
+			</if>
+			<if test="orderBy != null and orderBy == 'OWNCOUNT' ">
+			ORDER BY ownCount
+			</if>
+			<if test="sort != null and sort == 'ASC' ">
+				ASC
+			</if>
+			<if test="sort != null and sort == 'DESC' ">
+				DESC
+			</if>
+		) x,
+		(SELECT(@rowNum := 0)) y
+	</select>
+	
+	<select id="performanceRankingByTeacher" resultType="com.sxmaps.mms.vo.resp.RespPerformanceRankingVO" parameterType="com.sxmaps.mms.vo.req.ReqPerformanceRankingVO">
+	SELECT
+		x.*, (@rowNum :=@rowNum + 1) AS rank
+	FROM
+		(
+			SELECT
+				u.user_name campusName,
+				IFNULL(a.sumAmount,0)+IFNULL(e.sumAmount,0) sumAmount,
+				IFNULL(a.count,0) commonCount,
+				IFNULL(b.count,0) hanselCount,
+				IFNULL(d.count,0) counselCount,
+				IFNULL(e.count,0) ownCount,
+				IFNULL(a.count,0) / IF(IFNULL(a.count,0)+IFNULL(b.count,0)+IFNULL(d.count,0)=0,1,IFNULL(a.count,0)+IFNULL(b.count,0)+IFNULL(d.count,0)) commonRate
+			FROM
+				auth_user u
+			LEFT JOIN (
+				SELECT
+					o.station_teacher_uid,
+					SUM(o.paid_amount+o.hansel_amount) sumAmount,
+					COUNT(o.uid) count
+				FROM orders o
+				WHERE 
+				 o.step = '7'
+				AND o.cate = '2'
+				AND o.order_type = 'COMMON'
+				AND o.order_state = 'PAID'
+				AND o.service_state = '1'
+				AND o.order_cate != '1'
+				AND IFNULL(o.order_time,o.create_time) BETWEEN CONCAT(#{startTime},' 00:00:00') AND CONCAT(#{endTime},' 23:59:59')
+				GROUP BY o.station_teacher_uid
+			) a ON u.user_id = a.station_teacher_uid
+			LEFT JOIN (
+				SELECT
+					o.station_teacher_uid,
+					SUM(o.paid_amount) sumAmount,
+					COUNT(o.uid) count
+				FROM orders o
+				WHERE 
+				 o.step = '7'
+				AND o.cate = '2'
+				AND o.order_type = 'HANSEL'
+				AND o.service_state = '1'
+				AND o.order_cate != '1'
+				AND IFNULL(o.order_time,o.create_time) BETWEEN CONCAT(#{startTime},' 00:00:00') AND CONCAT(#{endTime},' 23:59:59')
+				GROUP BY o.station_teacher_uid
+			) b ON u.user_id = b.station_teacher_uid
+			LEFT JOIN (
+				SELECT
+					o.station_teacher_uid,
+					SUM(o.paid_amount) sumAmount,
+					COUNT(o.uid) count
+				FROM orders o
+				WHERE 
+				 o.step = '7'
+				AND o.cate = '2'
+				AND o.order_type = 'COUNSEL'
+				AND o.service_state = '1'
+				AND o.order_cate != '1'
+				AND IFNULL(o.order_time,o.create_time) BETWEEN CONCAT(#{startTime},' 00:00:00') AND CONCAT(#{endTime},' 23:59:59')
+				GROUP BY o.station_teacher_uid
+			) d ON u.user_id = d.station_teacher_uid
+			LEFT JOIN (
+				SELECT
+					o.station_teacher_uid,
+					SUM(o.paid_amount+o.hansel_amount) sumAmount,
+					COUNT(o.uid) count
+				FROM orders o
+				WHERE 
+				 o.step = '7'
+				AND o.cate = '2'
+				AND o.order_type = 'COMMON'
+				AND o.order_state = 'PAID'
+				AND o.service_state = '1'
+				AND o.order_cate = '1'
+				AND IFNULL(o.order_time,o.create_time) BETWEEN CONCAT(#{startTime},' 00:00:00') AND CONCAT(#{endTime},' 23:59:59')
+				GROUP BY o.station_teacher_uid
+			) e ON u.user_id = e.station_teacher_uid
+			WHERE u.dept_id_sx in 
+			<foreach collection="deptList" item="deptId" index="index" open="(" close=")" separator=",">
+			#{deptId}
+		</foreach>
+		<!--  	ORDER BY sumAmount DESC   -->
+		<if test="orderBy != null and orderBy == 'SUMAMOUNT' ">
+			ORDER BY sumAmount
+			</if>
+			<if test="orderBy != null and orderBy == 'COMMONCOUNT' ">
+			ORDER BY commonCount
+			</if>
+			<if test="orderBy != null and orderBy == 'HANSELCOUNT' ">
+			ORDER BY hanselCount
+			</if>
+			<if test="orderBy != null and orderBy == 'COUNSELCOUNT' ">
+			ORDER BY counselCount
+			</if>
+			<if test="orderBy != null and orderBy == 'OWNCOUNT' ">
+			ORDER BY ownCount
+			</if>
+			<if test="sort != null and sort == 'ASC' ">
+				ASC
+			</if>
+			<if test="sort != null and sort == 'DESC' ">
+				DESC
+			</if>
+		) x,
+		(SELECT(@rowNum := 0)) y
+	</select>
+	
+	<select id="performanceForeRank" parameterType="com.sxmaps.mms.vo.req.ReqPerformanceForeRankVO" resultType="com.sxmaps.mms.vo.resp.RespPerformanceForeRankVO">
+	SELECT a.*,
+	(@rowNum:=@rowNum+1) as rank
+	FROM (SELECT
+		COUNT(o.uid) count,
+		IFNULL(SUM(o.paid_amount+o.hansel_amount),0) sumAmount,
+		s.dept_name deptName,
+		u.user_name userName,
+		u.user_id userId
+	FROM
+		orders o
+	INNER JOIN auth_user u ON o.seller_uid = u.user_id AND u.source = 1
+	INNER JOIN auth_dept_sx s ON u.dept_id_sx = s.dept_id
+	WHERE 
+	 o.step = '7'
+	AND o.order_type = 'COMMON'
+	AND o.order_state = 'PAID'
+	AND IFNULL(o.order_time,o.create_time) BETWEEN CONCAT(#{startTime},' 00:00:00') AND CONCAT(#{endTime},' 23:59:59')
+	<if test="sxDeptId != null and sxDeptId != '' ">
+	AND FIND_IN_SET(u.dept_id_sx, #{sxDeptId})
+	</if>
+	GROUP BY
+		o.seller_uid
+	) as a,
+	(SELECT (@rowNum:=0)) b
+	ORDER BY sumAmount DESC
+	</select>
+	
+	<select id="performanceForeDoubleRank" parameterType="com.sxmaps.mms.vo.req.ReqPerformanceForeRankVO" resultType="com.sxmaps.mms.vo.resp.RespPerformanceForeRankVO">
+	<!--  SELECT a.*,(@rowNum:=@rowNum+1) rank FROM
+	(SELECT
+		COUNT(o.uid) count,
+		SUM(o.paid_amount) sumAmount,
+		u.user_name userName,
+		s.dept_name deptName
+	FROM
+		orders o
+	INNER JOIN (
+		SELECT
+			order_uid,
+			COUNT(order_sn) count
+		FROM
+			orders_item
+		GROUP BY
+			order_sn
+	) i ON i.order_uid = o.uid
+	INNER JOIN auth_user u ON o.seller_uid = u.user_id
+	INNER JOIN auth_dept_sx s ON u.dept_id_sx = s.dept_id
+	WHERE i.count >= 2
+	AND o.order_type = 'COMMON'
+	AND o.order_state = 'PAID'
+	AND o.step = 7
+	AND o.create_time BETWEEN CONCAT(#{startTime},' 00:00:00') AND CONCAT(#{endTime},' 23:59:59')
+	GROUP BY o.seller_uid) a,
+	(SELECT (@rowNum:=0)) b
+	ORDER BY sumAmount DESC  -->
+	SELECT 
+	  a.*,
+	  (@rowNum := @rowNum + 1) rank 
+	FROM
+	  (SELECT 
+	    COUNT(o.uid) COUNT,
+	    SUM(o.paid_amount+o.hansel_amount) sumAmount,
+	    c.user_name userName,
+	    c.dept_name deptName 
+	  FROM
+	    orders o,
+	    (SELECT 
+	      a.*,
+	      b.* 
+	    FROM
+	      (SELECT 
+	        i.order_uid,
+	        COUNT(i.uid) counts,
+	        o.seller_uid 
+	      FROM
+	        orders_item i,
+	        orders o 
+	      WHERE i.order_uid = o.uid 
+	        AND o.step = '7' 
+	        AND o.order_type = 'COMMON' 
+	        AND o.order_state = 'PAID' 
+	        AND IFNULL(o.order_time,o.create_time) BETWEEN CONCAT(#{startTime}, ' 00:00:00') 
+	        AND CONCAT(#{endTime}, ' 23:59:59') 
+	      GROUP BY i.order_uid 
+	      HAVING counts > 1) a,
+	      (SELECT 
+	        u.user_id,
+	        u.user_name,
+	        s.dept_name 
+	      FROM
+	        auth_user u,
+	        auth_dept_sx s 
+	      WHERE u.dept_id_sx = s.dept_id
+	      AND u.source = 1) b 
+	    WHERE b.user_id = a.seller_uid) c 
+	  WHERE c.order_uid = o.uid 
+	    AND c.seller_uid = o.seller_uid 
+	  GROUP BY o.seller_uid ) a,
+	  (SELECT 
+	    (@rowNum := 0)) b 
+	ORDER BY sumAmount DESC 
+	</select>
+	
+	<select id="performanceForeSum" resultType="com.sxmaps.mms.vo.resp.RespPerformancePerMonthVO">
+	SELECT
+		COUNT(1) count,
+		IFNULL(SUM(paid_amount+hansel_amount),0) data,
+		DATE_FORMAT(create_time,'%y-%m-%d') date
+	FROM
+		orders o
+	WHERE
+	 step = '7'
+	AND order_cate != '1'
+	AND	order_type = 'COMMON'
+	AND order_state = 'PAID'
+	AND IFNULL(o.order_time,o.create_time)	BETWEEN CONCAT(#{startTime},' 00:00:00') AND CONCAT(#{endTime},' 23:59:59')
+	AND seller_uid = #{sellerUid}
+	GROUP BY DATE_FORMAT(create_time,'%y-%m-%d')
+	</select>
+	
+	<select id="performanceForeByDay" parameterType="com.sxmaps.mms.vo.req.ReqPerformanceForeDayVO" resultType="com.sxmaps.mms.vo.resp.RespPerformanceForeDayVO">
+	SELECT
+		u.user_id sellerID,
+		u.user_name sellerName,
+		a.count applyNum,
+		b.count visitsNum,
+		a.sumAmount turnover,
+		(a.sumAmount/a.count) customerPrice
+	FROM
+		orders o
+	INNER JOIN auth_user u ON u.user_id = o.seller_uid
+	LEFT JOIN (
+		SELECT
+			COUNT(uid) count,SUM(paid_amount) sumAmount,seller_uid
+		FROM
+			orders
+		WHERE
+			order_type = 'COMMON'
+		AND order_state = 'PAID'
+		AND IFNULL(o.order_time,o.create_time) BETWEEN CONCAT(#{date}, ' 00:00:00') AND CONCAT(#{date}, ' 23:59:59')
+		GROUP BY seller_uid
+	) a ON a.seller_uid = u.user_id
+	LEFT JOIN (
+		SELECT
+			COUNT(uid) count,seller_uid
+		FROM
+			orders
+		WHERE IFNULL(o.order_time,o.create_time) BETWEEN CONCAT(#{date}, ' 00:00:00') AND CONCAT(#{date}, ' 23:59:59')
+		GROUP BY seller_uid
+	) b ON b.seller_uid = u.user_id
+	WHERE IFNULL(o.order_time,o.create_time) BETWEEN CONCAT(#{date}, ' 00:00:00') AND CONCAT(#{date}, ' 23:59:59')
+	AND u.user_id in <foreach collection="sellerList" item="sellerId" index="index" open="(" close=")" separator=",">
+		#{sellerId}
+	</foreach>
+	GROUP BY o.seller_uid
+	</select>
+	<!-- 定金单当日转成交，定金数量记在当日内，定金金额不计入；定金单当日没有转成交，定金数量记在当日内，定金金额记在当日内 -->
+	<select id="performanceForeBySite" parameterType="com.sxmaps.mms.vo.req.ReqPerformanceForeBySiteVO" resultType="com.sxmaps.mms.vo.resp.RespPerformanceForeBySiteVO">
+	SELECT
+		IFNULL(a.commonCount,0) commonCount,
+		IFNULL(d.commonSum,0) commonSum,
+		IFNULL(a.commonSum,0)/(LENGTH(a.seller_uid) - LENGTH(REPLACE(a.seller_uid, ',', '')) + 1) avgPerConsultant,
+		IFNULL(LENGTH(a.seller_uid) - LENGTH(REPLACE(a.seller_uid, ',', '')) + 1,0) consultantNum,
+		IFNULL(b.hanselCount,0) hanselCount,
+		IFNULL(b.hanselSum,0) hanselSum,
+		IFNULL(c.counselCount,0) counselCount,
+		o.site_sn siteSn
+	FROM
+		orders o
+	LEFT JOIN (
+		SELECT
+			COUNT(uid) commonCount,SUM(paid_amount+hansel_amount) commonSum,GROUP_CONCAT(DISTINCT seller_uid) seller_uid,site_sn
+		FROM
+			orders o
+		WHERE order_type = 'COMMON'
+		AND cate = '2'
+		AND order_cate != '1'
+		AND (paid_amount+hansel_amount) &gt;= 1000
+		<if test="source!= null and source!= '' ">
+		AND resource = #{source}
+		</if>
+		AND IFNULL(o.order_time,o.create_time) BETWEEN CONCAT(#{date}, ' 00:00:00') AND CONCAT(#{date}, ' 23:59:59')
+		GROUP BY site_sn
+	) a ON a.site_sn = o.site_sn
+	LEFT JOIN (
+		SELECT
+			COUNT(uid) hanselCount,SUM(paid_amount) hanselSum,site_sn
+		FROM
+			orders o
+		WHERE 
+		 step = '7'
+		AND service_state = '1'
+		AND order_type = 'HANSEL'
+		AND order_state = 'PAID'
+		AND order_cate != '1'
+		<if test="source!= null and source!= '' ">
+		AND resource = #{source}
+		</if>
+		AND IFNULL(o.order_time,o.create_time) BETWEEN CONCAT(#{date}, ' 00:00:00') AND CONCAT(#{date}, ' 23:59:59')
+		GROUP BY site_sn
+	) b ON b.site_sn = o.site_sn
+	LEFT JOIN (
+		SELECT
+			SUM(paid_amount+hansel_amount) commonSum,GROUP_CONCAT(DISTINCT seller_uid) seller_uid,site_sn
+		FROM
+			orders o
+		WHERE order_type = 'COMMON'
+		AND cate = '2'
+		AND order_cate != '1'
+		AND paid_amount &gt; 0
+		<if test="source!= null and source!= '' ">
+		AND resource = #{source}
+		</if>
+		AND IFNULL(o.order_time,o.create_time) BETWEEN CONCAT(#{date}, ' 00:00:00') AND CONCAT(#{date}, ' 23:59:59')
+		GROUP BY site_sn
+	) d ON d.site_sn = o.site_sn
+	<!--  LEFT JOIN (
+		SELECT
+			SUM(paid_amount) hanselSum,site_sn
+		FROM
+			orders
+		WHERE order_type = 'HANSEL'
+		AND order_state = 'PAID'
+		AND step = 7
+		AND order_cate != 1
+		AND service_state = 1
+		<if test="source!= null and source!= '' ">
+		AND resource = #{source}
+		</if>
+		AND create_time BETWEEN CONCAT(#{date}, ' 00:00:00') AND CONCAT(#{date}, ' 23:59:59')
+		GROUP BY site_sn
+	) d ON d.site_sn = o.site_sn  -->
+	LEFT JOIN (
+		SELECT
+			COUNT(uid) counselCount,site_sn
+		FROM
+			orders o
+		WHERE 
+		 step = '7'
+		AND order_type = 'COUNSEL'
+		AND order_cate != '1'
+		<if test="source != null and source != '' ">
+		AND resource = #{source}
+		</if>
+		AND IFNULL(o.order_time,o.create_time) BETWEEN CONCAT(#{date}, ' 00:00:00') AND CONCAT(#{date}, ' 23:59:59')
+		GROUP BY site_sn
+	) c ON c.site_sn = o.site_sn
+	WHERE
+		o.site_sn in 
+		<foreach collection="sites" item="site" index="index" open="(" close=")" separator=",">
+		#{site}
+	</foreach>
+	GROUP BY
+		o.site_sn
+	</select>
+	
+	<select id="performanceForeByGroupId" parameterType="com.sxmaps.mms.vo.req.ReqPerformanceForeBySiteVO" resultType="com.sxmaps.mms.vo.resp.RespPerformanceForeBySiteVO">
+	SELECT
+			s.parent_id siteSn,
+			IFNULL(SUM(a.commonCount),0) as commonCount,
+			IFNULL(sum(a.commonSum),0) as commonSum,
+			IFNULL(sum(b.counselCount),0) as counselCount,
+			IFNULL(SUM(c.reserveCount),0) as hanselCount
+		FROM
+			auth_dept_sx s
+		LEFT JOIN auth_user u ON s.dept_id = u.dept_id_sx
+		LEFT JOIN (SELECT seller_uid,SUM(paid_amount+hansel_amount) commonSum,COUNT(uid) commonCount FROM orders o 
+		WHERE 
+			 o.step = '7'
+		     AND o.order_type = 'COMMON'
+			AND o.order_state = 'PAID'
+			AND o.order_cate != '1'
+			AND IFNULL(o.order_time,o.create_time) BETWEEN CONCAT(#{date},' 00:00:00') AND CONCAT(#{date},' 23:59:59')
+		GROUP BY o.seller_uid
+	) a ON a.seller_uid = u.user_id
+		LEFT JOIN (SELECT seller_uid,COUNT(uid) counselCount FROM orders o 
+		WHERE 
+			 o.step = '7'
+		    AND o.order_type = 'COUNSEL'
+			AND o.order_cate != '1'
+			AND IFNULL(o.order_time,o.create_time) BETWEEN CONCAT(#{date},' 00:00:00') AND CONCAT(#{date},' 23:59:59')
+		GROUP BY o.seller_uid
+	) b ON b.seller_uid = u.user_id
+		LEFT JOIN (SELECT COUNT(uid) reserveCount,consultant_uid FROM ftms_track_reservation f
+		WHERE f.reservation_date BETWEEN CONCAT(#{date},' 00:00:00') AND CONCAT(#{date},' 23:59:59')
+		GROUP BY f.consultant_uid
+	) c ON c.consultant_uid = u.user_id 
+	WHERE s.parent_id in
+		<foreach collection="sites" item="site" index="index" open="(" close=")" separator=",">
+			#{site}
+		</foreach>
+	GROUP BY s.parent_id
+	</select>
+	
+	<select id="qryReserveCountByDept" parameterType="com.sxmaps.mms.vo.req.ReqPerformanceForeDayVO" resultType="com.sxmaps.mms.vo.resp.RespReserveCountByDeptVO">
+	SELECT
+		COUNT(f.uid) count,
+		m.dept_code schoolDeptId,
+		m.campus_name schoolName,
+		m.campus_code schoolCode
+	FROM
+		mms_campus m
+	LEFT JOIN ftms_track_reservation f ON m.dept_code = f.dept_code
+	WHERE f.reservation_date BETWEEN CONCAT(#{date},' 00:00:00') AND CONCAT(#{date},' 23:59:59')
+	GROUP BY
+		m.dept_code
+	</select>
+</mapper>

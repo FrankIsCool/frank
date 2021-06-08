@@ -1,6 +1,7 @@
 package com.sxmaps.my.advice;
 
 import com.sxmaps.my.common.JsonMessage;
+import com.sxmaps.my.enums.ApiExceptionEnum;
 import com.sxmaps.my.exception.ApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,9 +18,16 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 类：异常处理
+ * 内容：
+ * 创建人：付帅
+ * 时间：2021/6/8
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
-	final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+	private final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
 	/**
 	 * 参数错误异常处理
@@ -30,15 +38,13 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseBody
 	public JsonMessage argumentErrorHandler(MethodArgumentNotValidException exception) {
-		JsonMessage responseMsg = new JsonMessage();
-		responseMsg.setCode("0");
-		responseMsg.setText("请求的参数有误");
-		Map<String, String> mapErrFields = new HashMap<String, String>();
+		JsonMessage errorMessage = JsonMessage.createErrorMessage(ApiExceptionEnum.PARAM);
+		Map<String, String> mapErrFields = new HashMap<>();
 		for (FieldError err : exception.getBindingResult().getFieldErrors()) {
 			mapErrFields.put(err.getField(), err.getDefaultMessage());
 		}
-		responseMsg.setData(mapErrFields);
-		return responseMsg;
+		errorMessage.setData(mapErrFields);
+		return errorMessage;
 	}
 
 	/**
@@ -51,24 +57,19 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler({ Exception.class })
 	@ResponseBody
 	public JsonMessage defaultErrorHandler(HttpServletRequest request, Exception exception) {
-		JsonMessage responseMsg = new JsonMessage();
+		logger.error("异常: {}", exception.getMessage());
 		if (exception instanceof ApiException) {
-			responseMsg.setCode(((ApiException) exception).getErrorCode());
-			responseMsg.setText(exception.getMessage());
-		} else if (exception instanceof org.springframework.web.servlet.NoHandlerFoundException) {
-			responseMsg.setCode("404");
-			responseMsg.setText("HTTP 404 NOT FOUND");
-		} else if (exception instanceof SQLException) {
-			responseMsg.setCode("1046");
-			responseMsg.setText("数据库处理异常");
-		} else if (exception instanceof DataAccessException || exception instanceof BadSqlGrammarException) {
-			responseMsg.setCode("1036");
-			responseMsg.setText("数据库异常");
-		} else {
-			responseMsg.setCode("500");
-			responseMsg.setText(exception.getMessage());
+			return JsonMessage.createErrorMessage(((ApiException) exception).getErrorCode(),exception.getMessage());
 		}
-		logger.error("API_ERR: {}", exception.getMessage());
-		return responseMsg;
+		if (exception instanceof org.springframework.web.servlet.NoHandlerFoundException) {
+			return JsonMessage.createErrorMessage(ApiExceptionEnum.NOTFOUND);
+		}
+		if (exception instanceof SQLException) {
+			return JsonMessage.createErrorMessage(ApiExceptionEnum.DB);
+		}
+		if (exception instanceof DataAccessException || exception instanceof BadSqlGrammarException) {
+			return JsonMessage.createErrorMessage(ApiExceptionEnum.DB);
+		}
+		return JsonMessage.createErrorMessage(ApiExceptionEnum.EXCEPTION);
 	}
 }

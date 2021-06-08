@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxmaps.mms.mapper.MmsResubmitListMapper">
+  <resultMap id="BaseResultMap" type="com.sxmaps.mms.model.MmsResubmitList">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="uid" jdbcType="BIGINT" property="uid" />
+    <result column="resubmit_uid" jdbcType="BIGINT" property="resubmitUid" />
+    <result column="member_uid" jdbcType="VARCHAR" property="memberUid" />
+    <result column="consult_id" jdbcType="VARCHAR" property="consultId" />
+    <result column="consult_name" jdbcType="VARCHAR" property="consultName" />
+    <result column="operate_state" jdbcType="INTEGER" property="operateState" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+  </resultMap>
+  
+  <select id="getResubmitLog" resultType="com.sxmaps.mms.vo.resp.RespDistributionLog">
+  		SELECT `update_by` AS updateBy,`create_time` updateTime, operate_state  
+  			AS operationState,consult_name AS consultName  FROM `mms_resubmit_list` WHERE `member_uid` = #{memberId}
+  			ORDER BY `create_time` ASC
+  </select>
+</mapper>

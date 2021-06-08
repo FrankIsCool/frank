@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxmaps.mms.mapper.MmsCategoryMapper">
+	<resultMap id="BaseResultMap" type="com.sxmaps.mms.model.MmsCategory">
+		<!-- WARNING - @mbg.generated -->
+		<id column="uid" jdbcType="BIGINT" property="uid" />
+		<result column="cate_code" jdbcType="VARCHAR" property="cateCode" />
+		<result column="cate_name" jdbcType="VARCHAR" property="cateName" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="state" jdbcType="VARCHAR" property="state" />
+	</resultMap>
+
+	<resultMap type="com.sxmaps.mms.vo.resp.RespCategoryVO" id="CategoryMap">
+		<result column="uid" jdbcType="BIGINT" property="categoryUid" />
+		<result column="cate_code" jdbcType="VARCHAR" property="cateCode" />
+		<result column="cate_name" jdbcType="VARCHAR" property="cateName" />
+		<collection property="settingList" column="{categoryUid=uid}"
+			javaType="ArrayList" ofType="com.sxmaps.mms.vo.resp.RespSettingVO"
+			select="selectBycategoryUid">
+		</collection>
+	</resultMap>
+
+	<resultMap type="com.sxmaps.mms.vo.resp.RespSettingVO" id="SettingMap">
+		<result column="uid" jdbcType="BIGINT" property="settingUid" />
+		<result column="op_code" jdbcType="VARCHAR" property="opCode" />
+		<result column="op_name" jdbcType="VARCHAR" property="opName" />
+	</resultMap>
+	<!-- 查询类型信息 -->
+	<select id="qryCategorySetting" resultMap="CategoryMap">
+		SELECT
+		a.uid,
+		a.cate_code,
+		a.cate_name
+		FROM
+		mms_category a
+		WHERE
+		a.state = '1'
+	</select>
+
+	<select id="selectBycategoryUid" resultMap="SettingMap">
+		SELECT
+		a.uid,
+		a.op_code,
+		a.op_name
+		FROM
+		mms_setting a
+		WHERE
+		a.state = '1'
+		AND a.cate_id =
+		#{categoryUid, jdbcType=BIGINT}
+	</select>
+	<!-- 查询类型名称是否存在 -->
+	<select id="qryCategoryName" parameterType="com.sxmaps.mms.vo.req.ReqCategoryVO"
+		resultType="java.lang.Integer">
+		SELECT
+		COUNT(1)
+		FROM
+		mms_category a
+		WHERE
+		a.cate_name =
+		#{cateName,jdbcType=VARCHAR}
+		<if test="uid != null and uid!=''">
+			AND a.uid!=#{uid,jdbcType=BIGINT}
+		</if>
+	</select>
+
+	<!-- 查询服务类型信息 -->
+	<select id="findCategory" resultType="com.sxmaps.mms.vo.resp.RespGoryVO">
+		SELECT
+		a.uid,
+		a.cate_code AS
+		cateCode,
+		a.cate_name AS cateName
+		FROM
+		mms_category a
+		WHERE
+		a.state = '1'
+	</select>
+
+	<!-- 根据类别id获取类型类别信息 -->
+	<select id="SettingCateBysettUid" resultType="com.sxmaps.mms.vo.resp.RespSettingByCateVO"
+		parameterType="com.sxmaps.mms.vo.req.ReqSettingByCateVO">
+		SELECT
+		a.uid AS cateUid,
+		a.cate_code AS cateCode,
+		a.cate_name AS cateName,
+		b.uid AS settUid,
+		b.op_code AS opCode,
+		b.op_name AS opName
+		FROM
+		mms_category a
+		INNER JOIN mms_setting b ON a.uid = b.cate_id 
+		AND b.uid=#{settingUid}
+	</select>
+</mapper>
