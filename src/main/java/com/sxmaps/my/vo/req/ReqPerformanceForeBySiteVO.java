@@ -1,11 +1,10 @@
-package com.sxmaps.mms.vo.req;
-
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
+package com.sxmaps.my.vo.req;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @ApiModel("ReqPerformanceForeBySiteVO")
 public class ReqPerformanceForeBySiteVO {

@@ -1,8 +1,4 @@
-package com.sxmaps.mms.aspect;
-
-import java.util.Arrays;
-
-import javax.servlet.http.HttpServletRequest;
+package com.sxmaps.my.aspect;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -15,13 +11,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+
 @Aspect
 @Component
 public class ApiAspect {
 	private final Logger logger = LoggerFactory.getLogger(ApiAspect.class);
 	ThreadLocal<Long> startTime = new ThreadLocal<Long>();
 
-	@Pointcut("execution(public * com.sxmaps.mms.controller..*(..)) or execution(public * com.sxmaps.mms.fegin..*(..))")
+	@Pointcut("execution(public * com.sxmaps.my.controller..*(..)) or execution(public * com.sxmaps.my.fegin..*(..))")
 	public void log() {
 	}
 

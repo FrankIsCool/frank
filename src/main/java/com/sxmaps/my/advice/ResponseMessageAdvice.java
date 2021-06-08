@@ -1,8 +1,8 @@
-package com.sxmaps.mms.advice;
+package com.sxmaps.my.advice;
 
-import java.util.Arrays;
-import java.util.List;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sxmaps.my.common.JsonMessage;
+import com.sxmaps.my.common.WebTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;
@@ -13,11 +13,10 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sxmaps.mms.model.JsonMessage;
-import com.sxmaps.mms.utils.WebTools;
+import java.util.Arrays;
+import java.util.List;
 
-@ControllerAdvice(basePackages = { "com.sxmaps.mms.controller" })
+@ControllerAdvice(basePackages = { "com.sxmaps.my.controller" })
 public class ResponseMessageAdvice implements ResponseBodyAdvice<Object> {
 	final Logger logger = LoggerFactory.getLogger(ResponseMessageAdvice.class);
 	List<MediaType> mediaTypes = Arrays.asList(MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON_UTF8);

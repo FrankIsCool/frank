@@ -1,11 +1,9 @@
-package com.sxmaps.mms.utils;
-
-import javax.servlet.http.HttpServletRequest;
+package com.sxmaps.my.common;
 
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.sxmaps.mms.model.JsonMessage;
+import javax.servlet.http.HttpServletRequest;
 
 public class WebTools {
 	public static JsonMessage createSuccessMessage(Object msgData) {

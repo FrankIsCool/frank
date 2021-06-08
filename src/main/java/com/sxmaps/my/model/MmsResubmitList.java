@@ -1,7 +1,7 @@
-package com.sxmaps.mms.model;
+package com.sxmaps.my.model;
 
-import java.util.Date;
 import javax.persistence.*;
+import java.util.Date;
 
 @Table(name = "mms_resubmit_list")
 public class MmsResubmitList {

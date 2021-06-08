@@ -1,4 +1,4 @@
-package com.sxmaps.mms.utils;
+package com.sxmaps.my.utils;
 
 /**
  * SQL注入过虑工具类

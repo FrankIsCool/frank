@@ -1,4 +1,4 @@
-package com.sxmaps.mms.utils;
+package com.sxmaps.my.utils;
 
 import java.util.Collection;
 import java.util.regex.Matcher;

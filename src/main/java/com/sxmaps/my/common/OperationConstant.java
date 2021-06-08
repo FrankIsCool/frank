@@ -1,4 +1,4 @@
-package com.sxmaps.mms.common;
+package com.sxmaps.my.common;
 
 import java.util.HashMap;
 import java.util.Map;

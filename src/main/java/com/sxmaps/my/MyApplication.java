@@ -1,4 +1,4 @@
-package com.sxmaps.mms;
+package com.sxmaps.my;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,7 +7,6 @@ import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
-
 import tk.mybatis.spring.annotation.MapperScan;
 
 @EnableRetry
@@ -17,9 +16,9 @@ import tk.mybatis.spring.annotation.MapperScan;
 @SpringBootApplication
 @EnableAsync
 @MapperScan(basePackages = "com.sxmaps.my.mapper")
-public class MmsApplication {
+public class MyApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MmsApplication.class, args);
+		SpringApplication.run(MyApplication.class, args);
 	}
 }

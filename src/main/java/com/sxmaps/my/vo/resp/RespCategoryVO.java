@@ -1,12 +1,13 @@
-package com.sxmaps.mms.vo.resp;
-
-import java.io.Serializable;
-import java.util.List;
+package com.sxmaps.my.vo.resp;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+import java.io.Serializable;
 
 @SuppressWarnings("serial")
+@Data
 @ApiModel(description = "类型管理VO")
 public class RespCategoryVO implements Serializable {
 	/**
@@ -26,45 +27,4 @@ public class RespCategoryVO implements Serializable {
 	 */
 	@ApiModelProperty(name = "cateName", value = "类别名称", example = "售后")
 	private String cateName;
-
-	private List<RespSettingVO> settingList;
-
-	public Long getCategoryUid() {
-		return categoryUid;
-	}
-
-	public void setCategoryUid(Long categoryUid) {
-		this.categoryUid = categoryUid;
-	}
-
-	public String getCateCode() {
-		return cateCode;
-	}
-
-	public void setCateCode(String cateCode) {
-		this.cateCode = cateCode;
-	}
-
-	public String getCateName() {
-		return cateName;
-	}
-
-	public void setCateName(String cateName) {
-		this.cateName = cateName;
-	}
-
-	public List<RespSettingVO> getSettingList() {
-		return settingList;
-	}
-
-	public void setSettingList(List<RespSettingVO> settingList) {
-		this.settingList = settingList;
-	}
-
-	@Override
-	public String toString() {
-		return "RespCategoryVO [categoryUid=" + categoryUid + ", cateCode=" + cateCode + ", cateName=" + cateName
-				+ ", settingList=" + settingList + "]";
-	}
-
 }

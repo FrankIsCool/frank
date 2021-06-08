@@ -1,4 +1,4 @@
-package com.sxmaps.mms.utils;
+package com.sxmaps.my.utils;
 
 import javax.servlet.http.HttpServletRequest;
 

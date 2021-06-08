@@ -1,9 +1,9 @@
-package com.sxmaps.mms.common;
-
-import java.util.List;
+package com.sxmaps.my.common;
 
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Options;
+
+import java.util.List;
 
 public interface InsertUidListMapper<T> {
 	

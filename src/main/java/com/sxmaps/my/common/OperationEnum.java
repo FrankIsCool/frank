@@ -1,4 +1,4 @@
-package com.sxmaps.mms.common;
+package com.sxmaps.my.common;
 //操作枚举
 public enum OperationEnum {
 	OPERATION_IMPORT(1,"导入学员数据"),

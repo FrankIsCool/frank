@@ -1,25 +1,21 @@
-package com.sxmaps.mms.exception;
+package com.sxmaps.my.exception;
+
+import com.sxmaps.my.enums.ApiExceptionEnum;
 
 @SuppressWarnings("serial")
-public class ApiException extends Exception {
-	Integer errorCode;
+public class ApiException extends RuntimeException {
+	/**
+	 * 错误编码
+	 **/
+	private String errorCode;
 
-	public ApiException(String errorMsg) {
-		super(errorMsg);
-		this.errorCode = 0;
+
+	public ApiException(ApiExceptionEnum exceptionEnum) {
+		super(exceptionEnum.getExceptionDesc());
+		this.errorCode = exceptionEnum.getExceptionCode();
 	}
 
-	public ApiException(Integer errorCode) {
-		super("");
-		this.errorCode = errorCode;
-	}
-
-	public ApiException(Integer errorCode, String errorMsg) {
-		super(errorMsg);
-		this.errorCode = errorCode;
-	}
-
-	public Integer getErrorCode() {
+	public String getErrorCode() {
 		return errorCode;
 	}
 }

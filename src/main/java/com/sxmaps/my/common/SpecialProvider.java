@@ -1,14 +1,13 @@
-package com.sxmaps.mms.common;
-
-import java.util.Set;
+package com.sxmaps.my.common;
 
 import org.apache.ibatis.mapping.MappedStatement;
-
 import tk.mybatis.mapper.entity.EntityColumn;
 import tk.mybatis.mapper.mapperhelper.EntityHelper;
 import tk.mybatis.mapper.mapperhelper.MapperHelper;
 import tk.mybatis.mapper.mapperhelper.MapperTemplate;
 import tk.mybatis.mapper.mapperhelper.SqlHelper;
+
+import java.util.Set;
 
 public class SpecialProvider extends MapperTemplate{
 	

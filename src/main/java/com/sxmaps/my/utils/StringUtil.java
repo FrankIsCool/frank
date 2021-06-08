@@ -1,4 +1,6 @@
-package com.sxmaps.mms.utils;
+package com.sxmaps.my.utils;
+
+import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 import java.io.RandomAccessFile;
@@ -10,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
 
 /*****************************************************************************
  * 字符串处理工具类

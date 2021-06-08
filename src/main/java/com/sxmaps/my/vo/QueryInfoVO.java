@@ -1,11 +1,10 @@
-package com.sxmaps.mms.vo;
-
-import java.io.Serializable;
-
-import javax.validation.constraints.NotNull;
+package com.sxmaps.my.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * 模糊查询基类

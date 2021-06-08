@@ -1,11 +1,11 @@
-package com.sxmaps.mms.utils;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+package com.sxmaps.my.utils;
 
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * 生成订单号
