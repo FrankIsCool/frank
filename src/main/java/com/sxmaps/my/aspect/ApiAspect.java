@@ -1,5 +1,6 @@
 package com.sxmaps.my.aspect;
 
+import com.sxmaps.my.utils.IpUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
@@ -7,6 +8,7 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -14,13 +16,21 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
+/**
+ * 类：请求打印相关参数
+ * 内容：
+ * 创建人：付帅
+ * 时间：2021/6/8
+ */
 @Aspect
 @Component
 public class ApiAspect {
+
 	private final Logger logger = LoggerFactory.getLogger(ApiAspect.class);
+
 	ThreadLocal<Long> startTime = new ThreadLocal<Long>();
 
-	@Pointcut("execution(public * com.sxmaps.my.controller..*(..)) or execution(public * com.sxmaps.my.fegin..*(..))")
+	@Pointcut("execution(public * com.sxmaps.my.controller..*(..))")
 	public void log() {
 	}
 
@@ -34,12 +44,8 @@ public class ApiAspect {
 		startTime.set(System.currentTimeMillis());
 		ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 		HttpServletRequest request = attributes.getRequest();
-		String ip = request.getHeader("x-forwarded-for");
-		if (ip == null) {
-			ip = request.getRemoteAddr();
-		}
-		logger.info("REQ_URL:{}, ARGS:{},  METHOD:{}, CLI_IP:{}", request.getRequestURL().toString(),
-				Arrays.asList(joinPoint.getArgs()), request.getMethod(), ip);
+		String ip = IpUtil.getIpAddr(request);
+		logger.info("线程id: {},  请求地址:{}, 请求参数:{},  请求类型:{}, 请求ip:{}",Thread.currentThread().getId(), request.getRequestURL().toString(), Arrays.asList(joinPoint.getArgs()), request.getMethod(), ip);
 	}
 
 	/**
@@ -48,6 +54,6 @@ public class ApiAspect {
 	@After("log()")
 	public void doAfter() {
 		// 记录执行时间
-		logger.info("EXE_TIME: {}", System.currentTimeMillis() - startTime.get());
+		logger.info("线程id: {},  执行时间/毫秒: {}",Thread.currentThread().getId(), System.currentTimeMillis() - startTime.get());
 	}
 }

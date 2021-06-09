@@ -7,7 +7,7 @@ package com.sxmaps.my.enums;
  * 时间：2021/6/8
  */
 public enum ApiExceptionEnum {
-
+    SUCCESS("200", "SUCCESS"),
     SAVE("5001", "保存数据失败"),
     UPDATE("5002", "修改数据失败"),
     SELECT("5003", "查询失败"),

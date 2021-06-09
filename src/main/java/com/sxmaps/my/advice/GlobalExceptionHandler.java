@@ -57,7 +57,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler({ Exception.class })
 	@ResponseBody
 	public JsonMessage defaultErrorHandler(HttpServletRequest request, Exception exception) {
-		logger.error("异常: {}", exception.getMessage());
+		logger.error("线程id: {},  异常信息: {}",Thread.currentThread().getId(), exception.getMessage());
 		if (exception instanceof ApiException) {
 			return JsonMessage.createErrorMessage(((ApiException) exception).getErrorCode(),exception.getMessage());
 		}

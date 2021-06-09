@@ -1,8 +1,6 @@
 package com.sxmaps.my.advice;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sxmaps.my.common.JsonMessage;
-import com.sxmaps.my.common.WebTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;
@@ -18,7 +16,9 @@ import java.util.List;
 
 @ControllerAdvice(basePackages = { "com.sxmaps.my.controller" })
 public class ResponseMessageAdvice implements ResponseBodyAdvice<Object> {
+
 	final Logger logger = LoggerFactory.getLogger(ResponseMessageAdvice.class);
+
 	List<MediaType> mediaTypes = Arrays.asList(MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON_UTF8);
 
 	/**
@@ -36,24 +36,18 @@ public class ResponseMessageAdvice implements ResponseBodyAdvice<Object> {
 	public Object beforeBodyWrite(Object object, MethodParameter methodParameter, MediaType mediaType,
 			Class<? extends HttpMessageConverter<?>> converter, ServerHttpRequest request,
 			ServerHttpResponse response) {
-		// 如果请求的ContentType不是application/json，则原样返回
+		// 记录日志
+		logger.info("线程id: {},  返回结果集: {}",Thread.currentThread().getId(), object);
 		if (!mediaTypes.contains(mediaType)) {
 			return object;
 		}
-
-		// 当范围实体非ResponseMsg实，则格式化为ResponseMsg
-		if (object == null || !(object instanceof JsonMessage)) {
-			object = WebTools.createSuccessMessage(object);
+		// 返回结果非统一对象，则封装为同一对象
+		if (object == null) {
+			object = JsonMessage.createSuccessMessage();
 		}
-
-		// 记录日志
-		try {
-			ObjectMapper objectMapper = new ObjectMapper();
-			logger.info("HTTP_RSP: {}", objectMapper.writeValueAsString(object));
-		} catch (Exception e) {
-			logger.error("parse return object error: {}", e.getMessage());
+		if (!(object instanceof JsonMessage)) {
+			object = JsonMessage.createSuccessMessage(object);
 		}
-
 		return object;
 	}
 

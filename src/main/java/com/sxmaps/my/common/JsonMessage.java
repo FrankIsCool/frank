@@ -11,19 +11,25 @@ import lombok.Data;
  */
 @Data
 public class JsonMessage<T> {
-
+    //状态码
     private String code;
-
+    //错误信息
     private String text;
-
+    //返回结果集
     private T data;
 
-    public static JsonMessage createSuccessMessage(Object msgData) {
-        JsonMessage responseMsg = new JsonMessage();
-        responseMsg.setCode("200");
-        responseMsg.setText("success");
-        responseMsg.setData(msgData);
-        return responseMsg;
+    public JsonMessage(String code, String text, T data) {
+        this.code = code;
+        this.text = text;
+        this.data = data;
+    }
+
+    private static <T> JsonMessage<T> init(String code, String msg, T msgData){
+        return new JsonMessage<>(code,msg,msgData);
+    }
+
+    public static <T> JsonMessage<T> createSuccessMessage(T data) {
+        return init(ApiExceptionEnum.SUCCESS.getExceptionCode(),ApiExceptionEnum.SUCCESS.getExceptionDesc(),data);
     }
 
     public static JsonMessage createSuccessMessage() {
@@ -36,11 +42,7 @@ public class JsonMessage<T> {
     public static JsonMessage createErrorMessage(ApiExceptionEnum exceptionEnum) {
         return createErrorMessage(exceptionEnum.getExceptionCode(), exceptionEnum.getExceptionDesc(), null);
     }
-    public static JsonMessage createErrorMessage(String errorCode, String errorMsg, Object msgData) {
-        JsonMessage responseMsg = new JsonMessage();
-        responseMsg.setCode(errorCode);
-        responseMsg.setText(errorMsg);
-        responseMsg.setData(msgData);
-        return responseMsg;
+    public static <T> JsonMessage<T> createErrorMessage(String errorCode, String errorMsg, T msgData) {
+        return init(errorCode,errorMsg,msgData);
     }
 }

@@ -13,7 +13,7 @@ public class IpUtil {
 	/**
 	 * 获取IP
 	 * 
-	 * @param request对象
+	 * @param request 对象
 	 * @return 返回地址
 	 */
 	public static String getIpAddr(HttpServletRequest request) {
