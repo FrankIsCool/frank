@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -31,10 +32,10 @@ import java.util.List;
 @Service
 public class LoginServiceImpl implements ILoginService {
 
-    @Autowired
+    @Resource
     UserMapper userMapper;
 
-    @Autowired
+    @Resource
     LoginMapper loginMapper;
 
     @Override
@@ -74,6 +75,7 @@ public class LoginServiceImpl implements ILoginService {
         infoVo.setUserName(user.getUserName());
         infoVo.setToken(newLogin.getToken());
         infoVo.setValidTime(newLogin.getValidTime());
+        infoVo.setUserType(user.getUserType().intValue());
         newLogin.setUserInfo(JSONObject.toJSONString(infoVo));
         loginMapper.insert(newLogin);
 //        缓存新的用户信息

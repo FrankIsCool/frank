@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxmaps.my.mapper.LoginMapper">
+    <resultMap id="BaseResultMap" type="com.sxmaps.my.model.Login">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="uid" jdbcType="BIGINT" property="uid"/>
+        <result column="user_uid" jdbcType="BIGINT" property="userUid"/>
+        <result column="token" jdbcType="VARCHAR" property="token"/>
+        <result column="valid_time" jdbcType="TIMESTAMP" property="validTime"/>
+        <result column="user_info" jdbcType="VARCHAR" property="userInfo"/>
+        <result column="functions" jdbcType="VARCHAR" property="functions"/>
+        <result column="del" jdbcType="TINYINT" property="del"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <select id="getLoginByUserUid" parameterType="long" resultMap="BaseResultMap">
+        select * from login where user_uid = #{userUid} and del = 1
+    </select>
+    <select id="getLoginByToken" parameterType="string" resultMap="BaseResultMap">
+        select * from login where token = #{token} and del = 1
+    </select>
+    <select id="getLogins" resultMap="BaseResultMap">
+        select * from login where del = 1
+    </select>
+</mapper>

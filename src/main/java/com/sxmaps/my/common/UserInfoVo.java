@@ -33,4 +33,7 @@ public class UserInfoVo {
 
     @ApiModelProperty(name = "validTime", value = "登录有效时间", example = "2021/5/20 5:30:30",hidden = true)
     private Date validTime;
+
+    @ApiModelProperty(name = "userType", value = "登录人类型", example = "1",hidden = true)
+    private Integer userType;
 }
