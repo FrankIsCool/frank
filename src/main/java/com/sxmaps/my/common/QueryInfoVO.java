@@ -15,7 +15,7 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 @Data
 @ApiModel(description = "分页基础类")
-public class QueryInfoVO implements Serializable {
+public class QueryInfoVO extends UserInfoVo implements Serializable {
 
     /**
      * 每页显示条数

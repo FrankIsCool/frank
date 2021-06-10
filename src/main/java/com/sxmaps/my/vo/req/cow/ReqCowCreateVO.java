@@ -1,5 +1,6 @@
 package com.sxmaps.my.vo.req.cow;
 
+import com.sxmaps.my.common.UserInfoVo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.models.auth.In;
@@ -11,7 +12,7 @@ import javax.validation.constraints.Min;
 
 @Data
 @ApiModel(description = "新增牛请求对象")
-public class ReqCowCreateVO {
+public class ReqCowCreateVO extends UserInfoVo {
 
 	@ApiModelProperty(value = "耳钉号")
 	@NotBlank(message = "耳钉号不能为空")

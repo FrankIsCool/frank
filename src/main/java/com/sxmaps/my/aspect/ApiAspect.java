@@ -44,8 +44,8 @@ public class ApiAspect {
 		startTime.set(System.currentTimeMillis());
 		ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 		HttpServletRequest request = attributes.getRequest();
-		String ip = IpUtil.getIpAddr(request);
-		logger.info("线程id: {},  请求地址:{}, 请求参数:{},  请求类型:{}, 请求ip:{}",Thread.currentThread().getId(), request.getRequestURL().toString(), Arrays.asList(joinPoint.getArgs()), request.getMethod(), ip);
+		logger.info("线程id: {},  请求地址:{}, 请求参数:{},  请求类型:{}, 请求ip:{}",Thread.currentThread().getId(), request.getRequestURL().toString(),
+				Arrays.asList(joinPoint.getArgs()), request.getMethod(), IpUtil.getIpAddr(request));
 	}
 
 	/**
