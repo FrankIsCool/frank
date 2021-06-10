@@ -15,12 +15,18 @@ public enum ApiExceptionEnum {
 
     PARAM("600", "参数异常"),
     PARAM_TOKEN("601", "token不能为空"),
+    NOTVALID_TOKEN("601", "无效token"),
 
     SAVE("5001", "保存数据失败"),
     UPDATE("5002", "修改数据失败"),
     SELECT("5003", "查询失败"),
     NOTSELECT("5004", "没有找到该数据"),
     DB("5005", "数据库异常"),
+
+    NOTUSER("5101", "账户不存在"),
+    PASSWORDERROR("5102", "密码错误"),
+    DELUSER("5103", "账户已注销"),
+    NOTVALIDTIME("5104", "登录超时，请重新登录"),
 
     ;
 

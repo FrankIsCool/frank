@@ -12,9 +12,9 @@ import java.util.List;
 @ApiModel(description = "登录请求对象")
 public class ReqLoginVO {
 
-	@ApiModelProperty(value = "账户名称/邮箱/手机号")
-	@NotBlank(message = "账户名称/邮箱/手机号不能为空")
-	private String userName;
+	@ApiModelProperty(value = "/手机号")
+	@NotBlank(message = "手机号不能为空")
+	private String phone;
 	
 	@ApiModelProperty(value = "密码")
 	@NotBlank(message = "密码不能为空")

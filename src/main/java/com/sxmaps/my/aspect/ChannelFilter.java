@@ -1,5 +1,7 @@
 package com.sxmaps.my.aspect;
 
+import com.sxmaps.my.mapper.LoginMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -16,6 +18,7 @@ import java.io.IOException;
 @Component
 @WebFilter(filterName = "channelFilter", urlPatterns = {"/cow/*"})
 public class ChannelFilter implements Filter {
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) {
         try {

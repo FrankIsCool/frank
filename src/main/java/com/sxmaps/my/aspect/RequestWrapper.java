@@ -2,14 +2,18 @@ package com.sxmaps.my.aspect;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.sxmaps.my.common.LoginThreadLocal;
 import com.sxmaps.my.common.UserInfoVo;
 import com.sxmaps.my.enums.ApiExceptionEnum;
 import com.sxmaps.my.exception.ApiException;
+import com.sxmaps.my.mapper.LoginMapper;
+import com.sxmaps.my.model.Login;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StreamUtils;
 
 import javax.servlet.ReadListener;
@@ -17,6 +21,7 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.io.*;
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
@@ -96,23 +101,13 @@ public class RequestWrapper extends HttpServletRequestWrapper {
      * @date 2021/6/10
      **/
     private void getUserInfo(String token,Map map) {
-        UserInfoVo userInfo = getUserInfo(token);
+        UserInfoVo userInfo = LoginThreadLocal.getUserInfoVo(token);
         JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(userInfo));
         Set<String> keys = jsonObject.keySet();
         for(String key : keys){
             map.put(key, jsonObject.get(key));
         }
         logger.info("线程id: {},  登录人信息: {}",Thread.currentThread().getId(),userInfo);
-
-    }
-    private UserInfoVo getUserInfo(String token) {
-        UserInfoVo userInfoVo = new UserInfoVo();
-        userInfoVo.setToken(token);
-        userInfoVo.setLivestockName("明远牧场");
-        userInfoVo.setLivestockUide("001");
-        userInfoVo.setUserName("frank");
-        userInfoVo.setUserUid("001");
-        return userInfoVo;
     }
     public byte[] getRequestBody() {
         return requestBody;
