@@ -21,6 +21,10 @@
     <select id="getUsersByFarmersUid" parameterType="Long" resultMap="BaseResultMap">
         select * from users where farmers_uid = #{farmersUid} and del = 1
     </select>
+    <select id="getFarmersUsersByFarmersUid" parameterType="Long" resultMap="BaseResultMap">
+        select * from users where farmers_uid = #{farmersUid} and del = 1 and user_type = 1
+    </select>
+
     <update id="delUsers" parameterType="Long">
         update users set del = 2 where farmers_uid = #{farmersUid}
     </update>

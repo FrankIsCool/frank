@@ -1,6 +1,7 @@
 package com.sxmaps.my.controller.cow;
 
 import com.github.pagehelper.PageInfo;
+import com.sxmaps.my.service.ICowService;
 import com.sxmaps.my.vo.req.cow.ReqCowCreateVO;
 import com.sxmaps.my.vo.req.cow.ReqCowIdVO;
 import com.sxmaps.my.vo.req.cow.ReqCowListVO;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
+
 /**
  * 类：牛接口
  * 内容：
@@ -24,9 +27,62 @@ import org.springframework.web.bind.annotation.RestController;
  * 时间：2021/6/9
  */
 @RestController
-@RequestMapping("/cow")
+@RequestMapping("/check/cow")
 @Api(value = "牛接口", tags = "牛接口")
 public class CowController {
+    @Resource
+    ICowService cowService;
+
+    /**
+     * 牛死亡接口
+     * @return
+     */
+    @PostMapping(value = "die",produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(notes = "牛死亡接口", value = "牛死亡接口",response = Integer.class)
+    @ApiImplicitParam(name = "vo", value = "牛死亡接口参数", dataType = "ReqCowIdVO")
+    public Integer cowDie(@RequestBody @Validated ReqCowIdVO vo) {
+        return cowService.cowDie(vo);
+    }
+    /**
+     * 牛生病接口
+     * @return
+     */
+    @PostMapping(value = "ill",produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(notes = "牛生病接口", value = "牛生病接口",response = Integer.class)
+    @ApiImplicitParam(name = "vo", value = "牛生病接口", dataType = "ReqCowIdVO")
+    public Integer cowIll(@RequestBody @Validated ReqCowIdVO vo) {
+        return cowService.cowIll(vo);
+    }
+    /**
+     * 牛正常接口
+     * @return
+     */
+    @PostMapping(value = "normal",produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(notes = "牛正常接口", value = "牛正常接口",response = Integer.class)
+    @ApiImplicitParam(name = "vo", value = "牛正常接口", dataType = "ReqCowIdVO")
+    public Integer cowNormal(@RequestBody @Validated ReqCowIdVO vo) {
+        return cowService.cowNormal(vo);
+    }
+    /**
+     * 牛怀孕接口
+     * @return
+     */
+    @PostMapping(value = "fetation",produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(notes = "牛怀孕接口", value = "牛怀孕接口",response = Integer.class)
+    @ApiImplicitParam(name = "vo", value = "牛怀孕接口", dataType = "ReqCowIdVO")
+    public Integer cowFetation(@RequestBody @Validated ReqCowIdVO vo) {
+        return cowService.cowFetation(vo);
+    }
+    /**
+     * 牛售卖接口
+     * @return
+     */
+    @PostMapping(value = "sale",produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(notes = "牛售卖接口", value = "牛售卖接口",response = Integer.class)
+    @ApiImplicitParam(name = "vo", value = "牛售卖接口", dataType = "ReqCowIdVO")
+    public Integer cowSale(@RequestBody @Validated ReqCowIdVO vo) {
+        return cowService.cowSale(vo);
+    }
     /**
      * 牛基本信息接口
      *

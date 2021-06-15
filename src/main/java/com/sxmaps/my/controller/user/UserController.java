@@ -25,7 +25,7 @@ import javax.annotation.Resource;
  * 时间：2021/6/15
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/check/user")
 @Api(value = "用户相关接口", tags = "用户相关接口")
 public class UserController {
     @Resource

@@ -17,6 +17,6 @@ public class RespLoginVO implements Serializable {
 	@ApiModelProperty(name = "userName", value = "登录人名称", example = "张三")
 	private String userName;
 
-	@ApiModelProperty(name = "livestockName", value = "畜牧场名称", example = "明远牧场")
-	private String livestockName;
+	@ApiModelProperty(name = "farmersName", value = "牧场名称", example = "明远牧场")
+	private String farmersName;
 }

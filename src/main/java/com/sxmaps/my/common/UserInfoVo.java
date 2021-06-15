@@ -16,24 +16,24 @@ import java.util.Date;
 @ApiModel(description = "当前登录人基本信息")
 public class UserInfoVo {
 
-    @ApiModelProperty(name = "token", value = "登录令牌", example = "143515325413254",hidden = true)
+    @ApiModelProperty(name = "token", value = "登录令牌", example = "143515325413254", hidden = true)
     private String token;
 
-    @ApiModelProperty(name = "userName", value = "登录人名称", example = "张三",hidden = true)
+    @ApiModelProperty(name = "userName", value = "登录人名称", example = "张三", hidden = true)
     private String userName;
 
-    @ApiModelProperty(name = "userUid", value = "登录人id", example = "1",hidden = true)
+    @ApiModelProperty(name = "userUid", value = "登录人id", example = "1", hidden = true)
     private Long userUid;
 
-    @ApiModelProperty(name = "livestockName", value = "畜牧场名称", example = "明远牧场",hidden = true)
-    private String livestockName;
+    @ApiModelProperty(name = "farmersName", value = "牧场名称", example = "明远牧场", hidden = true)
+    private String farmersName;
 
-    @ApiModelProperty(name = "livestockUid", value = "畜牧场id", example = "1",hidden = true)
-    private String livestockUid;
+    @ApiModelProperty(name = "farmersUid", value = "牧场id", example = "1", hidden = true)
+    private Long farmersUid;
 
-    @ApiModelProperty(name = "validTime", value = "登录有效时间", example = "2021/5/20 5:30:30",hidden = true)
+    @ApiModelProperty(name = "validTime", value = "登录有效时间", example = "2021/5/20 5:30:30", hidden = true)
     private Date validTime;
 
-    @ApiModelProperty(name = "userType", value = "登录人类型", example = "1",hidden = true)
+    @ApiModelProperty(name = "userType", value = "登录人类型", example = "1", hidden = true)
     private Integer userType;
 }

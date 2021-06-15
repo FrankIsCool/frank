@@ -1,19 +1,27 @@
 package com.sxmaps.my.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.sxmaps.my.enums.StateEnum;
 import com.sxmaps.my.enums.UserTypeEnum;
 import com.sxmaps.my.mapper.FarmersMapper;
 import com.sxmaps.my.model.Farmers;
+import com.sxmaps.my.model.User;
 import com.sxmaps.my.service.IFarmersService;
 import com.sxmaps.my.service.IUserService;
-import com.sxmaps.my.vo.req.farmers.ReqFarmersCreateVO;
-import com.sxmaps.my.vo.req.farmers.ReqFarmersDelVO;
+import com.sxmaps.my.utils.StringUtil;
+import com.sxmaps.my.vo.req.farmers.*;
 import com.sxmaps.my.vo.req.user.ReqUserCreateVO;
+import com.sxmaps.my.vo.resp.farmers.RespFarmersInfoVO;
+import com.sxmaps.my.vo.resp.farmers.RespFarmersListVO;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 类：
@@ -30,6 +38,7 @@ public class FarmersServiceImpl implements IFarmersService {
     IUserService userService;
 
     @Override
+    @Transactional
     public Integer createFarmers(ReqFarmersCreateVO vo) {
         Farmers farmers = new Farmers();
         farmers.setCreateTime(new Date());
@@ -47,11 +56,50 @@ public class FarmersServiceImpl implements IFarmersService {
     }
 
     @Override
+    @Transactional
     public Integer farmersCancel(ReqFarmersDelVO vo) {
         Farmers farmers = farmersMapper.selectByPrimaryKey(vo.getFarmersUid());
         farmers.setDel(StateEnum.DEL.getState().byteValue());
         farmers.setUpdateTime(new Date());
         farmersMapper.updateByPrimaryKey(farmers);
         return userService.delUsers(vo);
+    }
+
+    @Override
+    public RespFarmersInfoVO getFarmersInfo(ReqFarmersInfoVO vo) {
+        Farmers farmers = farmersMapper.selectByPrimaryKey(vo.getFarmersUid());
+        RespFarmersInfoVO infoVO = new RespFarmersInfoVO();
+        infoVO.setFarmersUid(farmers.getUid());
+        infoVO.setFarmersName(farmers.getFarmersName());
+        infoVO.setFarmersAddress(farmers.getFarmersAddress());
+        infoVO.setFarmersCreateTime(farmers.getCreateTime());
+
+        User farmersUser = userService.getFarmersUser(farmers.getUid());
+        infoVO.setFarmersUserUid(farmersUser.getUid());
+        infoVO.setFarmersUserName(farmersUser.getUserName());
+        infoVO.setFarmersUserPhone(farmersUser.getPhone());
+        return infoVO;
+    }
+
+    @Override
+    public Integer farmersUpdate(ReqFarmersUpdateVO vo) {
+        if(StringUtils.isEmpty(vo.getFarmersName()) && StringUtils.isEmpty(vo.getFarmersAddress())){
+            return 1;
+        }
+        Farmers farmers = farmersMapper.selectByPrimaryKey(vo.getFarmersUid());
+        farmers.setUpdateTime(new Date());
+        if(!StringUtils.isEmpty(vo.getFarmersName())){
+            farmers.setFarmersName(vo.getFarmersName());
+        }
+        if(!StringUtils.isEmpty(vo.getFarmersAddress())){
+            farmers.setFarmersAddress(vo.getFarmersAddress());
+        }
+        return farmersMapper.updateByPrimaryKey(farmers);
+    }
+
+    @Override
+    public PageInfo<RespFarmersListVO> getFarmersList(ReqFarmersListVO vo) {
+        PageHelper.startPage(vo.getPageNum(),vo.getPageSize());
+        return new PageInfo<>(farmersMapper.getFarmersList(vo));
     }
 }

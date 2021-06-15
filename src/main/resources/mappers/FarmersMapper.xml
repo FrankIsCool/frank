@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxmaps.my.mapper.FarmersMapper">
+    <resultMap id="BaseResultMap" type="com.sxmaps.my.model.Farmers">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="uid" jdbcType="BIGINT" property="uid"/>
+        <result column="farmers_name" jdbcType="VARCHAR" property="farmersName"/>
+        <result column="farmers_address" jdbcType="VARCHAR" property="farmersAddress"/>
+        <result column="del" jdbcType="TINYINT" property="del"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <select id="getFarmersList" parameterType="com.sxmaps.my.vo.req.farmers.ReqFarmersListVO"
+            resultType="com.sxmaps.my.vo.resp.farmers.RespFarmersListVO">
+        select
+            f.uid farmersUid,
+            f.farmers_name farmersName,
+            f.farmers_address farmersAddress
+        from
+            farmers f
+        where
+            1=1
+            <if test="farmersName !=null and farmersName !=''">
+                and f.farmers_name = #{farmersName}
+            </if>
+            <if test="del !=null">
+                and f.del = #{del}
+            </if>
+  </select>
+</mapper>

@@ -13,6 +13,7 @@ import com.sxmaps.my.vo.req.farmers.ReqFarmersDelVO;
 import com.sxmaps.my.vo.req.user.ReqUserCreateVO;
 import com.sxmaps.my.vo.req.user.ReqUsersDelVO;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class UserServiceImpl implements IUserService {
     ILoginService loginService;
 
     @Override
+    @Transactional
     public Integer createUser(ReqUserCreateVO vo) {
         if(null == UserTypeEnum.getEnum(vo.getUserType())){
             throw new ApiException(ApiExceptionEnum.NOTUSERTYPE);
@@ -44,13 +46,15 @@ public class UserServiceImpl implements IUserService {
         user.setUpdateTime(new Date());
         user.setDel(StateEnum.NOTDEL.getState().byteValue());
         user.setPhone(vo.getPhone());
-        user.setUserName(vo.getUserName());
-        user.setUserType(vo.getUserType().byteValue());
+        user.setUserName(vo.getName());
+        user.setUserType(vo.getType().byteValue());
         user.setFarmersUid(vo.getFarmersUid());
+        user.setPassword(vo.getPassword());
         return userMapper.insert(user);
     }
 
     @Override
+    @Transactional
     public Integer delUsers(ReqFarmersDelVO vo) {
         List<User> users = userMapper.getUsersByFarmersUid(vo.getFarmersUid());
         List<String> tokens = loginService.getTokens(users.stream().map(User::getUid).collect(Collectors.toList()));
@@ -59,6 +63,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    @Transactional
     public Integer delUser(ReqUsersDelVO vo) {
         User users = userMapper.selectByPrimaryKey(vo.getUserUid());
         List<Long> userUids = new ArrayList<>();
@@ -68,5 +73,10 @@ public class UserServiceImpl implements IUserService {
         users.setDel(StateEnum.DEL.getState().byteValue());
         users.setUpdateTime(new Date());
         return userMapper.updateByPrimaryKey(users);
+    }
+
+    @Override
+    public User getFarmersUser(Long farmersUid) {
+        return userMapper.getFarmersUsersByFarmersUid(farmersUid);
     }
 }

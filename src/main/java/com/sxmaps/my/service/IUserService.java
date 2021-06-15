@@ -1,5 +1,6 @@
 package com.sxmaps.my.service;
 
+import com.sxmaps.my.model.User;
 import com.sxmaps.my.vo.req.farmers.ReqFarmersDelVO;
 import com.sxmaps.my.vo.req.user.ReqUserCreateVO;
 import com.sxmaps.my.vo.req.user.ReqUsersDelVO;
@@ -36,4 +37,12 @@ public interface IUserService {
      * @date 2021/6/10
      **/
     Integer delUser(ReqUsersDelVO vo);
+    /**
+     * 获取牧场主信息
+     * @param farmersUid
+     * @return
+     * @author frank(付帅)
+     * @date 2021/6/10
+     **/
+    User getFarmersUser(Long farmersUid);
 }

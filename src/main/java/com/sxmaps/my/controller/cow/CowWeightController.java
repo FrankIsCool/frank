@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 时间：2021/6/9
  */
 @RestController
-@RequestMapping("/cow/weight")
+@RequestMapping("/check/cow/weight")
 @Api(value = "牛体重信息接口", tags = "牛体重信息接口")
 public class CowWeightController {
     /**

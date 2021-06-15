@@ -5,17 +5,22 @@ import com.sxmaps.my.common.LoginThreadLocal;
 import com.sxmaps.my.common.UserInfoVo;
 import com.sxmaps.my.enums.ApiExceptionEnum;
 import com.sxmaps.my.enums.StateEnum;
+import com.sxmaps.my.enums.UserTypeEnum;
 import com.sxmaps.my.exception.ApiException;
+import com.sxmaps.my.mapper.FarmersMapper;
 import com.sxmaps.my.mapper.LoginMapper;
 import com.sxmaps.my.mapper.UserMapper;
+import com.sxmaps.my.model.Farmers;
 import com.sxmaps.my.model.Login;
 import com.sxmaps.my.model.User;
+import com.sxmaps.my.service.IFarmersService;
 import com.sxmaps.my.service.ILoginService;
 import com.sxmaps.my.utils.DateUtil;
 import com.sxmaps.my.utils.UUIDUtil;
+import com.sxmaps.my.vo.req.farmers.ReqFarmersInfoVO;
 import com.sxmaps.my.vo.req.login.ReqLoginVO;
+import com.sxmaps.my.vo.resp.farmers.RespFarmersInfoVO;
 import com.sxmaps.my.vo.resp.login.RespLoginVO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +41,9 @@ public class LoginServiceImpl implements ILoginService {
     UserMapper userMapper;
 
     @Resource
+    FarmersMapper farmersMapper;
+
+    @Resource
     LoginMapper loginMapper;
 
     @Override
@@ -43,18 +51,18 @@ public class LoginServiceImpl implements ILoginService {
     public RespLoginVO login(ReqLoginVO vo) {
 //        获取用户基本信息
         User user = userMapper.getUserByPhone(vo.getPhone());
-        if(null == user){
+        if (null == user) {
             throw new ApiException(ApiExceptionEnum.NOTUSER);
         }
-        if(!user.getPassword().equals(vo.getPassword())){
+        if (!user.getPassword().equals(vo.getPassword())) {
             throw new ApiException(ApiExceptionEnum.PASSWORDERROR);
         }
-        if(StateEnum.DEL.getState() == user.getDel().intValue()){
+        if (StateEnum.DEL.getState() == user.getDel().intValue()) {
             throw new ApiException(ApiExceptionEnum.DELUSER);
         }
 //        获取用户是否已经登录
         Login login = loginMapper.getLoginByUserUid(user.getUid());
-        if(null != login){
+        if (null != login) {
             LoginThreadLocal.removeUserInfoVo(login.getToken());
             login.setDel(StateEnum.DEL.getState().byteValue());
             loginMapper.updateByPrimaryKey(login);
@@ -66,10 +74,10 @@ public class LoginServiceImpl implements ILoginService {
         newLogin.setToken(UUIDUtil.getUUID());
         newLogin.setCreateTime(new Date());
         int addDateNum = 1;
-        if(vo.getIsRemember()){
+        if (vo.getIsRemember()) {
             addDateNum = 7;
         }
-        newLogin.setValidTime(DateUtil.addDay(new Date(),addDateNum));
+        newLogin.setValidTime(DateUtil.addDay(new Date(), addDateNum));
         UserInfoVo infoVo = new UserInfoVo();
         infoVo.setUserUid(user.getUid());
         infoVo.setUserName(user.getUserName());
@@ -84,7 +92,10 @@ public class LoginServiceImpl implements ILoginService {
         RespLoginVO loginVO = new RespLoginVO();
         loginVO.setToken(newLogin.getToken());
         loginVO.setUserName(user.getUserName());
-
+        if (user.getUserType() == UserTypeEnum.USERTYP_1.getState().byteValue() || user.getUserType() == UserTypeEnum.USERTYP_2.getState().byteValue()) {
+            Farmers farmers = farmersMapper.selectByPrimaryKey(user.getFarmersUid());
+            loginVO.setFarmersName(farmers.getFarmersName());
+        }
         return loginVO;
     }
 

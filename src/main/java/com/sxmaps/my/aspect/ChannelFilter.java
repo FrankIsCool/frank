@@ -16,7 +16,7 @@ import java.io.IOException;
  * 时间：2021/6/10
  */
 @Component
-@WebFilter(filterName = "channelFilter", urlPatterns = {"/cow/*"})
+@WebFilter(filterName = "channelFilter", urlPatterns = {"/check/*"})
 public class ChannelFilter implements Filter {
 
     @Override

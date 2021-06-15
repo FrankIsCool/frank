@@ -13,4 +13,6 @@ public interface UserMapper extends CommonMapper<User> {
     Integer delUsers(@Param("farmersUid") Long farmersUid);
     //  获取牧场下所有用户
     List<User> getUsersByFarmersUid(@Param("farmersUid") Long farmersUid);
+    //  获取牧场主信息
+    User getFarmersUsersByFarmersUid(@Param("farmersUid") Long farmersUid);
 }

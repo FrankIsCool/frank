@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 时间：2021/6/9
  */
 @RestController
-@RequestMapping("/cow/kind")
+@RequestMapping("/check/cow/kind")
 @Api(value = "牛种类接口", tags = "牛种类接口")
 public class CowKindController {
     /**

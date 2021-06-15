@@ -13,8 +13,8 @@ import javax.validation.constraints.Min;
 @ApiModel(description = "牛id请求对象")
 public class ReqCowIdVO extends UserInfoVo {
 
-	@ApiModelProperty(value = "uid")
-	@NotBlank(message = "uid不能为空")
-	private String uid;
+	@ApiModelProperty(value = "牛Uid")
+	@NotBlank(message = "牛Uid不能为空")
+	private Long cowUid;
 
 }
