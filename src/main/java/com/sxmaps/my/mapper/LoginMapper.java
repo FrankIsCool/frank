@@ -14,4 +14,6 @@ public interface LoginMapper extends CommonMapper<Login> {
     Login getLoginByToken(@Param("token") String token);
 
     List<Login> getLogins();
+
+    List<String> getLoginByUserUids(@Param("userUids") List<Long> userUids);
 }

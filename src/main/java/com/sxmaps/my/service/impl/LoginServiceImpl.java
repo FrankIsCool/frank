@@ -90,11 +90,17 @@ public class LoginServiceImpl implements ILoginService {
 
     @Override
     public Integer loginOut(String token) {
-        return null;
+        LoginThreadLocal.removeUserInfoVo(token);
+        return 1;
     }
 
     @Override
     public List<Login> getLogins() {
         return loginMapper.getLogins();
+    }
+
+    @Override
+    public List<String> getTokens(List<Long> userUids) {
+        return loginMapper.getLoginByUserUids(userUids);
     }
 }

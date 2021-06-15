@@ -28,6 +28,8 @@ public enum ApiExceptionEnum {
     DELUSER("5103", "账户已注销"),
     NOTVALIDTIME("5104", "登录超时，请重新登录"),
 
+
+    NOTUSERTYPE("5201", "不支持该用户类型"),
     ;
 
     private String exceptionCode;

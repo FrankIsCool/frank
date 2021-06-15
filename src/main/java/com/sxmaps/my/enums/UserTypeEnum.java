@@ -1,5 +1,7 @@
 package com.sxmaps.my.enums;
 
+import java.util.stream.Stream;
+
 /**
  * 类：用户类型
  * 内容：
@@ -36,5 +38,9 @@ public enum UserTypeEnum {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public static UserTypeEnum getEnum(Integer value) {
+        return Stream.of(values()).filter(p -> p.getState().equals(value)).findFirst().orElse(null);
     }
 }

@@ -17,6 +17,18 @@
     <select id="getLoginByUserUid" parameterType="long" resultMap="BaseResultMap">
         select * from login where user_uid = #{userUid} and del = 1
     </select>
+    <select id="getLoginByUserUids" parameterType="long" resultType="String">
+        select
+            token
+        from
+            login
+        where
+            del = 1
+            and user_uid in
+            <foreach collection="userUids" item="userUid" index="index" open="(" close=")" separator=",">
+                #{userUid}
+            </foreach>
+    </select>
     <select id="getLoginByToken" parameterType="string" resultMap="BaseResultMap">
         select * from login where token = #{token} and del = 1
     </select>

@@ -38,4 +38,12 @@ public interface ILoginService {
      * @date 2021/6/10
      **/
     List<Login> getLogins();
+    /**
+     * 根据userid获取token
+     * @param userUids
+     * @return
+     * @author frank(付帅)
+     * @date 2021/6/10
+     **/
+    List<String> getTokens(List<Long> userUids);
 }

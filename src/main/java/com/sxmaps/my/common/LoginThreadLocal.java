@@ -86,6 +86,21 @@ public class LoginThreadLocal {
      * @author frank(付帅)
      * @date 2021/6/10
      **/
+    public static void removeUserInfoVo(List<String> tokens){
+        if(null == tokens || tokens.size()<1){
+            return;
+        }
+        tokens.forEach(token->{
+            userInfoVoMap.remove(token);
+        });
+    }
+    /**
+     * 移除token信息
+     * @param
+     * @return
+     * @author frank(付帅)
+     * @date 2021/6/10
+     **/
     public static void removeAndAddUserInfoVo(String token,UserInfoVo userInfoVo){
         userInfoVoMap.remove(token);
         userInfoVoMap.put(userInfoVo.getToken(),userInfoVo);

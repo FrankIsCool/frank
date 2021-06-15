@@ -3,7 +3,7 @@ package com.sxmaps.my.model;
 import java.util.Date;
 import javax.persistence.*;
 
-@Table(name = "user")
+@Table(name = "users")
 public class User {
     /**
      * uid
