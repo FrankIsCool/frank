@@ -1,5 +1,6 @@
 package com.sxmaps.my.service;
 
+import com.sxmaps.my.vo.req.cow.ReqCowCreateVO;
 import com.sxmaps.my.vo.req.cow.ReqCowIdVO;
 
 /**
@@ -49,4 +50,12 @@ public interface ICowService {
      * @date 2021/6/10
      **/
     Integer cowSale(ReqCowIdVO vo);
+    /**
+     * 牛创建
+     * @param vo
+     * @return
+     * @author frank(付帅)
+     * @date 2021/6/10
+     **/
+    Integer cowCreate(ReqCowCreateVO vo);
 }

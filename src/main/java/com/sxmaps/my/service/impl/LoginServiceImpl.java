@@ -67,6 +67,11 @@ public class LoginServiceImpl implements ILoginService {
             login.setDel(StateEnum.DEL.getState().byteValue());
             loginMapper.updateByPrimaryKey(login);
         }
+        Farmers farmers =null;
+        if (user.getUserType() == UserTypeEnum.USERTYP_1.getState().byteValue()
+                || user.getUserType() == UserTypeEnum.USERTYP_2.getState().byteValue()) {
+            farmers = farmersMapper.selectByPrimaryKey(user.getFarmersUid());
+        }
 //        增加新的用户登录信息
         Login newLogin = new Login();
         newLogin.setUserUid(user.getUid());
@@ -84,16 +89,23 @@ public class LoginServiceImpl implements ILoginService {
         infoVo.setToken(newLogin.getToken());
         infoVo.setValidTime(newLogin.getValidTime());
         infoVo.setUserType(user.getUserType().intValue());
+
+        if(null != farmers){
+            infoVo.setFarmersName(farmers.getFarmersName());
+            infoVo.setFarmersUid(farmers.getUid());
+        }
         newLogin.setUserInfo(JSONObject.toJSONString(infoVo));
         loginMapper.insert(newLogin);
+
+
 //        缓存新的用户信息
         LoginThreadLocal.addUserInfoVo(infoVo);
 //        拼装返回数据
         RespLoginVO loginVO = new RespLoginVO();
         loginVO.setToken(newLogin.getToken());
         loginVO.setUserName(user.getUserName());
-        if (user.getUserType() == UserTypeEnum.USERTYP_1.getState().byteValue() || user.getUserType() == UserTypeEnum.USERTYP_2.getState().byteValue()) {
-            Farmers farmers = farmersMapper.selectByPrimaryKey(user.getFarmersUid());
+        loginVO.setFarmersName("明远集团");
+        if(null != farmers){
             loginVO.setFarmersName(farmers.getFarmersName());
         }
         return loginVO;

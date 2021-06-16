@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow: hidden">
+
+<head>
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+    <!-- App css -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/theme.min.css" rel="stylesheet" type="text/css"/>
+    <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/metismenu.min.js"></script>
+    <script src="assets/js/waves.js"></script>
+    <script src="assets/js/simplebar.min.js"></script>
+
+    <!-- Morris Js-->
+    <script src="../plugins/morris-js/morris.min.js"></script>
+    <!-- Raphael Js-->
+    <script src="../plugins/raphael/raphael.min.js"></script>
+
+    <!-- Morris Custom Js-->
+    <script src="assets/pages/dashboard-demo.js"></script>
+
+    <!-- App js -->
+    <script src="assets/js/theme.js"></script>
+</head>
+
+<body>
+
+<div class="container-fluid">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Striped rows</h4>
+                <p class="card-subtitle mb-4"> Use <code>.table-striped</code> to add zebra-striping
+                    to any table row
+                    within the <code>&lt;tbody&gt;</code>. </p>
+
+                <div class="table-responsive">
+                    <table class="table table-striped mb-0">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Username</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>Larry</td>
+                            <td>the Bird</td>
+                            <td>@twitter</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div> <!-- end table-responsive-->
+            </div>
+            <!-- end card-body-->
+        </div>
+        <!-- end card -->
+    </div>
+</div>
+<script src="assets/js/my.js"></script>
+<script>
+    cowList();
+    function cowList(){
+        click("/login/out",null,function (data){
+            $.cookie('token', "");
+            $.cookie('userName', "");
+            $.cookie('farmersName', "");
+            window.location.href = 'pages-login.html'
+        })
+    }
+</script>
+</body>
+</html>

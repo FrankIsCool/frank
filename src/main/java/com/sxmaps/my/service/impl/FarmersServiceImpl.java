@@ -66,8 +66,8 @@ public class FarmersServiceImpl implements IFarmersService {
     }
 
     @Override
-    public RespFarmersInfoVO getFarmersInfo(ReqFarmersInfoVO vo) {
-        Farmers farmers = farmersMapper.selectByPrimaryKey(vo.getFarmersUid());
+    public RespFarmersInfoVO getFarmersInfo(Long farmersUid) {
+        Farmers farmers = farmersMapper.selectByPrimaryKey(farmersUid);
         RespFarmersInfoVO infoVO = new RespFarmersInfoVO();
         infoVO.setFarmersUid(farmers.getUid());
         infoVO.setFarmersName(farmers.getFarmersName());

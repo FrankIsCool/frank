@@ -24,7 +24,25 @@
     <select id="getFarmersUsersByFarmersUid" parameterType="Long" resultMap="BaseResultMap">
         select * from users where farmers_uid = #{farmersUid} and del = 1 and user_type = 1
     </select>
-
+    <select id="getUsersListByFarmersUid" resultType="com.sxmaps.my.vo.resp.user.RespUserVO" parameterType="com.sxmaps.my.vo.req.user.ReqUserListVO">
+        select
+            uid userUid,
+            user_name userName,
+            phone phone,
+            user_type userType,
+            del del
+        from
+            users
+        where
+            farmers_uid = #{farmersUid}
+            and del = 1
+            <if test="name != null and name != ''">
+                and user_name = #{name}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone}
+            </if>
+    </select>
     <update id="delUsers" parameterType="Long">
         update users set del = 2 where farmers_uid = #{farmersUid}
     </update>

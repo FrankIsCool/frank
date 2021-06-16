@@ -1,11 +1,15 @@
 package com.sxmaps.my.controller.user;
 
+import com.github.pagehelper.PageInfo;
+import com.sxmaps.my.common.UserInfoVo;
 import com.sxmaps.my.enums.UserTypeEnum;
 import com.sxmaps.my.service.IUserService;
 import com.sxmaps.my.vo.req.farmers.ReqFarmersCreateVO;
 import com.sxmaps.my.vo.req.farmers.ReqFarmersDelVO;
 import com.sxmaps.my.vo.req.user.ReqUserCreateVO;
+import com.sxmaps.my.vo.req.user.ReqUserListVO;
 import com.sxmaps.my.vo.req.user.ReqUsersDelVO;
+import com.sxmaps.my.vo.resp.user.RespUserVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -31,7 +35,7 @@ public class UserController {
     @Resource
     IUserService userService;
     /**
-     * 新增场主接口
+     * 新增子账户接口
      * @return
      */
     @PostMapping(value = "create",produces = MediaType.APPLICATION_JSON_VALUE)
@@ -40,6 +44,16 @@ public class UserController {
     public Integer farmersCreate(@RequestBody @Validated ReqUserCreateVO vo) {
         vo.setUserType(UserTypeEnum.USERTYP_2.getState());
         return userService.createUser(vo);
+    }
+    /**
+     * 查询牧场账户接口
+     * @return
+     */
+    @PostMapping(value = "list",produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(notes = "查询牧场账户接口", value = "查询牧场账户接口",response = RespUserVO.class)
+    @ApiImplicitParam(name = "vo", value = "查询牧场账户接口", dataType = "ReqUserListVO")
+    public PageInfo<RespUserVO> farmersCreate(@RequestBody @Validated ReqUserListVO vo) {
+        return userService.getFarmersUsers(vo);
     }
     /**
      * 注销子账户

@@ -12,5 +12,5 @@ public class ReqFarmersInfoVO extends UserInfoVo {
 
 	@ApiModelProperty(value = "牧场uid")
 	@NotBlank(message = "牧场uid不能为空")
-	private Long farmersUid;
+	private Long farmersid;
 }

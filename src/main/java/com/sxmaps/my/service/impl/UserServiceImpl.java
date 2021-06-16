@@ -1,5 +1,7 @@
 package com.sxmaps.my.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.sxmaps.my.common.LoginThreadLocal;
 import com.sxmaps.my.enums.ApiExceptionEnum;
 import com.sxmaps.my.enums.StateEnum;
@@ -11,7 +13,9 @@ import com.sxmaps.my.service.ILoginService;
 import com.sxmaps.my.service.IUserService;
 import com.sxmaps.my.vo.req.farmers.ReqFarmersDelVO;
 import com.sxmaps.my.vo.req.user.ReqUserCreateVO;
+import com.sxmaps.my.vo.req.user.ReqUserListVO;
 import com.sxmaps.my.vo.req.user.ReqUsersDelVO;
+import com.sxmaps.my.vo.resp.user.RespUserVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,5 +82,12 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User getFarmersUser(Long farmersUid) {
         return userMapper.getFarmersUsersByFarmersUid(farmersUid);
+    }
+
+    @Override
+    public PageInfo<RespUserVO> getFarmersUsers(ReqUserListVO vo) {
+        PageHelper.startPage(vo.getPageNum(),vo.getPageSize());
+        List<RespUserVO> userVOS = userMapper.getUsersListByFarmersUid(vo);
+        return new PageInfo<>(userVOS);
     }
 }

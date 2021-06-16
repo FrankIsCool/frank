@@ -41,7 +41,7 @@ public interface IFarmersService {
      * @author frank(付帅)
      * @date 2021/6/10
      **/
-    RespFarmersInfoVO getFarmersInfo(ReqFarmersInfoVO vo);
+    RespFarmersInfoVO getFarmersInfo(Long farmersUid);
 
     /**
      * 修改牧场信息

@@ -34,6 +34,7 @@ public enum ApiExceptionEnum {
 
 //牛
     NOTCOW("5301", "该牛只不存在"),
+    COWNUM("5302", "该牛耳编号已存在"),
     ;
 
     private String exceptionCode;

@@ -2,10 +2,12 @@ package com.sxmaps.my.service.impl;
 
 import com.sxmaps.my.enums.ApiExceptionEnum;
 import com.sxmaps.my.enums.CowStateEnum;
+import com.sxmaps.my.enums.StateEnum;
 import com.sxmaps.my.exception.ApiException;
 import com.sxmaps.my.mapper.CowMapper;
 import com.sxmaps.my.model.Cow;
 import com.sxmaps.my.service.ICowService;
+import com.sxmaps.my.vo.req.cow.ReqCowCreateVO;
 import com.sxmaps.my.vo.req.cow.ReqCowIdVO;
 import org.springframework.stereotype.Service;
 
@@ -76,5 +78,26 @@ public class CowServiceImpl implements ICowService {
         cow.setCowState(CowStateEnum.COWSTATEENUM_5.getState().byteValue());
         cow.setUpdateTime(new Date());
         return cowMapper.updateByPrimaryKey(cow);
+    }
+
+    @Override
+    public Integer cowCreate(ReqCowCreateVO vo) {
+        Cow cow = cowMapper.getCowByNum(vo.getCowNum(),vo.getFarmersUid());
+        if (null != cow) {
+            throw new ApiException(ApiExceptionEnum.COWNUM);
+        }
+        cow = new Cow();
+        cow.setCreateTime(new Date());
+        cow.setUpdateTime(new Date());
+        cow.setCowState(CowStateEnum.COWSTATEENUM_1.getState().byteValue());
+        cow.setSex(vo.getSex().byteValue());
+        cow.setDel(StateEnum.NOTDEL.getState().byteValue());
+        cow.setFarmersUid(vo.getFarmersUid());
+        cow.setBirthTime(vo.getCowBirth());
+        cow.setFaNum(vo.getCowFaNum());
+        cow.setKindUid(vo.getCowKindUid());
+        cow.setMonNum(vo.getCowMonNum());
+        cow.setLairageTime(new Date());
+        return cowMapper.insert(cow);
     }
 }

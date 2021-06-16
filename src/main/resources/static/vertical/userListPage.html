@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow: hidden">
+
+<head>
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+    <!-- App css -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/theme.min.css" rel="stylesheet" type="text/css" />
+    <!-- Sweet Alerts css -->
+    <link href="../plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+    <!-- jQuery  -->
+    <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/metismenu.min.js"></script>
+    <script src="assets/js/waves.js"></script>
+    <script src="assets/js/simplebar.min.js"></script>
+    <!-- Sweet Alerts Js-->
+    <script src="../plugins/sweetalert2/sweetalert2.min.js"></script>
+    <!-- Morris Js-->
+    <script src="../plugins/morris-js/morris.min.js"></script>
+    <!-- Raphael Js-->
+    <script src="../plugins/raphael/raphael.min.js"></script>
+
+    <!-- Morris Custom Js-->
+    <script src="assets/pages/dashboard-demo.js"></script>
+
+    <!-- App js -->
+    <script src="assets/js/theme.js"></script>
+    <script src="assets/js/my.js"></script>
+    <script src="assets/js/jquery.cookie.js"></script>
+</head>
+
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <h4 class="card-title">Buttons example</h4>
+                    <p class="card-subtitle mb-4">
+                        The Buttons extension for DataTables provides a common set of options, API methods and styling to display buttons on a page
+                        that will interact with a DataTable. The core library provides the based framework upon which plug-ins can built.
+                    </p>
+
+                    <table id="datatable-buttons" class="table table-striped dt-responsive nowrap">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>用户名</th>
+                            <th>手机号</th>
+                            <th>用户类型</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+
+
+                        <tbody id="list">
+
+                        </tbody>
+                    </table>
+
+                </div> <!-- end card body-->
+            </div> <!-- end card -->
+        </div><!-- end col-->
+    </div>
+    <!-- end row-->
+<script src="assets/js/my.js"></script>
+<script>
+    list(0,10);
+    function list(pageNum,pageSize){
+        var param = {pageNum:pageNum,pageSize:pageSize}
+        click("/check/user/list",param,function (data){
+            if(data.list.length<1){
+                return ;
+            }
+            var html = "";
+            $.each(data.list, function(index,item){
+                html = html + '<tr><th scope="row" uid="'+item.userUid+'">'+(index+1)+'</th><td>'+item.userName+
+                    '</td><td>'+item.phone+'</td><td>'+item.userTypeDesc+'</td><td>'+item.delDesc+'</td><td><a href="">删除</a><a href="">启用</a></td></tr>';
+            });
+            $("#list").html(html);
+        })
+    }
+</script>
+</body>
+</html>

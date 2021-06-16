@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sxmaps.my.mapper.CowMapper">
-  <resultMap id="BaseResultMap" type="com.sxmaps.my.model.Cow">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="uid" jdbcType="BIGINT" property="uid" />
-    <result column="farmers_uid" jdbcType="BIGINT" property="farmersUid" />
-    <result column="kind_uid" jdbcType="BIGINT" property="kindUid" />
-    <result column="kind" jdbcType="VARCHAR" property="kind" />
-    <result column="num" jdbcType="VARCHAR" property="num" />
-    <result column="fa_num" jdbcType="VARCHAR" property="faNum" />
-    <result column="mon_num" jdbcType="VARCHAR" property="monNum" />
-    <result column="sex" jdbcType="TINYINT" property="sex" />
-    <result column="weight" jdbcType="VARCHAR" property="weight" />
-    <result column="birth_time" jdbcType="DATE" property="birthTime" />
-    <result column="lairage_time" jdbcType="DATE" property="lairageTime" />
-    <result column="cow_state" jdbcType="TINYINT" property="cowState" />
-    <result column="del" jdbcType="TINYINT" property="del" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-  </resultMap>
-  <select id="getCow" resultMap="BaseResultMap" parameterType="com.sxmaps.my.vo.req.cow.ReqCowIdVO" >
-    select * from cow where del = 1 and uid = #{cowUid} and farmers_uid = #{farmersUid}
-  </select>
+    <resultMap id="BaseResultMap" type="com.sxmaps.my.model.Cow">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="uid" jdbcType="BIGINT" property="uid"/>
+        <result column="farmers_uid" jdbcType="BIGINT" property="farmersUid"/>
+        <result column="kind_uid" jdbcType="BIGINT" property="kindUid"/>
+        <result column="kind" jdbcType="VARCHAR" property="kind"/>
+        <result column="num" jdbcType="VARCHAR" property="num"/>
+        <result column="fa_num" jdbcType="VARCHAR" property="faNum"/>
+        <result column="mon_num" jdbcType="VARCHAR" property="monNum"/>
+        <result column="sex" jdbcType="TINYINT" property="sex"/>
+        <result column="weight" jdbcType="VARCHAR" property="weight"/>
+        <result column="birth_time" jdbcType="DATE" property="birthTime"/>
+        <result column="lairage_time" jdbcType="DATE" property="lairageTime"/>
+        <result column="cow_state" jdbcType="TINYINT" property="cowState"/>
+        <result column="del" jdbcType="TINYINT" property="del"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <select id="getCow" resultMap="BaseResultMap" parameterType="com.sxmaps.my.vo.req.cow.ReqCowIdVO">
+        select * from cow where del = 1 and uid = #{cowUid} and farmers_uid = #{farmersUid}
+    </select>
+    <select id="getCowByNum" resultMap="BaseResultMap">
+        select * from cow where del = 1 and num = #{num} and farmers_uid = #{farmersUid}
+    </select>
 </mapper>

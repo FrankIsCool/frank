@@ -1,6 +1,7 @@
 package com.sxmaps.my.controller.farmers;
 
 import com.github.pagehelper.PageInfo;
+import com.sxmaps.my.common.UserInfoVo;
 import com.sxmaps.my.service.IFarmersService;
 import com.sxmaps.my.vo.req.farmers.*;
 import com.sxmaps.my.vo.resp.farmers.RespFarmersInfoVO;
@@ -35,11 +36,21 @@ public class FarmersController {
      * 牧场基本信息接口
      * @return
      */
-    @PostMapping(value = "/check/info",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/check/admin/info",produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(notes = "牧场基本信息接口", value = "牧场基本信息接口" ,response = RespFarmersInfoVO.class)
     @ApiImplicitParam(name = "vo", value = "新增牧场接口", dataType = "ReqFarmersInfoVO")
     public RespFarmersInfoVO farmersInfo(@RequestBody @Validated ReqFarmersInfoVO vo) {
-        return farmersService.getFarmersInfo(vo);
+        return farmersService.getFarmersInfo(vo.getFarmersid());
+    }
+    /**
+     * 牧场基本信息接口
+     * @return
+     */
+    @PostMapping(value = "/check/info",produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(notes = "牧场基本信息接口", value = "牧场基本信息接口" ,response = RespFarmersInfoVO.class)
+    @ApiImplicitParam(name = "vo", value = "新增牧场接口", dataType = "UserInfoVo")
+    public RespFarmersInfoVO farmersInfo(@RequestBody @Validated UserInfoVo vo) {
+        return farmersService.getFarmersInfo(vo.getFarmersUid());
     }
     /**
      * 修改牧场基本信息接口

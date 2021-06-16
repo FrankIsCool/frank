@@ -116,7 +116,7 @@ public class CowController {
     @ApiOperation(notes = "新增牛基本信息接口", value = "新增牛基本信息接口", response = Integer.class)
     @ApiImplicitParam(name = "vo", value = "新增牛基本信息接口参数", dataType = "ReqCowCreateVO")
     public Integer cowCreate(@RequestBody @Validated ReqCowCreateVO vo) {
-        return 1;
+        return cowService.cowCreate(vo);
     }
 
     /**

@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.util.Date;
 
 @Data
 @ApiModel(description = "新增牛请求对象")
@@ -24,8 +25,8 @@ public class ReqCowCreateVO extends UserInfoVo {
 	@Min(value = 1,message = "性别只能为：1，公，2：母")
 	private Integer sex;
 
-	@ApiModelProperty(value = "品种")
-	private String cowKind;
+	@ApiModelProperty(value = "品种uid")
+	private Long cowKindUid;
 
 	@ApiModelProperty(value = "体重/市斤")
 	private Integer weigth;
@@ -34,8 +35,8 @@ public class ReqCowCreateVO extends UserInfoVo {
 	private String cowMonNum;
 
 	@ApiModelProperty(value = "父亲耳钉号")
-	private String cowFatherKind;
+	private String cowFaNum;
 
 	@ApiModelProperty(value = "出生日期")
-	private String cowBirth;
+	private Date cowBirth;
 }
