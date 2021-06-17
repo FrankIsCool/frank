@@ -31,6 +31,7 @@ public enum ApiExceptionEnum {
 
 //用户
     NOTUSERTYPE("5201", "不支持该用户类型"),
+    NOTDELUSERTYPE("5202", "主账户不能注销"),
 
 //牛
     NOTCOW("5301", "该牛只不存在"),

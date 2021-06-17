@@ -15,4 +15,7 @@ public class ReqUserListVO extends QueryInfoVO {
 
     @ApiModelProperty(value = "手机号")
     private String phone;
+
+    @ApiModelProperty(value = "状态：1：正常，2：已删除")
+    private Integer del;
 }

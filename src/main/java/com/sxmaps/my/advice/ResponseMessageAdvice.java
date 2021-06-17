@@ -1,6 +1,8 @@
 package com.sxmaps.my.advice;
 
+import com.github.pagehelper.PageInfo;
 import com.sxmaps.my.common.JsonMessage;
+import com.sxmaps.my.common.PageInfoTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;
@@ -9,8 +11,11 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,6 +49,14 @@ public class ResponseMessageAdvice implements ResponseBodyAdvice<Object> {
 		// 返回结果非统一对象，则封装为同一对象
 		if (object == null) {
 			object = JsonMessage.createSuccessMessage();
+		}
+		if (object  instanceof PageInfo) {
+			ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+			HttpServletRequest request2 = attributes.getRequest();
+			PageInfo pageInfo = (PageInfo)object;
+			PageInfoTable table = new PageInfoTable();
+			table.setPage(pageInfo,request2);
+			object = JsonMessage.createSuccessMessage(table);
 		}
 		if (!(object instanceof JsonMessage)) {
 			object = JsonMessage.createSuccessMessage(object);

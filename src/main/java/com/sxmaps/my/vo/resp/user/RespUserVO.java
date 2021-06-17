@@ -36,7 +36,7 @@ public class RespUserVO implements Serializable {
 
 	public void setDel(Integer del) {
 		this.del = del;
-		this.delDesc = StateEnum.getEnum(userType).getDesc();
+		this.delDesc = StateEnum.getEnum(del).getDesc();
 	}
 
 	public void setUserType(Integer userType) {

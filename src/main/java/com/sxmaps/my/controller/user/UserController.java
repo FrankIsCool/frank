@@ -1,14 +1,11 @@
 package com.sxmaps.my.controller.user;
 
 import com.github.pagehelper.PageInfo;
-import com.sxmaps.my.common.UserInfoVo;
 import com.sxmaps.my.enums.UserTypeEnum;
 import com.sxmaps.my.service.IUserService;
-import com.sxmaps.my.vo.req.farmers.ReqFarmersCreateVO;
-import com.sxmaps.my.vo.req.farmers.ReqFarmersDelVO;
 import com.sxmaps.my.vo.req.user.ReqUserCreateVO;
 import com.sxmaps.my.vo.req.user.ReqUserListVO;
-import com.sxmaps.my.vo.req.user.ReqUsersDelVO;
+import com.sxmaps.my.vo.req.user.ReqUsersUidVO;
 import com.sxmaps.my.vo.resp.user.RespUserVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -42,7 +39,7 @@ public class UserController {
     @ApiOperation(notes = "新增子账户接口", value = "新增子账户接口",response = Integer.class)
     @ApiImplicitParam(name = "vo", value = "新增子账户接口", dataType = "ReqUserCreateVO")
     public Integer farmersCreate(@RequestBody @Validated ReqUserCreateVO vo) {
-        vo.setUserType(UserTypeEnum.USERTYP_2.getState());
+        vo.setType(UserTypeEnum.USERTYP_2.getState());
         return userService.createUser(vo);
     }
     /**
@@ -52,7 +49,7 @@ public class UserController {
     @PostMapping(value = "list",produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(notes = "查询牧场账户接口", value = "查询牧场账户接口",response = RespUserVO.class)
     @ApiImplicitParam(name = "vo", value = "查询牧场账户接口", dataType = "ReqUserListVO")
-    public PageInfo<RespUserVO> farmersCreate(@RequestBody @Validated ReqUserListVO vo) {
+    public PageInfo<RespUserVO> farmersList(@RequestBody @Validated ReqUserListVO vo) {
         return userService.getFarmersUsers(vo);
     }
     /**
@@ -61,8 +58,18 @@ public class UserController {
      */
     @PostMapping(value = "cancel",produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(notes = "注销子账户", value = "注销子账户",response = Integer.class)
-    @ApiImplicitParam(name = "vo", value = "注销子账户", dataType = "ReqUsersDelVO")
-    public Integer farmersCancel(@RequestBody @Validated ReqUsersDelVO vo) {
+    @ApiImplicitParam(name = "vo", value = "注销子账户", dataType = "ReqUsersUidVO")
+    public Integer farmersCancel(@RequestBody @Validated ReqUsersUidVO vo) {
         return userService.delUser(vo);
+    }
+    /**
+     * 恢复子账户
+     * @return
+     */
+    @PostMapping(value = "recover",produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(notes = "恢复子账户", value = "恢复子账户",response = Integer.class)
+    @ApiImplicitParam(name = "vo", value = "恢复子账户", dataType = "ReqUsersUidVO")
+    public Integer farmersRecover(@RequestBody @Validated ReqUsersUidVO vo) {
+        return userService.recoverUser(vo);
     }
 }

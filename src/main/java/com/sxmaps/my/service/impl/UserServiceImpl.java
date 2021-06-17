@@ -14,7 +14,7 @@ import com.sxmaps.my.service.IUserService;
 import com.sxmaps.my.vo.req.farmers.ReqFarmersDelVO;
 import com.sxmaps.my.vo.req.user.ReqUserCreateVO;
 import com.sxmaps.my.vo.req.user.ReqUserListVO;
-import com.sxmaps.my.vo.req.user.ReqUsersDelVO;
+import com.sxmaps.my.vo.req.user.ReqUsersUidVO;
 import com.sxmaps.my.vo.resp.user.RespUserVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,8 +68,20 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     @Transactional
-    public Integer delUser(ReqUsersDelVO vo) {
-        User users = userMapper.selectByPrimaryKey(vo.getUserUid());
+    public Integer recoverUser(ReqUsersUidVO vo) {
+        User users = userMapper.selectByPrimaryKey(vo.getUid());
+        users.setDel(StateEnum.NOTDEL.getState().byteValue());
+        users.setUpdateTime(new Date());
+        return userMapper.updateByPrimaryKey(users);
+    }
+
+    @Override
+    @Transactional
+    public Integer delUser(ReqUsersUidVO vo) {
+        User users = userMapper.selectByPrimaryKey(vo.getUid());
+        if(users.getUserType().intValue()==UserTypeEnum.USERTYP_1.getState()){
+            throw new ApiException(ApiExceptionEnum.EXCEPTION);
+        }
         List<Long> userUids = new ArrayList<>();
         userUids.add(users.getUid());
         List<String> tokens = loginService.getTokens(userUids);
