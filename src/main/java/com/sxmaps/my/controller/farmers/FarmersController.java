@@ -25,7 +25,6 @@ import javax.annotation.Resource;
  * 时间：2021/6/9
  */
 @RestController
-@RequestMapping("/farmers")
 @Api(value = "牧场接口", tags = "牧场接口")
 public class FarmersController {
 
@@ -36,7 +35,7 @@ public class FarmersController {
      * 牧场基本信息接口
      * @return
      */
-    @PostMapping(value = "/check/admin/info",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/admin/farmers/info",produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(notes = "牧场基本信息接口", value = "牧场基本信息接口" ,response = RespFarmersInfoVO.class)
     @ApiImplicitParam(name = "vo", value = "新增牧场接口", dataType = "ReqFarmersInfoVO")
     public RespFarmersInfoVO farmersInfo(@RequestBody @Validated ReqFarmersInfoVO vo) {
@@ -46,7 +45,7 @@ public class FarmersController {
      * 牧场基本信息接口
      * @return
      */
-    @PostMapping(value = "/check/info",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/check/farmers/info",produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(notes = "牧场基本信息接口", value = "牧场基本信息接口" ,response = RespFarmersInfoVO.class)
     @ApiImplicitParam(name = "vo", value = "新增牧场接口", dataType = "UserInfoVo")
     public RespFarmersInfoVO farmersInfo(@RequestBody @Validated UserInfoVo vo) {
@@ -56,7 +55,7 @@ public class FarmersController {
      * 修改牧场基本信息接口
      * @return
      */
-    @PostMapping(value = "/check/update/info",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/check/farmers/update/info",produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(notes = "修改牧场基本信息接口", value = "修改牧场基本信息接口",response = Integer.class)
     @ApiImplicitParam(name = "vo", value = "修改牧场基本信息接口", dataType = "ReqFarmersUpdateVO")
     public Integer farmersUpdateInfo(@RequestBody @Validated ReqFarmersUpdateVO vo) {
@@ -66,7 +65,7 @@ public class FarmersController {
      * 牧场列表接口
      * @return
      */
-    @PostMapping(value = "/check/list",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/check/farmers/list",produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(notes = "牧场列表接口", value = "牧场列表接口",response = RespFarmersListVO.class)
     @ApiImplicitParam(name = "vo", value = "牧场列表接口", dataType = "ReqFarmersListVO")
     public PageInfo<RespFarmersListVO> farmersList(@RequestBody @Validated ReqFarmersListVO vo) {
@@ -76,7 +75,7 @@ public class FarmersController {
      * 新增牧场接口
      * @return
      */
-    @PostMapping(value = "create",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/farmers/create",produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(notes = "新增牧场接口", value = "新增牧场接口",response = Integer.class)
     @ApiImplicitParam(name = "vo", value = "新增牧场接口", dataType = "ReqFarmersCreateVO")
     public Integer farmersCreate(@RequestBody @Validated ReqFarmersCreateVO vo) {
@@ -86,7 +85,7 @@ public class FarmersController {
      * 注销牧场接口
      * @return
      */
-    @PostMapping(value = "/check/cancel",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/check/farmers/cancel",produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(notes = "注销牧场接口", value = "注销牧场接口",response = Integer.class)
     @ApiImplicitParam(name = "vo", value = "注销牧场接口", dataType = "ReqFarmersDelVO")
     public Integer farmersCancel(@RequestBody @Validated ReqFarmersDelVO vo) {

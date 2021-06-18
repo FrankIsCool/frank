@@ -47,53 +47,51 @@
 </head>
 <style>
     .table th, .table td {
-        vertical-align:middle;
+        vertical-align: middle;
     }
 </style>
 <body>
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="card card-animate">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-8">
-                            <form class="form-inline">
-                                <div class="form-group">
-                                    <label for="searchPhone" class="mr-2">手机号</label>
-                                    <input type="search" class="form-control" id="searchPhone" placeholder="手机号">
-                                </div>
-                                <div class="form-group  mx-sm-3">
-                                    <label for="searchName" class="mr-2">用户名</label>
-                                    <input type="search" class="form-control" id="searchName" placeholder="用户名">
-                                </div>
-                                <div class="form-group mx-sm-3">
-                                    <label for="status-select" class="mr-2">状态</label>
-                                    <select class="custom-select" id="status-select">
-                                        <option selected="">全部</option>
-                                        <option value="1">正常</option>
-                                        <option value="2">已删除</option>
-                                    </select>
-                                </div>
-                            </form>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-8">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="searchPhone" class="mr-2">手机号</label>
+                            <input type="search" class="form-control" id="searchPhone" placeholder="手机号">
                         </div>
-                        <div class="col-lg-4">
-                            <div class="text-lg-right mt-3 mt-lg-0">
-                                <button type="button" class="btn btn-success mr-1" id="search"><i class="mdi mdi-magnify">搜索</i></button>
-                                <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter"><i class="mdi mdi-plus-circle mr-1"></i>新增子账户</a>
-                            </div>
-                        </div><!-- end col-->
-                    </div> <!-- end row -->
-                    <!-- Modal -->
+                        <div class="form-group  mx-sm-3">
+                            <label for="searchName" class="mr-2">用户名</label>
+                            <input type="search" class="form-control" id="searchName" placeholder="用户名">
+                        </div>
+                        <div class="form-group mx-sm-3">
+                            <label for="status-select" class="mr-2">状态</label>
+                            <select class="custom-select" id="status-select">
+                                <option selected="">全部</option>
+                                <option value="1">正常</option>
+                                <option value="2">已删除</option>
+                            </select>
+                        </div>
+                    </form>
                 </div>
-            </div> <!-- end card-box -->
-        </div><!-- end col-->
+                <div class="col-lg-4">
+                    <div class="text-lg-right mt-3 mt-lg-0">
+                        <button type="button" class="btn btn-success mr-1" id="search"><i class="mdi mdi-magnify">搜索</i>
+                        </button>
+                        <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter"><i
+                                class="mdi mdi-plus-circle mr-1"></i>新增子账户</a>
+                    </div>
+                </div><!-- end col-->
+            </div> <!-- end row -->
+        </div>
     </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
+    <!-- Modal -->
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
                     <table id="datatable-buttons" class="table table-striped dt-responsive nowrap">
                         <thead>
                         <tr>
@@ -166,23 +164,23 @@
     ];
     var aoColumnDefs = [{
         "aTargets": [5],
-        "fnCreatedCell" : function(nTd, sData, oData, iRow, iCol){
+        "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
             var b;
-            if(oData.del==1 && oData.userType != 1){
+            if (oData.del == 1 && oData.userType != 1) {
                 b = $('<button class="btn btn-danger btn-sm waves-effect waves-light">删除账户</button>');
                 b.button();
-                b.on('click',function(){
+                b.on('click', function () {
                     click('/check/user/cancel', {uid: oData.userUid}, function () {
-                        clickList('/check/user/list', {}, columns,aoColumnDefs)
+                        clickList('/check/user/list', {}, columns, aoColumnDefs)
                     })
                 });
             }
-            if(oData.del==2){
+            if (oData.del == 2) {
                 b = $('<button class="btn btn-info btn-sm waves-effect waves-light">恢复账户</button>');
                 b.button();
-                b.on('click',function(){
+                b.on('click', function () {
                     click('/check/user/recover', {uid: oData.userUid}, function () {
-                        clickList('/check/user/list', {}, columns,aoColumnDefs)
+                        clickList('/check/user/list', {}, columns, aoColumnDefs)
                     })
                 });
             }
@@ -190,15 +188,23 @@
             $(nTd).prepend(b);
         }
     }];
-    clickList('/check/user/list', {}, columns,aoColumnDefs)
-    $("#addUser").click(function(){
-        click('/check/user/create', {name:$("#username").val(),phone:$("#phone").val(),password:$("#password").val()}, function () {
+    clickList('/check/user/list', {}, columns, aoColumnDefs)
+    $("#addUser").click(function () {
+        click('/check/user/create', {
+            name: $("#username").val(),
+            phone: $("#phone").val(),
+            password: $("#password").val()
+        }, function () {
             $("#notAdd").click();
-            clickList('/check/user/list', {}, columns,aoColumnDefs)
+            clickList('/check/user/list', {}, columns, aoColumnDefs)
         })
     });
-    $("#search").click(function(){
-        clickList('/check/user/list', {name:$("#searchName").val(),phone:$("#searchPhone").val(),del:$("#status-select").val()}, columns,aoColumnDefs)
+    $("#search").click(function () {
+        clickList('/check/user/list', {
+            name: $("#searchName").val(),
+            phone: $("#searchPhone").val(),
+            del: $("#status-select").val()
+        }, columns, aoColumnDefs)
     });
 </script>
 

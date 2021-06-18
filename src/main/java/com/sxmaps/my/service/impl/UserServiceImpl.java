@@ -15,6 +15,7 @@ import com.sxmaps.my.vo.req.farmers.ReqFarmersDelVO;
 import com.sxmaps.my.vo.req.user.ReqUserCreateVO;
 import com.sxmaps.my.vo.req.user.ReqUserListVO;
 import com.sxmaps.my.vo.req.user.ReqUsersUidVO;
+import com.sxmaps.my.vo.req.user.ReqUsersUpdateVO;
 import com.sxmaps.my.vo.resp.user.RespUserVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,6 +72,18 @@ public class UserServiceImpl implements IUserService {
     public Integer recoverUser(ReqUsersUidVO vo) {
         User users = userMapper.selectByPrimaryKey(vo.getUid());
         users.setDel(StateEnum.NOTDEL.getState().byteValue());
+        users.setUpdateTime(new Date());
+        return userMapper.updateByPrimaryKey(users);
+    }
+
+    @Override
+    public Integer updateUser(ReqUsersUpdateVO vo) {
+        User users = userMapper.selectByPrimaryKey(vo.getUid());
+        if(users.getFarmersUid()!=vo.getFarmersUid()){
+            throw new ApiException(ApiExceptionEnum.NOTFARMERSUSER);
+        }
+        users.setUserName(vo.getName());
+        users.setPhone(vo.getPhone());
         users.setUpdateTime(new Date());
         return userMapper.updateByPrimaryKey(users);
     }

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+    <!-- App css -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/theme.min.css" rel="stylesheet" type="text/css"/>
+    <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/metismenu.min.js"></script>
+    <script src="assets/js/waves.js"></script>
+    <script src="assets/js/simplebar.min.js"></script>
+
+    <!-- Morris Js-->
+    <script src="../plugins/morris-js/morris.min.js"></script>
+    <!-- Raphael Js-->
+    <script src="../plugins/raphael/raphael.min.js"></script>
+
+    <script src="assets/js/my.js"></script>
+    <script src="assets/js/jquery.cookie.js"></script>
+
+    <!-- App js -->
+    <script src="assets/js/theme.js"></script>
+    <style>
+        .input-hide{
+            border-style: hidden;
+        }
+        .form-control[readonly] {
+            background-color: #FFFFFF;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xl-6">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-borderless table-centered mb-0">
+                        <thead class="thead-light">
+                        <tr>
+                            <th>牧场信息</th>
+                            <th>
+                                <button class="float-right btn btn-info btn-sm waves-effect waves-light" id="updateFarmers" val>编辑</button>
+                                <button class="float-right btn btn-secondary btn-sm d-none" id="cancelFarmers" val>取消</button>
+                                <button class="float-right btn btn-success btn-sm d-none mr-3" id="saveFarmers" val>保存</button>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>企业名称</td>
+                            <td><input class="form-control input-hide" type="text" id="farmersName" readonly="readonly" required="" placeholder=""></td>
+                        </tr>
+                        <tr>
+                            <td>牧场地址</td>
+                            <td><input class="form-control input-hide" type="text" id="farmersAddress" readonly="readonly" required="" placeholder=""></td>
+                        </tr>
+                        <tr>
+                            <td>牧场创建日期</td>
+                            <td><input class="form-control input-hide" type="text" id="farmersCreateTime" readonly="readonly" required="" placeholder=""></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div> <!-- end col -->
+        <div class="col-xl-6">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-borderless table-centered mb-0">
+                        <thead class="thead-light">
+                        <tr>
+                            <th>牧场主信息</th>
+                            <th>
+                                <button class="float-right btn btn-info btn-sm waves-effect waves-light" id="updateFarmersUser" val>编辑</button>
+                                <button class="float-right btn btn-secondary btn-sm d-none" id="cancelFarmersUser" val>取消</button>
+                                <button class="float-right btn btn-success btn-sm d-none mr-3" id="saveFarmersUser" val>保存</button>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>牧场主姓名</td>
+                            <td><input class="form-control input-hide" type="text" id="farmersUserName" readonly="readonly" required="" placeholder=""></td>
+                        </tr>
+                        <tr>
+                            <td>牧场主手机号</td>
+                            <td><input class="form-control input-hide" type="text" id="farmersUserPhone" readonly="readonly" required="" placeholder=""></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    click('/check/farmers/info', {}, function (data) {
+        //牧场主信息
+        $("#farmersUserPhone").val(data.farmersUserPhone);
+        $("#farmersUserName").val(data.farmersUserName);
+
+        $("#farmersUserPhone").attr("value",data.farmersUserPhone);
+        $("#farmersUserName").attr("value",data.farmersUserName);
+
+        //牧场信息
+        $("#farmersCreateTime").val(data.farmersCreateTime);
+        $("#farmersAddress").val(data.farmersAddress);
+        $("#farmersName").val(data.farmersName);
+
+        $("#farmersCreateTime").attr("value",data.farmersCreateTime);
+        $("#farmersAddress").attr("value",data.farmersAddress);
+        $("#farmersName").attr("value",data.farmersName);
+
+        $("#updateFarmersUser").attr("val",data.farmersUserUid);
+        $("#updateFarmers").attr("val",data.farmersUid);
+    })
+    //牧场编辑
+    $("#updateFarmers").click(function (){
+        $("#updateFarmers").addClass('d-none');
+        $("#saveFarmers").removeClass('d-none');
+        $("#cancelFarmers").removeClass('d-none');
+
+
+
+        $("#farmersCreateTime").removeClass('input-hide').removeAttr('readonly');
+        $("#farmersAddress").removeClass('input-hide').removeAttr('readonly');
+        $("#farmersName").removeClass('input-hide').removeAttr('readonly');
+    });
+    //牧场取消
+    $("#cancelFarmers").click(function (){
+        $("#updateFarmers").removeClass('d-none');
+        $("#saveFarmers").addClass('d-none');
+        $("#cancelFarmers").addClass('d-none');
+
+        $("#farmersCreateTime").addClass('input-hide').attr('readonly','readonly').val($("#farmersCreateTime").attr("value"));
+        $("#farmersAddress").addClass('input-hide').attr('readonly','readonly').val($("#farmersAddress").attr("value"));
+        $("#farmersName").addClass('input-hide').attr('readonly','readonly').val($("#farmersName").attr("value"));
+    })
+    //牧场保存
+    $("#saveFarmers").click(function (){
+        var farmersCreateTime = $("#farmersCreateTime").val();
+        var farmersAddress = $("#farmersAddress").val();
+        var farmersName = $("#farmersName").val();
+        click('/check/farmers/update/info', {farmerCreateTime:farmersCreateTime,farmerAddress:farmersAddress,farmerName:farmersName}, function (data) {
+            $("#updateFarmers").removeClass('d-none');
+            $("#saveFarmers").addClass('d-none');
+            $("#cancelFarmers").addClass('d-none');
+
+            $("#farmersCreateTime").addClass('input-hide').attr('readonly','readonly').attr('value',farmersCreateTime);
+            $("#farmersAddress").addClass('input-hide').attr('readonly','readonly').attr('value',farmersAddress);
+            $("#farmersName").addClass('input-hide').attr('readonly','readonly').attr('value',farmersName);
+        })
+    });
+
+
+    //牧场主编辑
+    $("#updateFarmersUser").click(function (){
+        $("#updateFarmersUser").addClass('d-none');
+        $("#saveFarmersUser").removeClass('d-none');
+        $("#cancelFarmersUser").removeClass('d-none');
+
+        $("#farmersUserPhone").removeClass('input-hide').removeAttr('readonly');
+        $("#farmersUserName").removeClass('input-hide').removeAttr('readonly');
+    });
+    //牧场主取消
+    $("#cancelFarmersUser").click(function (){
+        $("#updateFarmersUser").removeClass('d-none');
+        $("#saveFarmersUser").addClass('d-none');
+        $("#cancelFarmersUser").addClass('d-none');
+
+        $("#farmersUserPhone").addClass('input-hide').attr('readonly','readonly').val($("#farmersUserPhone").attr("value"));
+        $("#farmersUserName").addClass('input-hide').attr('readonly','readonly').val($("#farmersUserName").attr("value"));
+    })
+    //牧场主保存
+    $("#saveFarmersUser").click(function (){
+        var farmersUserPhone = $("#farmersUserPhone").val();
+        var farmersUserName = $("#farmersUserName").val();
+        var farmersUserUid = $("#updateFarmersUser").attr('val');
+        click('/check/user/update', {uid:farmersUserUid,name:farmersUserName,phone:farmersUserPhone}, function (data) {
+            $("#updateFarmersUser").removeClass('d-none');
+            $("#saveFarmersUser").addClass('d-none');
+            $("#cancelFarmersUser").addClass('d-none');
+
+            $("#farmersUserName").addClass('input-hide').attr('readonly','readonly').attr('value',farmersUserName);
+            $("#farmersUserPhone").addClass('input-hide').attr('readonly','readonly').attr('value',farmersUserPhone);
+        })
+    });
+</script>
+</body>
+</html>

@@ -83,16 +83,19 @@ public class FarmersServiceImpl implements IFarmersService {
 
     @Override
     public Integer farmersUpdate(ReqFarmersUpdateVO vo) {
-        if(StringUtils.isEmpty(vo.getFarmersName()) && StringUtils.isEmpty(vo.getFarmersAddress())){
+        if(StringUtils.isEmpty(vo.getFarmersName()) && StringUtils.isEmpty(vo.getFarmerAddress())){
             return 1;
         }
         Farmers farmers = farmersMapper.selectByPrimaryKey(vo.getFarmersUid());
         farmers.setUpdateTime(new Date());
-        if(!StringUtils.isEmpty(vo.getFarmersName())){
-            farmers.setFarmersName(vo.getFarmersName());
+        if(!StringUtils.isEmpty(vo.getFarmerName())){
+            farmers.setFarmersName(vo.getFarmerName());
         }
-        if(!StringUtils.isEmpty(vo.getFarmersAddress())){
-            farmers.setFarmersAddress(vo.getFarmersAddress());
+        if(!StringUtils.isEmpty(vo.getFarmerAddress())){
+            farmers.setFarmersAddress(vo.getFarmerAddress());
+        }
+        if(null != vo.getFarmerCreateTime()){
+            farmers.setCreateTime(vo.getFarmerCreateTime());
         }
         return farmersMapper.updateByPrimaryKey(farmers);
     }

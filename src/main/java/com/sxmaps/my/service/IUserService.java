@@ -6,6 +6,7 @@ import com.sxmaps.my.vo.req.farmers.ReqFarmersDelVO;
 import com.sxmaps.my.vo.req.user.ReqUserCreateVO;
 import com.sxmaps.my.vo.req.user.ReqUserListVO;
 import com.sxmaps.my.vo.req.user.ReqUsersUidVO;
+import com.sxmaps.my.vo.req.user.ReqUsersUpdateVO;
 import com.sxmaps.my.vo.resp.user.RespUserVO;
 
 /**
@@ -40,6 +41,14 @@ public interface IUserService {
      * @date 2021/6/10
      **/
     Integer recoverUser(ReqUsersUidVO vo);
+    /**
+     * 修改账户信息
+     * @param vo
+     * @return
+     * @author frank(付帅)
+     * @date 2021/6/10
+     **/
+    Integer updateUser(ReqUsersUpdateVO vo);
     /**
      * 注销子账户信息
      * @param vo
