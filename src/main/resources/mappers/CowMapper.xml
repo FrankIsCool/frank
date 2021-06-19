@@ -27,4 +27,28 @@
     <select id="getCowByNum" resultMap="BaseResultMap">
         select * from cow where del = 1 and num = #{num} and farmers_uid = #{farmersUid}
     </select>
+    <select id="getCows" parameterType="com.sxmaps.my.vo.req.cow.ReqCowListVO"
+            resultType="com.sxmaps.my.vo.resp.cow.RespCowListVO">
+        select
+            uid cowUid,
+            num cowNum,
+            sex sex,
+            weight weigth,
+            cow_state cowState,
+            lairage_time lairageTime,
+            mon_num cowMonNum,
+            fa_num cowFatherKind,
+            birth_time cowBirth
+        from
+            cow
+        where
+            del = 1
+            and farmers_uid = #{farmersUid}
+            <if test="cowNum != null and cowNum != ''">
+                and num = #{cowNum}
+            </if>
+            <if test="sex != null and sex != 0 ">
+                and sex = #{sex}
+            </if>
+    </select>
 </mapper>

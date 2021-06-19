@@ -12,8 +12,6 @@ import tk.mybatis.spring.annotation.MapperScan;
 
 @EnableRetry
 @EnableScheduling
-@EnableFeignClients
-@EnableDiscoveryClient
 @SpringBootApplication
 @EnableAsync
 @MapperScan(basePackages = "com.sxmaps.my.mapper")

@@ -38,7 +38,6 @@
     <script src="../plugins/datatables/buttons.print.min.js"></script>
     <script src="../plugins/datatables/dataTables.keyTable.min.js"></script>
     <script src="../plugins/datatables/dataTables.select.min.js"></script>
-
     <!-- App js -->
     <script src="assets/js/theme.js"></script>
     <script src="assets/js/my.js"></script>
@@ -59,20 +58,8 @@
                 <div class="col-lg-8">
                     <form class="form-inline">
                         <div class="form-group">
-                            <label for="searchPhone" class="mr-2">手机号</label>
-                            <input type="search" class="form-control" id="searchPhone" placeholder="手机号">
-                        </div>
-                        <div class="form-group  mx-sm-3">
-                            <label for="searchName" class="mr-2">用户名</label>
-                            <input type="search" class="form-control" id="searchName" placeholder="用户名">
-                        </div>
-                        <div class="form-group mx-sm-3">
-                            <label for="status-select" class="mr-2">状态</label>
-                            <select class="custom-select" id="status-select">
-                                <option selected="" value="0">全部</option>
-                                <option value="1">正常</option>
-                                <option value="2">已删除</option>
-                            </select>
+                            <label for="searchKindName" class="mr-2">种类名称</label>
+                            <input type="search" class="form-control" id="searchKindName" placeholder="种类名称">
                         </div>
                     </form>
                 </div>
@@ -81,25 +68,24 @@
                         <button type="button" class="btn btn-success mr-1" id="search"><i class="mdi mdi-magnify">搜索</i>
                         </button>
                         <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter"><i
-                                class="mdi mdi-plus-circle mr-1"></i>新增子账户</a>
+                                class="mdi mdi-plus-circle mr-1"></i>新增种类</a>
                     </div>
                 </div><!-- end col-->
             </div> <!-- end row -->
         </div>
     </div>
     <!-- Modal -->
-    <div class="card">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-12">
-                    <table id="datatable-buttons" class="table table-striped dt-responsive nowrap">
+
+    <div class="row">
+        <div class="col-8">
+            <div class="card">
+                <div class="card-body">
+                    <table id="selection-datatable" class="table table-hover nowrap">
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>用户名</th>
-                            <th>手机号</th>
-                            <th>用户类型</th>
-                            <th>状态</th>
+                            <th>种类名称</th>
+                            <th>创建时间</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -109,8 +95,17 @@
 
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div> <!-- end card body-->
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title" id="cowWeightChart"></h4>
+                    <p class="card-subtitle mb-4">种类数量变化图</p>
 
-                </div> <!-- end card body-->
+                    <div id="morris-line-example" class="morris-chart"></div>
+                </div>
             </div> <!-- end card -->
         </div><!-- end col-->
     </div>
@@ -119,7 +114,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">新增子账户</h5>
+                    <h5 class="modal-title" id="exampleModalCenterTitle">新增种类</h5>
                     <button type="button" class="close waves-effect waves-light" data-dismiss="modal"
                             aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -127,26 +122,16 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="username">用户名</label>
-                        <input class="form-control" type="text" id="username" required=""
-                               placeholder="请输入名字">
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">手机号</label>
-                        <input class="form-control" type="text" id="phone" required=""
-                               placeholder="请输入手机号">
-                    </div>
-                    <div class="form-group">
-                        <label for="password">密码</label>
-                        <input class="form-control" type="password" id="password" required=""
-                               placeholder="请输入密码">
+                        <label for="kindname">种类名称</label>
+                        <input class="form-control" type="text" id="kindname" required=""
+                               placeholder="请输入种类名称">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary waves-effect waves-light"
                             data-dismiss="modal" id="notAdd">取消
                     </button>
-                    <button type="button" class="btn btn-primary waves-effect waves-light" id="addUser">保存</button>
+                    <button type="button" class="btn btn-primary waves-effect waves-light" id="add">保存</button>
                 </div>
             </div>
         </div>
@@ -155,57 +140,59 @@
 <!-- end row-->
 <script>
     var columns = [
-        {"data": "userUid"},
-        {"data": "userName"},
-        {"data": "phone"},
-        {"data": "userTypeDesc"},
-        {"data": "delDesc"},
-        {"data": "delDesc"}
+        {"data": "kindUid"},
+        {"data": "kindName"},
+        {"data": "createTime"},
+        {"data": "kindName"}
     ];
     var aoColumnDefs = [{
-        "aTargets": [5],
+        "aTargets": [columns.length - 1],
         "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-            var b;
-            if (oData.del == 1 && oData.userType != 1) {
-                b = $('<button class="btn btn-danger btn-sm waves-effect waves-light">删除账户</button>');
-                b.button();
-                b.on('click', function () {
-                    click('/check/user/cancel', {uid: oData.userUid}, function () {
-                        clickList('/check/user/list', {}, columns, aoColumnDefs)
-                    })
-                });
-            }
-            if (oData.del == 2) {
-                b = $('<button class="btn btn-info btn-sm waves-effect waves-light">恢复账户</button>');
-                b.button();
-                b.on('click', function () {
-                    click('/check/user/recover', {uid: oData.userUid}, function () {
-                        clickList('/check/user/list', {}, columns, aoColumnDefs)
-                    })
-                });
-            }
             $(nTd).empty();
-            $(nTd).prepend(b);
+            var weight = $('<button class="d-none kind">种类数量变化图</button>');
+            weight.button();
+            weight.on('click', function () {
+                $("#morris-line-example").empty();
+                $("#morris-line-example svg").remove();
+                $("#cowWeightChart").html(oData.kindName+'数量')
+                charjs(oData.useKind, oData.kindName);
+            });
+            $(nTd).prepend(weight);
+            var info = $('<button class="btn btn-update btn-sm waves-effect waves-light">修改</button>');
+            info.button();
+            $(nTd).prepend(info);
         }
     }];
-    clickList('/check/user/list', {}, columns, aoColumnDefs,"#datatable-buttons")
-    $("#addUser").click(function () {
-        click('/check/user/create', {
-            name: $("#username").val(),
-            phone: $("#phone").val(),
-            password: $("#password").val()
+    clickList('/check/kind/list', {}, columns, aoColumnDefs, "#selection-datatable")
+    $("#search").click(function () {
+        clickList('/check/kind/list', {
+            kindName: $("#searchKindName").val()
+        }, columns, aoColumnDefs,"#selection-datatable")
+    });
+    $('table tbody').on('mouseover', 'tr', function () {
+        $(this).find("td .kind").click();
+    });
+    $("#add").click(function () {
+        click('/check/kind/create', {
+            kindName: $("#kindname").val()
         }, function () {
             $("#notAdd").click();
-            clickList('/check/user/list', {}, columns, aoColumnDefs,"#datatable-buttons")
+            clickList('/check/kind/list', {}, columns, aoColumnDefs,"#selection-datatable")
         })
     });
-    $("#search").click(function () {
-        clickList('/check/user/list', {
-            name: $("#searchName").val(),
-            phone: $("#searchPhone").val(),
-            del: $("#status-select").val()
-        }, columns, aoColumnDefs,"#datatable-buttons")
-    });
+    function charjs(data, cowNum) {
+        Morris.Line({
+            element: "morris-line-example",
+            gridLineColor: "#eef0f2",
+            lineColors: ["#9b94da"],
+            data: data,
+            xkey: "createTime",
+            ykeys: ["weigth"],
+            hideHover: "auto",
+            resize: !0,
+            labels: [cowNum]
+        })
+    }
 </script>
 
 </body>

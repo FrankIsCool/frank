@@ -1,7 +1,11 @@
 package com.sxmaps.my.service;
 
+import com.github.pagehelper.PageInfo;
 import com.sxmaps.my.vo.req.cow.ReqCowCreateVO;
+import com.sxmaps.my.vo.req.cow.ReqCowCreateWeightVO;
 import com.sxmaps.my.vo.req.cow.ReqCowIdVO;
+import com.sxmaps.my.vo.req.cow.ReqCowListVO;
+import com.sxmaps.my.vo.resp.cow.RespCowListVO;
 
 /**
  * 类：牛
@@ -58,4 +62,20 @@ public interface ICowService {
      * @date 2021/6/10
      **/
     Integer cowCreate(ReqCowCreateVO vo);
+    /**
+     * 牛列表
+     * @param vo
+     * @return
+     * @author frank(付帅)
+     * @date 2021/6/10
+     **/
+    PageInfo<RespCowListVO> cowList(ReqCowListVO vo);
+    /**
+     * 牛增加体重记录
+     * @param vo
+     * @return
+     * @author frank(付帅)
+     * @date 2021/6/10
+     **/
+    Integer cowCreateWeight(ReqCowCreateWeightVO vo);
 }

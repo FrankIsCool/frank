@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Data
@@ -20,7 +21,7 @@ public class ReqCowCreateVO extends UserInfoVo {
 	private String cowNum;
 	
 	@ApiModelProperty(value = "性别：1，公，2：母")
-	@NotBlank(message = "性别不能为空")
+	@NotNull(message = "性别不能为空")
 	@Max(value = 2,message = "性别只能为：1，公，2：母")
 	@Min(value = 1,message = "性别只能为：1，公，2：母")
 	private Integer sex;

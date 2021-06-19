@@ -104,7 +104,7 @@ public class CowController {
     @ApiOperation(notes = "牛列表信息接口", value = "牛列表信息接口", response = RespCowListVO.class)
     @ApiImplicitParam(name = "vo", value = "牛列表信息接口参数", dataType = "ReqCowListVO")
     public PageInfo<RespCowListVO> cowList(@RequestBody @Validated ReqCowListVO vo) {
-        return null;
+        return cowService.cowList(vo);
     }
 
     /**

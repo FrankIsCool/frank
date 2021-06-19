@@ -43,7 +43,7 @@ function click(url, param, success) {
     })
 };
 
-function clickList(url, param,columns,aoColumnDefs) {
+function clickList(url, param,columns,aoColumnDefs,tableName) {
     //提示信息
     var lang = {
         "sProcessing": "处理中...",
@@ -70,9 +70,9 @@ function clickList(url, param,columns,aoColumnDefs) {
             "sSortDescending": ": 以降序排列此列"
         }
     };
-    $("#datatable-buttons").dataTable().fnDestroy();
+    $(tableName).dataTable().fnDestroy();
     //初始化表格
-    var table = $("#datatable-buttons").dataTable({
+    var table = $(tableName).dataTable({
         language: lang,  //提示信息
         autoWidth: false,  //禁用自动调整列宽
         stripeClasses: ["odd", "even"],  //为奇偶行加上样式，兼容不支持CSS伪类的场合

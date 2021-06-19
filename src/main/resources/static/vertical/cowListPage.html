@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="overflow: hidden">
+<html lang="en">
 
 <head>
     <!-- App favicon -->
@@ -20,7 +20,6 @@
     <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/metismenu.min.js"></script>
-    <script src="assets/js/waves.js"></script>
     <script src="assets/js/simplebar.min.js"></script>
     <!-- Sweet Alerts Js-->
     <script src="../plugins/sweetalert2/sweetalert2.min.js"></script>
@@ -39,37 +38,66 @@
     <script src="../plugins/datatables/buttons.print.min.js"></script>
     <script src="../plugins/datatables/dataTables.keyTable.min.js"></script>
     <script src="../plugins/datatables/dataTables.select.min.js"></script>
-
     <!-- App js -->
     <script src="assets/js/theme.js"></script>
     <script src="assets/js/my.js"></script>
     <script src="assets/js/jquery.cookie.js"></script>
-</head>
 
+</head>
+<style>
+    .table th, .table td {
+        vertical-align: middle;
+    }
+</style>
 <body>
 
 <div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-8">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="searchCowNum" class="mr-2">耳钉号</label>
+                            <input type="search" class="form-control" id="searchCowNum" placeholder="耳钉号">
+                        </div>
+                        <div class="form-group mx-sm-3">
+                            <label for="status-select" class="mr-2">状态</label>
+                            <select class="custom-select" id="status-select">
+                                <option selected="0" value="0">全部</option>
+                                <option value="1">公</option>
+                                <option value="2">母</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-4">
+                    <div class="text-lg-right mt-3 mt-lg-0">
+                        <button type="button" class="btn btn-success mr-1" id="search"><i class="mdi mdi-magnify">搜索</i>
+                        </button>
+                        <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter"><i
+                                class="mdi mdi-plus-circle mr-1"></i>新增牛只</a>
+                    </div>
+                </div><!-- end col-->
+            </div> <!-- end row -->
+        </div>
+    </div>
+    <!-- Modal -->
+
     <div class="row">
-        <div class="col-12">
+        <div class="col-8">
             <div class="card">
                 <div class="card-body">
-
-                    <h4 class="card-title">Buttons example</h4>
-                    <p class="card-subtitle mb-4">
-                        The Buttons extension for DataTables provides a common set of options, API methods and styling
-                        to display buttons on a page
-                        that will interact with a DataTable. The core library provides the based framework upon which
-                        plug-ins can built.
-                    </p>
-
-                    <table id="datatable-buttons" class="table table-striped dt-responsive nowrap">
+                    <table id="selection-datatable" class="table table-hover nowrap">
                         <thead>
                         <tr>
-                            <th>#</th>
-                            <th>用户名</th>
-                            <th>手机号</th>
-                            <th>用户类型</th>
+                            <th>耳钉号</th>
+                            <th>性别（公/母）</th>
+                            <th>体重（斤）</th>
                             <th>状态</th>
+                            <th>喂养时间</th>
+                            <th>出生日期</th>
+                            <th>操作</th>
                         </tr>
                         </thead>
 
@@ -78,22 +106,237 @@
 
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div> <!-- end card body-->
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title" id="cowWeightChart"></h4>
+                    <p class="card-subtitle mb-4">牛只的体重变化图</p>
 
-                </div> <!-- end card body-->
+                    <div id="morris-line-example" class="morris-chart"></div>
+                </div>
             </div> <!-- end card -->
         </div><!-- end col-->
+    </div>
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">新增牛只</h5>
+                    <button type="button" class="close waves-effect waves-light" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="addCowNum">耳钉号</label>
+                        <input class="form-control" type="text" id="addCowNum" required=""
+                               placeholder="请输入耳钉号">
+                    </div>
+                    <div class="form-group">
+                        <label for="addWeigth">体重</label>
+                        <input class="form-control" type="text" id="addWeigth" required=""
+                               placeholder="请输入体重">
+                    </div>
+                    <div class="form-group">
+                        <label>种类</label>
+                        <div id="kindNams">
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>性别</label>
+                        <div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="sex1" value=1 name="sex" class="custom-control-input">
+                                <label class="custom-control-label" for="sex1">公</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="sex2" value=2 name="sex" class="custom-control-input">
+                                <label class="custom-control-label" for="sex2">母</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary waves-effect waves-light"
+                            data-dismiss="modal" id="notAdd">取消
+                    </button>
+                    <button type="button" class="btn btn-primary waves-effect waves-light" id="add">保存</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <!-- end row-->
 <script>
-    var dd = [
-        {"data": "userUid"},
-        {"data": "userName"},
-        {"data": "phone"},
-        {"data": "userTypeDesc"},
-        {"data": "delDesc"}
+    var columns = [
+        {"data": "cowNum"},
+        {"data": "sexDesc"},
+        {"data": "weigth"},
+        {"data": "cowStateDesc"},
+        {"data": "lairageAge"},
+        {"data": "cowBirth"},
+        {"data": "cowFatherKind"}
     ];
-    clickList('/check/user/list', {}, dd)
+    var aoColumnDefs = [{
+        "aTargets": [columns.length - 1],
+        "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+            $(nTd).empty();
+            var weight = $('<button class="d-none weight">体重变化图</button>');
+            weight.button();
+            weight.on('click', function () {
+                $("#morris-line-example").empty();
+                $("#morris-line-example svg").remove();
+                $("#cowWeightChart").html(oData.cowNum + '体重')
+                charjs(oData.weigthVOS, oData.cowNum);
+            });
+            $(nTd).prepend(weight);
+
+            //生命状态：1：正常，2：怀孕，3：生病，4：死亡，5：售卖
+            if (oData.cowState == 1 || oData.cowState == 2 || oData.cowState == 3) {
+                //死亡
+                var die = $('<button class="btn btn-sm mr-3 btn-secondary waves-effect waves-light">死亡</button>');
+                die.on('click', function () {
+                    click('/check/cow/die', {cowUid: oData.cowUid}, function (data) {
+                        refresh();
+                    })
+                });
+                die.button();
+                $(nTd).prepend(die);
+            }
+
+
+            //生命状态：1：正常，2：怀孕，3：生病，4：死亡，5：售卖
+            if (oData.cowState == 1 || oData.cowState == 2) {
+                //生病
+                var ill = $('<button class="btn btn-sm mr-3 btn-warning waves-effect waves-light">生病</button>');
+                ill.on('click', function () {
+                    click('/check/cow/ill', {cowUid: oData.cowUid}, function (data) {
+                        refresh();
+                    })
+                });
+                ill.button();
+                $(nTd).prepend(ill);
+            }
+            //生命状态：1：正常，2：怀孕，3：生病，4：死亡，5：售卖
+            if ((oData.cowState == 1 || oData.cowState == 3) && oData.sex == 2) {
+                //怀孕
+                var fetation = $('<button class="btn mr-3 btn-sm btn-primary waves-effect waves-light">怀孕</button>');
+                fetation.on('click', function () {
+                    click('/check/cow/fetation', {cowUid: oData.cowUid}, function (data) {
+                        refresh();
+                    })
+                });
+                fetation.button();
+                $(nTd).prepend(fetation);
+            }
+            //生命状态：1：正常，2：怀孕，3：生病，4：死亡，5：售卖
+            //售卖
+            if (oData.cowState != 5) {
+                var sale = $('<button class="btn mr-3 btn-sm btn-success waves-effect waves-light">出售</button>');
+                sale.on('click', function () {
+                    click('/check/cow/sale', {cowUid: oData.cowUid}, function (data) {
+                        refresh();
+                    })
+                });
+                sale.button();
+                $(nTd).prepend(sale);
+            }
+            //生命状态：1：正常，2：怀孕，3：生病，4：死亡，5：售卖
+            if (oData.cowState == 3) {
+                //正常
+                var normal = $('<button class="btn mr-3 btn-sm btn-outline-success btn-rounded waves-effect waves-light">治愈</button>');
+                normal.on('click', function () {
+                    click('/check/cow/normal', {cowUid: oData.cowUid}, function (data) {
+                        refresh();
+                    })
+                });
+                normal.button();
+                $(nTd).prepend(normal);
+            }
+            //生命状态：1：正常，2：怀孕，3：生病，4：死亡，5：售卖
+            if (oData.cowState == 1 || oData.cowState == 2 || oData.cowState == 3) {
+                //体重
+                var normal = $('<button class="btn mr-3 btn-sm btn-light btn-rounded waves-effect">体重</button>');
+                normal.on('click', function () {
+                    Swal.fire({
+                        title: "请输入体重",
+                        input: "number",
+                        inputAttributes: {
+                            autocapitalize: "off"
+                        },
+                        showCancelButton: !0,
+                        confirmButtonText: "提交",
+                        showLoaderOnConfirm: !0,
+                        preConfirm: function (t) {
+                            click('/check/cow/weight/create', {cowUid: oData.cowUid,weigth: t}, function (data) {
+                                refresh();
+                            })
+                        },
+                        allowOutsideClick: function () {
+                            Swal.isLoading()
+                        }
+                    }).then(function (t) {
+                    })
+                });
+                normal.button();
+                $(nTd).prepend(normal);
+            }
+        }
+    }];
+    refresh();
+    $("#search").click(function () {
+        clickList('/check/cow/list', {
+            cowNum: $("#searchCowNum").val(),
+            sex: $("#status-select").val()
+        }, columns, aoColumnDefs, "#selection-datatable")
+    });
+    $('table tbody').on('mouseover', 'tr', function () {
+        $(this).find("td .weight").click();
+    });
+    $("#add").click(function () {
+        click('/check/cow/create', {
+            cowNum: $("#addCowNum").val(),
+            cowKindUid: $("input[name='kindsRadio']:checked").val(),
+            sex: $("input[name='sex']:checked").val(),
+            weigth: $("#addWeigth").val()
+        }, function () {
+            $("#notAdd").click();
+            refresh();
+        })
+    });
+    click('/check/kind/all', {}, function (data) {
+        var kinds = '';
+        for (var i = 0; i < data.length; i++) {
+            kinds = kinds + '<div class="custom-control custom-radio custom-control-inline">' +
+                '<input type="radio" id="kindsRadio' + data[i].kindUid + '" value="' + data[i].kindUid + '" name="kindsRadio" class="custom-control-input">' +
+                '<label class="custom-control-label" for="kindsRadio' + data[i].kindUid + '" >' + data[i].kindName + '</label></div>';
+        }
+        $("#kindNams").html(kinds);
+    })
+
+    function charjs(data, cowNum) {
+        Morris.Line({
+            element: "morris-line-example",
+            gridLineColor: "#eef0f2",
+            lineColors: ["#9b94da"],
+            data: data,
+            xkey: "createTime",
+            ykeys: ["weigth"],
+            hideHover: "auto",
+            resize: !0,
+            labels: [cowNum]
+        })
+    }
+
+    function refresh() {
+        clickList('/check/cow/list', {}, columns, aoColumnDefs, "#selection-datatable")
+    }
 </script>
 
 </body>

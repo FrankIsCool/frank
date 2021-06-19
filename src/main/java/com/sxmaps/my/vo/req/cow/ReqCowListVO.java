@@ -17,7 +17,5 @@ public class ReqCowListVO extends QueryInfoVO {
 	private String cowNum;
 
 	@ApiModelProperty(value = "性别：1，公，2：母")
-	@Max(value = 2,message = "性别只能为：1，公，2：母")
-	@Min(value = 1,message = "性别只能为：1，公，2：母")
 	private Integer sex;
 }

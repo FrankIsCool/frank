@@ -8,13 +8,14 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Data
 @ApiModel(description = "牛id请求对象")
 public class ReqCowIdVO extends UserInfoVo {
 
 	@ApiModelProperty(value = "牛Uid")
-	@NotBlank(message = "牛Uid不能为空")
+	@NotNull(message = "牛Uid不能为空")
 	private Long cowUid;
 
 }

@@ -1,5 +1,6 @@
 package com.sxmaps.my.controller.cow;
 
+import com.sxmaps.my.service.ICowService;
 import com.sxmaps.my.vo.req.cow.ReqCowCreateWeightVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
+
 /**
  * 类：牛体重信息接口
  * 内容：
@@ -21,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/check/cow/weight")
 @Api(value = "牛体重信息接口", tags = "牛体重信息接口")
 public class CowWeightController {
+    @Resource
+    ICowService cowService;
     /**
      * 牛体重列表信息接口
      * @return
@@ -38,7 +43,7 @@ public class CowWeightController {
     @ApiOperation(notes = "新增牛体重信息接口", value = "新增牛体重信息接口",response = Integer.class)
     @ApiImplicitParam(name = "vo", value = "新增牛体重信息接口参数", dataType = "ReqCowCreateWeightVO")
     public Integer cowWeightCreate(@RequestBody @Validated ReqCowCreateWeightVO vo) {
-        return 1;
+        return cowService.cowCreateWeight(vo);
     }
     /**
      * 新增牛基本信息接口

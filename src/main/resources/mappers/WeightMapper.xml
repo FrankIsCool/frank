@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxmaps.my.mapper.WeightMapper">
+  <resultMap id="BaseResultMap" type="com.sxmaps.my.model.Weight">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="uid" jdbcType="BIGINT" property="uid" />
+    <result column="cow_uid" jdbcType="BIGINT" property="cowUid" />
+    <result column="weight" jdbcType="INTEGER" property="weight" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <select id="getWeights" parameterType="long" resultType="com.sxmaps.my.vo.resp.cow.RespCowListWeigthVO">
+    select
+        cow_uid cowUid,
+        weight weigth,
+        create_time createTime
+    from
+        weight
+    where
+        cow_uid in
+      <foreach collection="cowUids" item="item" index="index" open="(" close=")" separator=",">
+          #{item}
+      </foreach>
+  </select>
+</mapper>

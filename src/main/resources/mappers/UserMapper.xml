@@ -41,7 +41,7 @@
             <if test="phone != null and phone != ''">
                 and phone = #{phone}
             </if>
-            <if test="del != null">
+            <if test="del != null and del != 0">
                 and del = #{del}
             </if>
     </select>

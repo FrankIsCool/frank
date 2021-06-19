@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxmaps.my.mapper.KindMapper">
+  <resultMap id="BaseResultMap" type="com.sxmaps.my.model.Kind">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="uid" jdbcType="BIGINT" property="uid" />
+    <result column="kind_name" jdbcType="VARCHAR" property="kindName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <select id="getKinds" parameterType="com.sxmaps.my.vo.req.kind.ReqKindListVO" resultType="com.sxmaps.my.vo.resp.kind.RespKindVO" >
+    select
+        uid kindUid,
+        kind_name kindName,
+        create_time createTime
+    from
+        kind
+    where 1=1
+    <if test="kindName != null and kindName != ''">
+        kind_name = #{kindName}
+    </if>
+  </select>
+    <select id="getKindsAll" resultType="com.sxmaps.my.vo.resp.kind.RespKindAllVO" >
+        select
+        uid kindUid,
+        kind_name kindName
+        from
+        kind
+        where 1=1
+    </select>
+</mapper>
