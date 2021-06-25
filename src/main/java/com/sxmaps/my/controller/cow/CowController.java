@@ -2,10 +2,7 @@ package com.sxmaps.my.controller.cow;
 
 import com.github.pagehelper.PageInfo;
 import com.sxmaps.my.service.ICowService;
-import com.sxmaps.my.vo.req.cow.ReqCowCreateVO;
-import com.sxmaps.my.vo.req.cow.ReqCowIdVO;
-import com.sxmaps.my.vo.req.cow.ReqCowListVO;
-import com.sxmaps.my.vo.req.cow.ReqCowUpdateVO;
+import com.sxmaps.my.vo.req.cow.*;
 import com.sxmaps.my.vo.resp.cow.RespCowInfoVO;
 import com.sxmaps.my.vo.resp.cow.RespCowListVO;
 import io.swagger.annotations.Api;
@@ -54,14 +51,14 @@ public class CowController {
         return cowService.cowIll(vo);
     }
     /**
-     * 牛正常接口
+     * 牛治愈接口
      * @return
      */
-    @PostMapping(value = "normal",produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(notes = "牛正常接口", value = "牛正常接口",response = Integer.class)
-    @ApiImplicitParam(name = "vo", value = "牛正常接口", dataType = "ReqCowIdVO")
+    @PostMapping(value = "cure",produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(notes = "牛治愈接口", value = "牛治愈接口",response = Integer.class)
+    @ApiImplicitParam(name = "vo", value = "牛治愈接口", dataType = "ReqCowIdVO")
     public Integer cowNormal(@RequestBody @Validated ReqCowIdVO vo) {
-        return cowService.cowNormal(vo);
+        return cowService.cowCure(vo);
     }
     /**
      * 牛怀孕接口
@@ -74,13 +71,23 @@ public class CowController {
         return cowService.cowFetation(vo);
     }
     /**
+     * 牛分娩接口
+     * @return
+     */
+    @PostMapping(value = "childbirth",produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(notes = "牛分娩接口", value = "牛分娩接口",response = Integer.class)
+    @ApiImplicitParam(name = "vo", value = "牛分娩接口", dataType = "ReqCowChildbirthVO")
+    public Integer cowChildbirth(@RequestBody @Validated ReqCowChildbirthVO vo) {
+        return cowService.cowChildbirth(vo);
+    }
+    /**
      * 牛售卖接口
      * @return
      */
     @PostMapping(value = "sale",produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(notes = "牛售卖接口", value = "牛售卖接口",response = Integer.class)
-    @ApiImplicitParam(name = "vo", value = "牛售卖接口", dataType = "ReqCowIdVO")
-    public Integer cowSale(@RequestBody @Validated ReqCowIdVO vo) {
+    @ApiImplicitParam(name = "vo", value = "牛售卖接口", dataType = "ReqCowSaleVO")
+    public Integer cowSale(@RequestBody @Validated ReqCowSaleVO vo) {
         return cowService.cowSale(vo);
     }
     /**

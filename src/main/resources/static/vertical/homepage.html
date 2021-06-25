@@ -23,6 +23,10 @@
 
     <!-- App js -->
     <script src="assets/js/theme.js"></script>
+    <script src="assets/js/my.js"></script>
+    <script src="assets/js/jquery.cookie.js"></script>
+    <script src="../plugins/sweetalert2/sweetalert2.min.js"></script>
+    <link href="../plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css"/>
 </head>
 
 <body>
@@ -52,12 +56,12 @@
 
                     <div class="row text-center mt-4">
                         <div class="col-6">
-                            <h4>$7841.12</h4>
-                            <p class="text-muted mb-0">Total Revenue</p>
+                            <h4></h4>
+                            <p class="text-muted mb-0">母牛数</p>
                         </div>
                         <div class="col-6">
-                            <h4>17</h4>
-                            <p class="text-muted mb-0">Open Compaign</p>
+                            <h4></h4>
+                            <p class="text-muted mb-0">公牛数</p>
                         </div>
                     </div>
                 </div>
@@ -80,18 +84,22 @@
                             <li><a href="#" class="dropdown-item">Separated link</a></li>
                         </ul>
                     </div>
-                    <h4 class="card-title d-inline-block">Activity By Teams</h4>
+                    <h4 class="card-title d-inline-block">牛分布</h4>
 
                     <div id="morris-donut-example" class="morris-chart" style="height: 320px;"></div>
 
                     <div class="row text-center mt-4">
-                        <div class="col-6">
-                            <h4>5,459</h4>
-                            <p class="text-muted mb-0">Total Sales</p>
+                        <div class="col-4">
+                            <h4 id="allNum"></h4>
+                            <p class="text-muted mb-0">存栏数</p>
                         </div>
-                        <div class="col-6">
-                            <h4>18</h4>
-                            <p class="text-muted mb-0">Open Compaign</p>
+                        <div class="col-4">
+                            <h4 id="womanNum"></h4>
+                            <p class="text-muted mb-0">存栏母牛数</p>
+                        </div>
+                        <div class="col-4">
+                            <h4 id="manNum"></h4>
+                            <p class="text-muted mb-0">存栏公牛数</p>
                         </div>
                     </div>
                 </div>
@@ -99,7 +107,25 @@
         </div> <!-- end col -->
     </div>
     <!-- end row-->
-
+    <script>
+        click('/check/home/cow', {}, function (data) {
+            $("#allNum").html(data.cowLivestockNum);
+            $("#manNum").html(data.cowManCount);
+            $("#womanNum").html(data.cowWomanCount);
+            Morris.Donut({
+                element: "morris-donut-example",
+                resize: !0,
+                backgroundColor: "transparent",
+                colors: ["#1907e3", "#3824e5","#483bc9","#6a5de7", "#877de8"],
+                data: [
+                    {label: "生病", value: data.cowIllCount},
+                    {label: "怀孕", value: data.cowFetationCount},
+                    {label: "正常", value: data.cowNormalCount},
+                    {label: "死亡", value: data.cowDieCount},
+                    {label: "售卖", value: data.cowSaleCount}]
+            })
+        })
+    </script>
 </div>
 </body>
 </html>

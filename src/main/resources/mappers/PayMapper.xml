@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxmaps.my.mapper.PayMapper">
+    <resultMap id="BaseResultMap" type="com.sxmaps.my.model.Pay">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="uid" jdbcType="BIGINT" property="uid"/>
+        <result column="pay_uid" jdbcType="BIGINT" property="payUid"/>
+        <result column="farmers_uid" jdbcType="BIGINT" property="farmersUid"/>
+        <result column="amount" jdbcType="DECIMAL" property="amount"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <select id="getPays" resultType="com.sxmaps.my.vo.resp.pay.RespPayListVO"
+            parameterType="com.sxmaps.my.vo.req.pay.ReqPayListVO">
+        select
+        amount payAmount,
+        create_time createTime
+        from
+            pay
+        where
+            pay_uid in
+            <foreach collection="payTypeUids" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+            and farmers_uid = #{farmersUid}
+    </select>
+</mapper>

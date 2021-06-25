@@ -69,11 +69,20 @@ public class Cow {
     private Date lairageTime;
 
     /**
-     * 生命状态：1：正常，2：怀孕，3：生病，4：死亡，5：售卖
+     * 生命状态：1：正常，2：死亡，3：售卖
      */
-    @Column(name = "cow_state")
-    private Byte cowState;
-
+    @Column(name = "cow_life")
+    private Byte cowLife;
+    /**
+     * 是否生病：1：正常，2：生病
+     */
+    @Column(name = "ill_state")
+    private Byte illState;
+    /**
+     * 是否怀孕：1：正常，2：怀孕
+     */
+    @Column(name = "fetation_state")
+    private Byte fetationState;
     /**
      * 状态：1：正常，2：已删除
      */
@@ -134,6 +143,30 @@ public class Cow {
      */
     public Long getKindUid() {
         return kindUid;
+    }
+
+    public Byte getCowLife() {
+        return cowLife;
+    }
+
+    public void setCowLife(Byte cowLife) {
+        this.cowLife = cowLife;
+    }
+
+    public Byte getIllState() {
+        return illState;
+    }
+
+    public void setIllState(Byte illState) {
+        this.illState = illState;
+    }
+
+    public Byte getFetationState() {
+        return fetationState;
+    }
+
+    public void setFetationState(Byte fetationState) {
+        this.fetationState = fetationState;
     }
 
     /**
@@ -287,24 +320,6 @@ public class Cow {
      */
     public void setLairageTime(Date lairageTime) {
         this.lairageTime = lairageTime;
-    }
-
-    /**
-     * 获取生命状态：1：正常，2：怀孕，3：生病，4：死亡，5：售卖
-     *
-     * @return cow_state - 生命状态：1：正常，2：怀孕，3：生病，4：死亡，5：售卖
-     */
-    public Byte getCowState() {
-        return cowState;
-    }
-
-    /**
-     * 设置生命状态：1：正常，2：怀孕，3：生病，4：死亡，5：售卖
-     *
-     * @param cowState 生命状态：1：正常，2：怀孕，3：生病，4：死亡，5：售卖
-     */
-    public void setCowState(Byte cowState) {
-        this.cowState = cowState;
     }
 
     /**

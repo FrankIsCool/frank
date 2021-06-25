@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxmaps.my.mapper.PayTypeMapper">
+    <resultMap id="BaseResultMap" type="com.sxmaps.my.model.PayType">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="uid" jdbcType="BIGINT" property="uid"/>
+        <result column="pay_name" jdbcType="VARCHAR" property="payName"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <select id="getPayTypeAll" resultType="com.sxmaps.my.vo.resp.pay.RespPayTypeAllVO">
+    select
+        uid  payTypeUid,
+        pay_type payType,
+        pay_name payName
+    from
+        pay_type
+    where
+        1=1
+    </select>
+    <select id="getPayTypes" parameterType="com.sxmaps.my.vo.req.pay.ReqPayTypeListVO"
+            resultType="com.sxmaps.my.vo.resp.pay.RespPayTypeListVO">
+        select
+        uid payTypeUid,
+        pay_name payName,
+        pay_type payType,
+        create_time createTime
+        from
+        pay_type
+        where 1=1
+        <if test="payTypeName != null and payTypeName != ''">
+            and pay_name = #{payTypeName}
+        </if>
+    </select>
+    <select id="getPayTypesUid" parameterType="int" resultType="com.sxmaps.my.vo.resp.pay.RespPayTypeAllVO">
+        select
+        uid  payTypeUid,
+        pay_type payType,
+        pay_name payName
+        from
+        pay_type
+        where pay_type = #{payType}
+    </select>
+</mapper>

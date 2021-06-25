@@ -171,6 +171,51 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="exampleChildbirth" tabindex="-1" role="dialog"
+         aria-labelledby="exampleChildbirthTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleChildbirthTitle">分娩</h5>
+                    <button type="button" class="close waves-effect waves-light" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="addCowNum">耳钉号</label>
+                        <input class="form-control" type="text" id="childbirthCowNum" required=""
+                               placeholder="请输入耳钉号">
+                    </div>
+                    <div class="form-group">
+                        <label for="addWeigth">体重</label>
+                        <input class="form-control" type="text" id="childbirthWeigth" required=""
+                               placeholder="请输入体重">
+                    </div>
+                    <div class="form-group">
+                        <label>性别</label>
+                        <div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="childbirthSex1" value=1 name="childbirthSex" class="custom-control-input">
+                                <label class="custom-control-label" for="childbirthSex1">公</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="childbirthSex2" value=2 name="childbirthSex" class="custom-control-input">
+                                <label class="custom-control-label" for="childbirthSex2">母</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary waves-effect waves-light"
+                            data-dismiss="modal" id="notChildbirth">取消
+                    </button>
+                    <button type="button" class="btn btn-primary waves-effect waves-light" id="childbirth">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- end row-->
 <script>
@@ -197,9 +242,8 @@
             });
             $(nTd).prepend(weight);
 
-            //生命状态：1：正常，2：怀孕，3：生病，4：死亡，5：售卖
-            if (oData.cowState == 1 || oData.cowState == 2 || oData.cowState == 3) {
-                //死亡
+            //死亡
+            if (oData.cowLife == 1) {
                 var die = $('<button class="btn btn-sm mr-3 btn-secondary waves-effect waves-light">死亡</button>');
                 die.on('click', function () {
                     click('/check/cow/die', {cowUid: oData.cowUid}, function (data) {
@@ -211,9 +255,8 @@
             }
 
 
-            //生命状态：1：正常，2：怀孕，3：生病，4：死亡，5：售卖
-            if (oData.cowState == 1 || oData.cowState == 2) {
-                //生病
+            //生病
+            if (oData.cowIll == 1 && oData.cowLife == 1) {
                 var ill = $('<button class="btn btn-sm mr-3 btn-warning waves-effect waves-light">生病</button>');
                 ill.on('click', function () {
                     click('/check/cow/ill', {cowUid: oData.cowUid}, function (data) {
@@ -223,9 +266,8 @@
                 ill.button();
                 $(nTd).prepend(ill);
             }
-            //生命状态：1：正常，2：怀孕，3：生病，4：死亡，5：售卖
-            if ((oData.cowState == 1 || oData.cowState == 3) && oData.sex == 2) {
-                //怀孕
+            //怀孕
+            if ((oData.cowFetation == 1 && oData.cowLife == 1) && oData.sex == 2) {
                 var fetation = $('<button class="btn mr-3 btn-sm btn-primary waves-effect waves-light">怀孕</button>');
                 fetation.on('click', function () {
                     click('/check/cow/fetation', {cowUid: oData.cowUid}, function (data) {
@@ -235,32 +277,55 @@
                 fetation.button();
                 $(nTd).prepend(fetation);
             }
-            //生命状态：1：正常，2：怀孕，3：生病，4：死亡，5：售卖
             //售卖
-            if (oData.cowState != 5) {
+            if (oData.cowLife != 3) {
                 var sale = $('<button class="btn mr-3 btn-sm btn-success waves-effect waves-light">出售</button>');
                 sale.on('click', function () {
-                    click('/check/cow/sale', {cowUid: oData.cowUid}, function (data) {
-                        refresh();
+                    Swal.fire({
+                        title: "请输入售价",
+                        input: "number",
+                        inputAttributes: {
+                            autocapitalize: "off"
+                        },
+                        showCancelButton: !0,
+                        confirmButtonText: "提交",
+                        showLoaderOnConfirm: !0,
+                        preConfirm: function (t) {
+                            click('/check/cow/sale', {cowUid: oData.cowUid,saleAmount:t}, function (data) {
+                                refresh();
+                            })
+                        },
+                        allowOutsideClick: function () {
+                            Swal.isLoading()
+                        }
+                    }).then(function (t) {
                     })
+
                 });
                 sale.button();
                 $(nTd).prepend(sale);
             }
-            //生命状态：1：正常，2：怀孕，3：生病，4：死亡，5：售卖
-            if (oData.cowState == 3) {
-                //正常
+            //治愈
+            if (oData.cowIll != 1) {
                 var normal = $('<button class="btn mr-3 btn-sm btn-outline-success btn-rounded waves-effect waves-light">治愈</button>');
                 normal.on('click', function () {
-                    click('/check/cow/normal', {cowUid: oData.cowUid}, function (data) {
+                    click('/check/cow/cure', {cowUid: oData.cowUid}, function (data) {
                         refresh();
                     })
                 });
                 normal.button();
                 $(nTd).prepend(normal);
             }
-            //生命状态：1：正常，2：怀孕，3：生病，4：死亡，5：售卖
-            if (oData.cowState == 1 || oData.cowState == 2 || oData.cowState == 3) {
+            //分娩
+            if (oData.cowFetation != 1) {
+                var normal = $('<button class="btn mr-3 btn-sm btn-outline-success btn-rounded waves-effect waves-light" data-toggle="modal" data-target="#exampleChildbirth" >分娩</button>');
+                normal.on('click', function () {
+                    $("#childbirthCowNum").attr("cowUid",oData.cowUid)
+                });
+                normal.button();
+                $(nTd).prepend(normal);
+            }
+            if (oData.cowLife == 1) {
                 //体重
                 var normal = $('<button class="btn mr-3 btn-sm btn-light btn-rounded waves-effect">体重</button>');
                 normal.on('click', function () {
@@ -307,6 +372,16 @@
             weigth: $("#addWeigth").val()
         }, function () {
             $("#notAdd").click();
+            refresh();
+        })
+    });
+    $("#childbirth").click(function (){
+        var cowUid = $("#childbirthCowNum").attr("cowUid")
+        var cowNum = $("#childbirthCowNum").val();
+        var sex = $("input[name='childbirthSex']:checked").val();
+        var weigth = $("#childbirthWeigth").val();
+        click('/check/cow/childbirth', {cowUid: cowUid,cowNum:cowNum,sex:sex,weigth:weigth}, function (data) {
+            $("#notChildbirth").click();
             refresh();
         })
     });

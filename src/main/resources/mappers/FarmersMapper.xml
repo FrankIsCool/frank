@@ -15,18 +15,27 @@
     <select id="getFarmersList" parameterType="com.sxmaps.my.vo.req.farmers.ReqFarmersListVO"
             resultType="com.sxmaps.my.vo.resp.farmers.RespFarmersListVO">
         select
-            f.uid farmersUid,
-            f.farmers_name farmersName,
-            f.farmers_address farmersAddress
+        f.uid farmersUid,
+        f.farmers_name farmersName,
+        f.farmers_address farmersAddress
+        from
+        farmers f
+        where
+        1=1
+        <if test="farmersName !=null and farmersName !=''">
+            and f.farmers_name = #{farmersName}
+        </if>
+        <if test="del !=null">
+            and f.del = #{del}
+        </if>
+    </select>
+    <select id="getFarmersAll" resultMap="BaseResultMap" parameterType="string">
+        select
+            *
         from
             farmers f
         where
-            1=1
-            <if test="farmersName !=null and farmersName !=''">
-                and f.farmers_name = #{farmersName}
-            </if>
-            <if test="del !=null">
-                and f.del = #{del}
-            </if>
-  </select>
+            f.del = 1
+            or (f.del = 2 and update_time > #{lastTime})
+    </select>
 </mapper>

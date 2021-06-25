@@ -16,7 +16,9 @@
         <result column="weight" jdbcType="VARCHAR" property="weight"/>
         <result column="birth_time" jdbcType="DATE" property="birthTime"/>
         <result column="lairage_time" jdbcType="DATE" property="lairageTime"/>
-        <result column="cow_state" jdbcType="TINYINT" property="cowState"/>
+        <result column="cow_life" jdbcType="TINYINT" property="cowLife"/>
+        <result column="ill_state" jdbcType="TINYINT" property="illState"/>
+        <result column="fetation_state" jdbcType="TINYINT" property="fetationState"/>
         <result column="del" jdbcType="TINYINT" property="del"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -27,6 +29,105 @@
     <select id="getCowByNum" resultMap="BaseResultMap">
         select * from cow where del = 1 and num = #{num} and farmers_uid = #{farmersUid}
     </select>
+    <select id="getCowAllCount" resultType="int">
+        select
+        count(1)
+        from
+        cow
+        where
+        del = 1
+        and farmers_uid = #{farmersUid}
+    </select>
+    <select id="getCowLivestockNum"  resultType="int">
+        select
+        count(1)
+        from
+        cow
+        where
+        del = 1
+        and farmers_uid = #{farmersUid}
+        and cow_life = 1
+    </select>
+    <select id="getCowLifeCount" resultType="int">
+        select
+            count(1)
+        from
+            cow
+        where
+            del = 1
+            and farmers_uid = #{farmersUid}
+            <if test="cowLife != null and cowLife != ''">
+                and cow_life = #{cowLife}
+            </if>
+    </select>
+    <select id="getCowFetationCount" resultType="int">
+        select
+        count(1)
+        from
+        cow
+        where
+        del = 1
+        and farmers_uid = #{farmersUid}
+        <if test="fetationState != null and fetationState != ''">
+            and fetation_state = #{fetationState}
+        </if>
+    </select>
+    <select id="getCowNormalCount"  resultType="int">
+        select
+        count(1)
+        from
+        cow
+        where
+        del = 1
+        and farmers_uid = #{farmersUid}
+        and fetation_state = 1
+        and cow_life = 1
+        and ill_state = 1
+    </select>
+    <select id="getCowIllCount" resultType="int">
+        select
+        count(1)
+        from
+        cow
+        where
+        del = 1
+        and farmers_uid = #{farmersUid}
+        <if test="illState != null and illState != ''">
+            and ill_state = #{illState}
+        </if>
+    </select>
+    <select id="getCowCountCollect" resultType="com.sxmaps.my.vo.resp.cow.RespCowCollectVO" parameterType="string">
+        select
+            farmers_uid farmersUid,
+            kind_uid kindUid,
+            count(1) num
+        from
+            cow
+        where
+            create_time > #{createTime}
+            and farmers_uid in
+            <foreach collection="farmersUids" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+            and kind_uid in
+            <foreach collection="kindUids" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        group by farmers_uid,kind_uid
+    </select>
+    <select id="getCowCountBySex" resultType="int">
+        select
+            count(1)
+        from
+            cow
+        where
+            del = 1
+            and farmers_uid = #{farmersUid}
+            and cow_life = 1
+            <if test="sex != null and sex != ''">
+                and sex = #{sex}
+            </if>
+    </select>
     <select id="getCows" parameterType="com.sxmaps.my.vo.req.cow.ReqCowListVO"
             resultType="com.sxmaps.my.vo.resp.cow.RespCowListVO">
         select
@@ -34,7 +135,9 @@
             num cowNum,
             sex sex,
             weight weigth,
-            cow_state cowState,
+            cow_life cowLife,
+            ill_state cowIll,
+            fetation_state cowFetation,
             lairage_time lairageTime,
             mon_num cowMonNum,
             fa_num cowFatherKind,

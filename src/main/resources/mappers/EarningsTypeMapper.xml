@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxmaps.my.mapper.EarningsTypeMapper">
+  <resultMap id="BaseResultMap" type="com.sxmaps.my.model.EarningsType">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="uid" jdbcType="BIGINT" property="uid" />
+    <result column="earnings_name" jdbcType="VARCHAR" property="earningsName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <select id="getEarningsTypeBySaleCow" resultMap="BaseResultMap">
+    select
+    *
+    from
+    earnings_type
+    where
+    earnings_name = "售牛"
+  </select>
+</mapper>

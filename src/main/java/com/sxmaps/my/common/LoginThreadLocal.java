@@ -1,25 +1,16 @@
 package com.sxmaps.my.common;
 
-import com.alibaba.fastjson.JSONObject;
 import com.sxmaps.my.enums.ApiExceptionEnum;
 import com.sxmaps.my.exception.ApiException;
-import com.sxmaps.my.mapper.LoginMapper;
-import com.sxmaps.my.model.Login;
-import com.sxmaps.my.service.ILoginService;
-import org.mapstruct.BeanMapping;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * 类：
+ * 类：缓存登录信息对象
  * 内容：
  * 创建人：付帅
  * 时间：2021/6/10

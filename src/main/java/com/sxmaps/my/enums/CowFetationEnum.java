@@ -3,25 +3,21 @@ package com.sxmaps.my.enums;
 import java.util.stream.Stream;
 
 /**
- * 类：牛生命状态
+ * 类：怀孕
  * 内容：
  * 创建人：付帅
  * 时间：2021/6/15
  */
-public enum CowStateEnum {
-    //    1：正常，2：怀孕，3：生病，4：死亡，5：售卖
-    COWSTATEENUM_1(1, "正常"),
-    COWSTATEENUM_2(2, "怀孕"),
-    COWSTATEENUM_3(3, "生病"),
-    COWSTATEENUM_4(4, "死亡"),
-    COWSTATEENUM_5(5, "售卖"),
+public enum CowFetationEnum {
+    FETATION_1(1, "正常"),
+    FETATION_2(2, "怀孕"),
 
     ;
 
     private Integer state;
     private String desc;
 
-    CowStateEnum(Integer state, String desc) {
+    CowFetationEnum(Integer state, String desc) {
         this.state = state;
         this.desc = desc;
     }
@@ -42,7 +38,7 @@ public enum CowStateEnum {
         this.desc = desc;
     }
 
-    public static CowStateEnum getEnum(Integer value) {
+    public static CowFetationEnum getEnum(Integer value) {
         return Stream.of(values()).filter(p -> p.getState().equals(value)).findFirst().orElse(null);
     }
 }

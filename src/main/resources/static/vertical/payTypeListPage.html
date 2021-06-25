@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+    <!-- Plugins css -->
+    <link href="../plugins/datatables/dataTables.bootstrap4.css" rel="stylesheet" type="text/css"/>
+    <link href="../plugins/datatables/responsive.bootstrap4.css" rel="stylesheet" type="text/css"/>
+    <link href="../plugins/datatables/buttons.bootstrap4.css" rel="stylesheet" type="text/css"/>
+    <link href="../plugins/datatables/select.bootstrap4.css" rel="stylesheet" type="text/css"/>
+    <!-- App css -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/theme.min.css" rel="stylesheet" type="text/css"/>
+    <!-- Sweet Alerts css -->
+    <link href="../plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css"/>
+    <!-- jQuery  -->
+    <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/metismenu.min.js"></script>
+    <script src="assets/js/simplebar.min.js"></script>
+    <!-- Sweet Alerts Js-->
+    <script src="../plugins/sweetalert2/sweetalert2.min.js"></script>
+    <!-- Morris Js-->
+    <script src="../plugins/morris-js/morris.min.js"></script>
+    <!-- Raphael Js-->
+    <script src="../plugins/raphael/raphael.min.js"></script>
+    <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="../plugins/datatables/dataTables.bootstrap4.js"></script>
+    <script src="../plugins/datatables/dataTables.responsive.min.js"></script>
+    <script src="../plugins/datatables/responsive.bootstrap4.min.js"></script>
+    <script src="../plugins/datatables/dataTables.buttons.min.js"></script>
+    <script src="../plugins/datatables/buttons.bootstrap4.min.js"></script>
+    <script src="../plugins/datatables/buttons.html5.min.js"></script>
+    <script src="../plugins/datatables/buttons.flash.min.js"></script>
+    <script src="../plugins/datatables/buttons.print.min.js"></script>
+    <script src="../plugins/datatables/dataTables.keyTable.min.js"></script>
+    <script src="../plugins/datatables/dataTables.select.min.js"></script>
+    <!-- App js -->
+    <script src="assets/js/theme.js"></script>
+    <script src="assets/js/my.js"></script>
+    <script src="assets/js/jquery.cookie.js"></script>
+
+</head>
+<style>
+    .table th, .table td {
+        vertical-align: middle;
+    }
+</style>
+<body>
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-8">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="searchPayTypeName" class="mr-2">支付名称</label>
+                            <input type="search" class="form-control" id="searchPayTypeName" placeholder="支付名称">
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-4">
+                    <div class="text-lg-right mt-3 mt-lg-0">
+                        <button type="button" class="btn btn-success mr-1" id="search"><i class="mdi mdi-magnify">搜索</i>
+                        </button>
+                        <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter"><i
+                                class="mdi mdi-plus-circle mr-1"></i>新增支付类型</a>
+                    </div>
+                </div><!-- end col-->
+            </div> <!-- end row -->
+        </div>
+    </div>
+    <!-- Modal -->
+
+    <div class="row">
+        <div class="col-8">
+            <div class="card">
+                <div class="card-body">
+                    <table id="selection-datatable" class="table table-hover nowrap">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>支付名称</th>
+                            <th>支付类型</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+
+
+                        <tbody id="list">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div> <!-- end card body-->
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title" id="cowWeightChart"></h4>
+                    <p class="card-subtitle mb-4">支付金额变化图</p>
+
+                    <div id="morris-line-example" class="morris-chart"></div>
+                </div>
+            </div> <!-- end card -->
+        </div><!-- end col-->
+    </div>
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">新增支付分类</h5>
+                    <button type="button" class="close waves-effect waves-light" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="payTypeName">支付名称</label>
+                        <input class="form-control" type="text" id="payTypeName" required=""
+                               placeholder="请输入种类名称">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary waves-effect waves-light"
+                            data-dismiss="modal" id="notAdd">取消
+                    </button>
+                    <button type="button" class="btn btn-primary waves-effect waves-light" id="add">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end row-->
+<script>
+    var columns = [
+        {"data": "payTypeUid"},
+        {"data": "payName"},
+        {"data": "payTypeDesc"},
+        {"data": "createTime"},
+        {"data": "payName"}
+    ];
+    var aoColumnDefs = [{
+        "aTargets": [columns.length - 1],
+        "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+            $(nTd).empty();
+            var weight = $('<button class="d-none kind">数量变化图</button>');
+            weight.button();
+            weight.on('click', function () {
+                $("#morris-line-example").empty();
+                $("#morris-line-example svg").remove();
+                $("#cowWeightChart").html(oData.payName+'数量')
+                charjs(oData.useKind, oData.payName);
+            });
+            $(nTd).prepend(weight);
+            var info = $('<button class="btn btn-update btn-sm waves-effect waves-light">修改</button>');
+            info.button();
+            $(nTd).prepend(info);
+        }
+    }];
+    refresh();
+    $("#search").click(function () {
+        clickList('/check/pay/type/list', {
+            payName: $("#searchPayTypeName").val()
+        }, columns, aoColumnDefs,"#selection-datatable")
+    });
+    $('table tbody').on('mouseover', 'tr', function () {
+        $(this).find("td .kind").click();
+    });
+    $("#add").click(function () {
+        click('/check/pay/type/create', {
+            payName: $("#payTypeName").val()
+        }, function () {
+            $("#notAdd").click();
+            refresh();
+        })
+    });
+    function charjs(data, cowNum) {
+        Morris.Line({
+            element: "morris-line-example",
+            gridLineColor: "#eef0f2",
+            lineColors: ["#9b94da"],
+            data: data,
+            xkey: "createTime",
+            ykeys: ["weigth"],
+            hideHover: "auto",
+            resize: !0,
+            labels: [cowNum]
+        })
+    }
+    function refresh() {
+        clickList('/check/pay/type/list', {}, columns, aoColumnDefs, "#selection-datatable")
+    }
+</script>
+
+</body>
+</html>

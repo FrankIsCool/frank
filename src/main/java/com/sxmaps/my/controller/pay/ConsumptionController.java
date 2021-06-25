@@ -1,4 +1,4 @@
-package com.sxmaps.my.controller.consumption;
+package com.sxmaps.my.controller.pay;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
