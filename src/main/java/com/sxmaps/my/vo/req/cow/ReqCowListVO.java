@@ -16,6 +16,9 @@ public class ReqCowListVO extends QueryInfoVO {
 	@ApiModelProperty(value = "耳钉号")
 	private String cowNum;
 
+	@ApiModelProperty(value = "出栏：是，否")
+	private Boolean such;
+
 	@ApiModelProperty(value = "性别：1，公，2：母")
 	private Integer sex;
 }

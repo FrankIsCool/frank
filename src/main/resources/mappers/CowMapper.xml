@@ -153,5 +153,11 @@
             <if test="sex != null and sex != 0 ">
                 and sex = #{sex}
             </if>
+            <if test="such">
+                and cow_life = 3
+            </if>
+            <if test="!such">
+                and cow_life != 3
+            </if>
     </select>
 </mapper>

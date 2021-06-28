@@ -356,7 +356,7 @@
     }];
     refresh();
     $("#search").click(function () {
-        clickList('/check/cow/list', {
+        clickList('/check/cow/notSuch/list', {
             cowNum: $("#searchCowNum").val(),
             sex: $("#status-select").val()
         }, columns, aoColumnDefs, "#selection-datatable")
@@ -410,7 +410,7 @@
     }
 
     function refresh() {
-        clickList('/check/cow/list', {}, columns, aoColumnDefs, "#selection-datatable")
+        clickList('/check/cow/notSuch/list', {}, columns, aoColumnDefs, "#selection-datatable")
     }
 </script>
 

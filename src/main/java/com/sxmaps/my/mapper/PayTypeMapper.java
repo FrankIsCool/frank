@@ -17,6 +17,5 @@ public interface PayTypeMapper extends CommonMapper<PayType> {
 
     List<RespPayTypeListVO> getPayTypes(ReqPayTypeListVO vo);
 
-    List<RespPayTypeAllVO> getPayTypesUid(@Param("payType") Integer payType);
-
+    List<RespPayTypeAllVO> getPayTypesByType(@Param("payType") Integer payType);
 }

@@ -15,15 +15,29 @@
     <select id="getPays" resultType="com.sxmaps.my.vo.resp.pay.RespPayListVO"
             parameterType="com.sxmaps.my.vo.req.pay.ReqPayListVO">
         select
-        amount payAmount,
-        create_time createTime
+            p.pay_uid payTypeUid,
+            pt.pay_name payName,
+            p.amount payAmount,
+            p.create_time createTime
         from
-            pay
+            pay p
+            left join pay_type pt on pt.uid = p.pay_uid
         where
-            pay_uid in
-            <foreach collection="payTypeUids" item="item" index="index" open="(" close=")" separator=",">
-                #{item}
-            </foreach>
-            and farmers_uid = #{farmersUid}
+            p.pay_uid = #{payTypeUid}
+            and p.farmers_uid = #{farmersUid}
+    </select>
+    <select id="payCollect" parameterType="long" resultType="com.sxmaps.my.vo.resp.pay.RespPayCollectInfoVO">
+        select
+        sum(amount) payAmount,
+        pay_uid payUid
+        from
+        pay
+        where
+        pay_uid in
+        <foreach collection="payTypeUids" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        and farmers_uid = #{farmersUid}
+        group by pay_uid
     </select>
 </mapper>

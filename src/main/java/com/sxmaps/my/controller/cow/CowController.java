@@ -103,17 +103,29 @@ public class CowController {
     }
 
     /**
-     * 牛列表信息接口
+     * 出栏牛列表信息接口
      *
      * @return
      */
-    @PostMapping(value = "list", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(notes = "牛列表信息接口", value = "牛列表信息接口", response = RespCowListVO.class)
-    @ApiImplicitParam(name = "vo", value = "牛列表信息接口参数", dataType = "ReqCowListVO")
-    public PageInfo<RespCowListVO> cowList(@RequestBody @Validated ReqCowListVO vo) {
+    @PostMapping(value = "/such/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(notes = "出栏牛列表信息接口", value = "出栏牛列表信息接口", response = RespCowListVO.class)
+    @ApiImplicitParam(name = "vo", value = "出栏牛列表信息接口参数", dataType = "ReqCowListVO")
+    public PageInfo<RespCowListVO> suchCowList(@RequestBody @Validated ReqCowListVO vo) {
+        vo.setSuch(true);
         return cowService.cowList(vo);
     }
-
+    /**
+     * 存栏牛列表信息接口
+     *
+     * @return
+     */
+    @PostMapping(value = "/notSuch/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(notes = "存栏牛列表信息接口", value = "存栏牛列表信息接口", response = RespCowListVO.class)
+    @ApiImplicitParam(name = "vo", value = "存栏牛列表信息接口参数", dataType = "ReqCowListVO")
+    public PageInfo<RespCowListVO> notSuchCowList(@RequestBody @Validated ReqCowListVO vo) {
+        vo.setSuch(false);
+        return cowService.cowList(vo);
+    }
     /**
      * 新增牛基本信息接口
      *

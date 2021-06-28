@@ -10,12 +10,9 @@ import java.util.List;
 
 @SuppressWarnings("serial")
 @Data
-@ApiModel(description = "请求支付列表实体类")
+@ApiModel(description = "支付详情列表实体类")
 public class ReqPayListVO extends QueryInfoVO implements Serializable {
 
-	@ApiModelProperty(name = "payType", value = "支付类型", example = "支付类型")
-	private Integer payType;
-
-	@ApiModelProperty(name = "payTypeUids", value = "支付类型uid", example = "1",hidden = true)
-	private List<Long> payTypeUids;
+	@ApiModelProperty(name = "payTypeUid", value = "支付类型uid", example = "1")
+	private Long payTypeUid;
 }

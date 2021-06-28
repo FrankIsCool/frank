@@ -33,7 +33,7 @@
             and pay_name = #{payTypeName}
         </if>
     </select>
-    <select id="getPayTypesUid" parameterType="int" resultType="com.sxmaps.my.vo.resp.pay.RespPayTypeAllVO">
+    <select id="getPayTypesByType" parameterType="int" resultType="com.sxmaps.my.vo.resp.pay.RespPayTypeAllVO">
         select
         uid  payTypeUid,
         pay_type payType,

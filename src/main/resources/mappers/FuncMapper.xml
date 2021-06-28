@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxmaps.my.mapper.FuncMapper">
+    <resultMap id="BaseResultMap" type="com.sxmaps.my.model.Func">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="uid" jdbcType="BIGINT" property="uid"/>
+        <result column="father_uid" jdbcType="BIGINT" property="fatherUid"/>
+        <result column="function_sn" jdbcType="VARCHAR" property="functionSn"/>
+        <result column="function_name" jdbcType="VARCHAR" property="functionName"/>
+        <result column="funll_name" jdbcType="VARCHAR" property="funllName"/>
+        <result column="function_path" jdbcType="VARCHAR" property="functionPath"/>
+        <result column="function_type" jdbcType="TINYINT" property="functionType"/>
+        <result column="del" jdbcType="TINYINT" property="del"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <select id="getFunctionsOrPage" resultType="com.sxmaps.my.vo.resp.function.RespFunctionTreeVO">
+        select
+            uid functionuid,
+            function_sn functionSn,
+            function_name functionName,
+            funll_name funllName,
+            function_path functionPath,
+            function_type functionType,
+            remark remark,
+            del del
+        from
+            func
+        where
+            father_uid = #{fatherUid}
+            <if test="functionType!=null and functionType!=''">
+                and function_type = #{functionType}
+            </if>
+    </select>
+    <select id="getSystem" resultType="com.sxmaps.my.vo.resp.function.RespFunctionTreeVO">
+        select
+            uid functionuid,
+            function_sn functionSn,
+            function_name functionName,
+            funll_name funllName,
+            function_path functionPath,
+            function_type functionType,
+            remark remark,
+            del del
+        from
+            func
+        where
+            function_name = #{functionName}
+            and function_type = #{functionType}
+    </select>
+</mapper>

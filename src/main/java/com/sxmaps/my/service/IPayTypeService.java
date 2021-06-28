@@ -1,13 +1,16 @@
 package com.sxmaps.my.service;
 
 import com.github.pagehelper.PageInfo;
+import com.sxmaps.my.common.UserInfoVo;
 import com.sxmaps.my.vo.req.kind.ReqKindCreateVO;
 import com.sxmaps.my.vo.req.kind.ReqKindListVO;
+import com.sxmaps.my.vo.req.pay.ReqPayCollectVO;
 import com.sxmaps.my.vo.req.pay.ReqPayListVO;
 import com.sxmaps.my.vo.req.pay.ReqPayTypeCreateVO;
 import com.sxmaps.my.vo.req.pay.ReqPayTypeListVO;
 import com.sxmaps.my.vo.resp.kind.RespKindAllVO;
 import com.sxmaps.my.vo.resp.kind.RespKindVO;
+import com.sxmaps.my.vo.resp.pay.RespPayCollectVO;
 import com.sxmaps.my.vo.resp.pay.RespPayListVO;
 import com.sxmaps.my.vo.resp.pay.RespPayTypeAllVO;
 import com.sxmaps.my.vo.resp.pay.RespPayTypeListVO;
@@ -51,4 +54,11 @@ public interface IPayTypeService {
      * @date 2021/6/10
      **/
     PageInfo<RespPayListVO> payList(ReqPayListVO vo);
+    /**
+     * 支付统计
+     * @return
+     * @author frank(付帅)
+     * @date 2021/6/10
+     **/
+    RespPayCollectVO payCollect(ReqPayCollectVO vo);
 }

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow: hidden">
+
+<head>
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+    <!-- Plugins css -->
+    <link href="../plugins/datatables/dataTables.bootstrap4.css" rel="stylesheet" type="text/css"/>
+    <link href="../plugins/datatables/responsive.bootstrap4.css" rel="stylesheet" type="text/css"/>
+    <link href="../plugins/datatables/buttons.bootstrap4.css" rel="stylesheet" type="text/css"/>
+    <link href="../plugins/datatables/select.bootstrap4.css" rel="stylesheet" type="text/css"/>
+    <!-- App css -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/theme.min.css" rel="stylesheet" type="text/css"/>
+    <!-- Sweet Alerts css -->
+    <link href="../plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css"/>
+    <!-- jQuery  -->
+    <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/metismenu.min.js"></script>
+    <script src="assets/js/simplebar.min.js"></script>
+    <!-- Sweet Alerts Js-->
+    <script src="../plugins/sweetalert2/sweetalert2.min.js"></script>
+    <!-- Morris Js-->
+    <script src="../plugins/morris-js/morris.min.js"></script>
+    <!-- Raphael Js-->
+    <script src="../plugins/raphael/raphael.min.js"></script>
+    <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="../plugins/datatables/dataTables.bootstrap4.js"></script>
+    <script src="../plugins/datatables/dataTables.responsive.min.js"></script>
+    <script src="../plugins/datatables/responsive.bootstrap4.min.js"></script>
+    <script src="../plugins/datatables/dataTables.buttons.min.js"></script>
+    <script src="../plugins/datatables/buttons.bootstrap4.min.js"></script>
+    <script src="../plugins/datatables/buttons.html5.min.js"></script>
+    <script src="../plugins/datatables/buttons.flash.min.js"></script>
+    <script src="../plugins/datatables/buttons.print.min.js"></script>
+    <script src="../plugins/datatables/dataTables.keyTable.min.js"></script>
+    <script src="../plugins/datatables/dataTables.select.min.js"></script>
+    <!-- App js -->
+    <script src="assets/js/theme.js"></script>
+    <script src="assets/js/my.js"></script>
+    <script src="assets/js/jquery.cookie.js"></script>
+</head>
+
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card card-animate">
+                <div class="card-body">
+                    <h4 class="card-title d-inline-block">收益总计</h4>
+
+                    <div id="morris-donut-example" class="morris-chart" style="height: 320px;"></div>
+
+                    <div class="row text-center mt-4">
+                        <div class="col-12">
+                            <h4 id="allNum"></h4>
+                            <p class="text-muted mb-0">总计:</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end col -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <table id="selection-datatable" class="table table-hover nowrap">
+                        <thead>
+                        <tr>
+                            <th>支付类型</th>
+                            <th>支付金额</th>
+                            <th>创建时间</th>
+                        </tr>
+                        </thead>
+
+
+                        <tbody id="list">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div> <!-- end col -->
+    </div>
+    <!-- end row-->
+    <script>
+        var columns = [
+            {"data": "payName"},
+            {"data": "payAmount"},
+            {"data": "createTime"}
+        ];
+        click('/check/pay/collect', {payType:1}, function (data) {
+            $("#allNum").html(data.amountAll);
+            var info = [];
+            for (var i = 0; i < data.info.length; i++) {
+                info.push({label: data.info[i].payName, value: data.info[i].payAmount})
+            }
+            Morris.Donut({
+                element: "morris-donut-example",
+                resize: !0,
+                backgroundColor: "transparent",
+                colors: ["#ff3333", "#ef33eb","#239dcd","#747a80","#f3da1b"],
+                data: info
+            }).on('click',function (i, row) {
+                clickList('/check/pay/list', {payTypeUid:data.info[i].payUid},columns, null, "#selection-datatable");
+            })
+        })
+    </script>
+</div>
+</body>
+</html>

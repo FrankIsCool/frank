@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+    <!-- Plugins css -->
+    <link href="../plugins/datatables/dataTables.bootstrap4.css" rel="stylesheet" type="text/css"/>
+    <link href="../plugins/datatables/responsive.bootstrap4.css" rel="stylesheet" type="text/css"/>
+    <link href="../plugins/datatables/buttons.bootstrap4.css" rel="stylesheet" type="text/css"/>
+    <link href="../plugins/datatables/select.bootstrap4.css" rel="stylesheet" type="text/css"/>
+    <!-- App css -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/theme.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/treeStyle.css" rel="stylesheet" type="text/css"/>
+    <!-- Sweet Alerts css -->
+    <link href="../plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css"/>
+
+
+    <!-- jQuery  -->
+    <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/metismenu.min.js"></script>
+    <script src="assets/js/simplebar.min.js"></script>
+    <!-- Sweet Alerts Js-->
+    <script src="../plugins/sweetalert2/sweetalert2.min.js"></script>
+    <!-- Morris Js-->
+    <script src="../plugins/morris-js/morris.min.js"></script>
+    <!-- Raphael Js-->
+    <script src="../plugins/raphael/raphael.min.js"></script>
+    <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="../plugins/datatables/dataTables.bootstrap4.js"></script>
+    <script src="../plugins/datatables/dataTables.responsive.min.js"></script>
+    <script src="../plugins/datatables/responsive.bootstrap4.min.js"></script>
+    <script src="../plugins/datatables/dataTables.buttons.min.js"></script>
+    <script src="../plugins/datatables/buttons.bootstrap4.min.js"></script>
+    <script src="../plugins/datatables/buttons.html5.min.js"></script>
+    <script src="../plugins/datatables/buttons.flash.min.js"></script>
+    <script src="../plugins/datatables/buttons.print.min.js"></script>
+    <script src="../plugins/datatables/dataTables.keyTable.min.js"></script>
+    <script src="../plugins/datatables/dataTables.select.min.js"></script>
+    <!-- App js -->
+    <script src="assets/js/theme.js"></script>
+    <script src="assets/js/my.js"></script>
+    <script src="assets/js/jquery.cookie.js"></script>
+<style>
+    .dropdown-menu>li>a {
+        display: block;
+        padding: 3px 20px;
+        clear: both;
+        font-weight: 400;
+        line-height: 1.42857143;
+        color: #333;
+        white-space: nowrap;
+    }
+    .treeOpt{
+        position: absolute;
+        display: none;
+        background-color: #d4d0d0bd;
+        border-radius: 15px;
+        padding: 15px;
+        width: 100px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-10">
+            <div class="card">
+                <div class="card-body">
+                    <div class="tree">
+                        <ul id="sys">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row m-3">
+                        <h4 class="card-title">功能颜色，状态描述</h4>
+                    </div>
+                    <div class="row m-3">
+                        <button type="button" class="btn btn-secondary waves-effect waves-light" title="备注">系统</button>
+                    </div>
+                    <div class="row m-3">
+                        <button type="button" class="btn btn-success waves-effect waves-light" title="备注">菜单</button>
+                    </div>
+                    <div class="row m-3">
+                        <button type="button" class="btn btn-warning waves-effect waves-light" title="备注">页面</button>
+                    </div>
+                    <div class="row m-3">
+                        <a href="#">
+                            <button type="button" class="btn btn-outline-secondary waves-effect waves-light">功能</button>
+                            -备注</a>
+                    </div>
+                </div>
+            </div> <!-- end row -->
+        </div>
+    </div>
+</div>
+<div class="treeOpt">
+    <a href="#" data-toggle="modal" class="row m-1 add" data-target="#exampleModalCenter">添加</a>
+    <a href="#" data-toggle="modal" class="row m-1 update" data-target="#exampleModalCenter">修改</a>
+    <a href="#" class="row m-1 delete">删除</a>
+</div>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">新增子页面</h5>
+                <button type="button" class="close waves-effect waves-light" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="functionName">名称</label>
+                    <input class="form-control" type="text" id="functionName" required=""
+                           placeholder="请输入">
+                </div>
+                <div class="form-group">
+                    <label>类别</label>
+                    <div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="functionType1" value=1 name="functionType" class="custom-control-input">
+                            <label class="custom-control-label" for="functionType1">页面</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="functionType2" value=2 name="functionType" class="custom-control-input">
+                            <label class="custom-control-label" for="functionType2">功能</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="functionType3" value=3 name="functionType" class="custom-control-input">
+                            <label class="custom-control-label" for="functionType3">系统</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="functionType4" value=4 name="functionType" class="custom-control-input">
+                            <label class="custom-control-label" for="functionType4">菜单</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="functionSn">编码</label>
+                    <input class="form-control" type="text" id="functionSn" required=""
+                           placeholder="请输入">
+                </div>
+                <div class="form-group">
+                    <label for="functionPath">url</label>
+                    <input class="form-control" type="text" id="functionPath" required=""
+                           placeholder="请输入">
+                </div>
+                <div class="form-group">
+                    <label for="remark">备注</label>
+                    <input class="form-control" type="text" id="remark" required=""
+                           placeholder="请输入">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary waves-effect waves-light"
+                        data-dismiss="modal" id="notAdd">取消
+                </button>
+                <button type="button" class="btn btn-primary waves-effect waves-light" id="add">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end row-->
+<script type="text/javascript">
+    $(function () {
+        click("/check/function/tree", null, function (data) {
+            var treeHtml = '<li><span class="btn-secondary"><i class="icon-calendar"></i>' + data.functionName + '</span>';
+            treeHtml = tree(data, treeHtml);
+            treeHtml = treeHtml + '</li>';
+            $("#sys").append($(treeHtml));
+            $('.tree li:has(ul)').addClass('parent_li').find(' > span');
+            $('.tree li.parent_li > span').on('click', function (e) {
+                var children = $(this).parent('li.parent_li').find(' > ul > li');
+                if (children.is(":visible")) {
+                    children.hide('fast');
+                    $(this).find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+                } else {
+                    children.show('fast');
+                    $(this).find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+                }
+                e.stopPropagation();
+            });
+            $('#sys li span').bind("contextmenu",function(e) {
+                return false;
+            });
+            $('#sys li span').mousedown(function(e){
+                if(3 == e.which){
+                    showDiv($(this).attr('uid'));
+                }
+            })
+            $(".treeOpt a").on('click',function (){
+                $(".treeOpt").css("display", "none");
+            });
+            function showDiv(uid) {
+                $(".treeOpt").css("display","block");
+                $(".treeOpt").css("left", event.clientX-10);
+                $(".treeOpt").css("top", event.clientY + 10);
+                $(".treeOpt .add").attr('uid',uid);
+                $(".treeOpt .update").attr('uid',uid);
+                $(".treeOpt .delete").attr('uid',uid);
+            }
+        })
+        function tree(treeData, treeHtml) {
+            if (null == treeData.childTree || treeData.childTree.length < 1) {
+                return treeHtml;
+            }
+            treeHtml = treeHtml + '<ul>'
+            if (null != treeData.childTree) {
+                for (var i = 0; i < treeData.childTree.length; i++) {
+                    if (treeData.childTree[i].functionType == 1) {
+                        treeHtml = treeHtml + '<li><span class="badge btn-warning" uid="' + treeData.childTree[i].functionUid + '" title="' + treeData.childTree[i].remark + '"><i class="icon-minus-sign"></i>' + treeData.childTree[i].functionName + '</span>';
+                    }
+                    if (treeData.childTree[i].functionType == 4) {
+                        treeHtml = treeHtml + '<li><span class="badge btn-success" uid="' + treeData.childTree[i].functionUid + '" title="' + treeData.childTree[i].remark + '"><i class="icon-minus-sign"></i>' + treeData.childTree[i].functionName + '</span>';
+                    }
+                    if (treeData.childTree[i].functionType == 2) {
+                        treeHtml = treeHtml + '<li><a href="#"><span class="btn-outline-secondary" uid="' + treeData.childTree[i].functionUid + '"><i class="icon-time"></i>' + treeData.childTree[i].functionName + '</span>-' + treeData.childTree[i].remark + '</a>';
+                    }
+                    treeHtml = tree(treeData.childTree[i], treeHtml);
+                    treeHtml = treeHtml + '</li>';
+                }
+            }
+            treeHtml = treeHtml + '</ul>'
+            return treeHtml;
+        }
+        $(".delete").on('click',function (){
+           click("/check/function/del",{functionUid:$(this).attr('uid')},function (){
+               $("#notAdd").click();
+           })
+        });
+        $("#add").on('click',function (){
+            click("/check/function/add",{fatherUid:$(".add").attr('uid'),functionName:$("#functionName").val()
+                ,functionSn:$("#functionSn").val(),functionPath:$("#functionPath").val(),remark:$("#remark").val(), functionType: $("input[name='functionType']:checked").val()},null)
+        })
+    });
+</script>
+
+</body>
+</html>

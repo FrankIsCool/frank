@@ -1,12 +1,15 @@
 package com.sxmaps.my.controller.pay;
 
 import com.github.pagehelper.PageInfo;
+import com.sxmaps.my.common.UserInfoVo;
 import com.sxmaps.my.service.IPayTypeService;
 import com.sxmaps.my.vo.req.kind.ReqKindListVO;
+import com.sxmaps.my.vo.req.pay.ReqPayCollectVO;
 import com.sxmaps.my.vo.req.pay.ReqPayListVO;
 import com.sxmaps.my.vo.req.pay.ReqPayTypeCreateVO;
 import com.sxmaps.my.vo.req.pay.ReqPayTypeListVO;
 import com.sxmaps.my.vo.resp.kind.RespKindVO;
+import com.sxmaps.my.vo.resp.pay.RespPayCollectVO;
 import com.sxmaps.my.vo.resp.pay.RespPayListVO;
 import com.sxmaps.my.vo.resp.pay.RespPayTypeAllVO;
 import com.sxmaps.my.vo.resp.pay.RespPayTypeListVO;
@@ -73,7 +76,17 @@ public class PayController {
     @PostMapping(value = "/list",produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(notes = "支付记录列表接口", value = "支付记录列表接口",response = RespPayTypeListVO.class)
     @ApiImplicitParam(name = "vo", value = "支付记录列表接口",dataType = "ReqPayListVO")
-    public PageInfo<RespPayListVO> payTypeList(@RequestBody @Validated ReqPayListVO vo) {
+    public PageInfo<RespPayListVO> payList(@RequestBody @Validated ReqPayListVO vo) {
         return payTypeService.payList(vo);
+    }
+    /**
+     * 支付统计结果接口
+     * @return
+     */
+    @PostMapping(value = "/collect",produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(notes = "支付统计结果接口", value = "支付统计结果接口",response = RespPayCollectVO.class)
+    @ApiImplicitParam(name = "vo", value = "支付统计结果接口",dataType = "ReqPayListVO")
+    public RespPayCollectVO payCollect(@RequestBody @Validated ReqPayCollectVO vo) {
+        return payTypeService.payCollect(vo);
     }
 }
