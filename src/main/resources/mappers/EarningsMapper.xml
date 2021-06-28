@@ -12,4 +12,32 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
+  <select id="getEarnings" resultType="com.sxmaps.my.vo.resp.earnings.RespEarningsListVO"
+          parameterType="com.sxmaps.my.vo.req.earnings.ReqEarningsListVO">
+        select
+            e.earnings_uid earningsTypeUid,
+            et.earnings_name earningsName,
+            e.amount earningsAmount,
+            e.create_time createTime
+        from
+            earnings e
+            left join earnings_type et on et.uid = e.earnings_uid
+        where
+            e.earnings_uid = #{earningsTypeUid}
+            and e.farmers_uid = #{farmersUid}
+    </select>
+  <select id="earningsCollect" parameterType="long" resultType="com.sxmaps.my.vo.resp.earnings.RespEarningsCollectInfoVO">
+    select
+        sum(amount) earningsAmount,
+        earnings_uid earningsUid
+    from
+      earnings
+    where
+        earnings_uid in
+        <foreach collection="earningsTypeUids" item="item" index="index" open="(" close=")" separator=",">
+          #{item}
+        </foreach>
+        and farmers_uid = #{farmersUid}
+        group by earnings_uid
+  </select>
 </mapper>

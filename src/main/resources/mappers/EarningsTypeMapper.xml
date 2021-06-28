@@ -11,10 +11,33 @@
   </resultMap>
   <select id="getEarningsTypeBySaleCow" resultMap="BaseResultMap">
     select
-    *
+        *
     from
-    earnings_type
+        earnings_type
     where
-    earnings_name = "售牛"
+        earnings_name = "售牛"
+  </select>
+  <select id="getTypeAll" resultType="com.sxmaps.my.vo.resp.earnings.RespEarningsTypeAllVO">
+    select
+        uid  earningsTypeUid,
+        earnings_name earningsName
+    from
+        earnings_type
+    where
+        1=1
+    </select>
+  <select id="getTypes" parameterType="com.sxmaps.my.vo.req.earnings.ReqEarningsTypeListVO"
+          resultType="com.sxmaps.my.vo.resp.earnings.RespEarningsTypeListVO">
+    select
+        uid earningsTypeUid,
+        earnings_name earningsName,
+        create_time createTime
+    from
+        earnings_type
+    where
+        1=1
+        <if test="earningsName != null and earningsName != ''">
+          and earnings_name = #{earningsName}
+        </if>
   </select>
 </mapper>

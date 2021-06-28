@@ -25,7 +25,7 @@ import java.util.List;
  * 创建人：付帅
  * 时间：2021/6/10
  */
-public interface IPayTypeService {
+public interface IPayService {
     /**
      * 新增类型
      * @return

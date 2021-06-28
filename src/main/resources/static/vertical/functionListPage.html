@@ -200,6 +200,11 @@
                     showDiv($(this).attr('uid'));
                 }
             })
+            $('#sys').mousedown(function(e){
+                if(1 == e.which){
+                    $(".treeOpt").css("display", "none");
+                }
+            })
             $(".treeOpt a").on('click',function (){
                 $(".treeOpt").css("display", "none");
             });

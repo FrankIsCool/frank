@@ -2,21 +2,15 @@ package com.sxmaps.my.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sxmaps.my.common.UserInfoVo;
 import com.sxmaps.my.mapper.PayMapper;
 import com.sxmaps.my.mapper.PayTypeMapper;
 import com.sxmaps.my.model.PayType;
-import com.sxmaps.my.service.IPayTypeService;
-import com.sxmaps.my.vo.req.kind.ReqKindCreateVO;
-import com.sxmaps.my.vo.req.kind.ReqKindListVO;
+import com.sxmaps.my.service.IPayService;
 import com.sxmaps.my.vo.req.pay.ReqPayCollectVO;
 import com.sxmaps.my.vo.req.pay.ReqPayListVO;
 import com.sxmaps.my.vo.req.pay.ReqPayTypeCreateVO;
 import com.sxmaps.my.vo.req.pay.ReqPayTypeListVO;
-import com.sxmaps.my.vo.resp.kind.RespKindAllVO;
-import com.sxmaps.my.vo.resp.kind.RespKindVO;
 import com.sxmaps.my.vo.resp.pay.*;
-import io.swagger.annotations.ApiModelProperty;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -35,7 +29,7 @@ import java.util.stream.Collectors;
  * 时间：2021/6/10
  */
 @Service
-public class PayTypeServiceImpl implements IPayTypeService {
+public class PayServiceImpl implements IPayService {
 
     @Resource
     PayTypeMapper payTypeMapper;

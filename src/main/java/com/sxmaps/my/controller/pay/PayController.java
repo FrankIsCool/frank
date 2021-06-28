@@ -1,14 +1,11 @@
 package com.sxmaps.my.controller.pay;
 
 import com.github.pagehelper.PageInfo;
-import com.sxmaps.my.common.UserInfoVo;
-import com.sxmaps.my.service.IPayTypeService;
-import com.sxmaps.my.vo.req.kind.ReqKindListVO;
+import com.sxmaps.my.service.IPayService;
 import com.sxmaps.my.vo.req.pay.ReqPayCollectVO;
 import com.sxmaps.my.vo.req.pay.ReqPayListVO;
 import com.sxmaps.my.vo.req.pay.ReqPayTypeCreateVO;
 import com.sxmaps.my.vo.req.pay.ReqPayTypeListVO;
-import com.sxmaps.my.vo.resp.kind.RespKindVO;
 import com.sxmaps.my.vo.resp.pay.RespPayCollectVO;
 import com.sxmaps.my.vo.resp.pay.RespPayListVO;
 import com.sxmaps.my.vo.resp.pay.RespPayTypeAllVO;
@@ -16,7 +13,6 @@ import com.sxmaps.my.vo.resp.pay.RespPayTypeListVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,7 +34,7 @@ import java.util.List;
 @Api(value = "消费接口", tags = "消费接口")
 public class PayController {
     @Resource
-    IPayTypeService payTypeService;
+    IPayService payTypeService;
     /**
      * 新增消费类型接口
      * @return

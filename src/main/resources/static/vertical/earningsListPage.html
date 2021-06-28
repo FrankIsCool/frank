@@ -70,8 +70,8 @@
                     <table id="selection-datatable" class="table table-hover nowrap">
                         <thead>
                         <tr>
-                            <th>支付类型</th>
-                            <th>支付金额</th>
+                            <th>收益名称</th>
+                            <th>收益金额</th>
                             <th>创建时间</th>
                         </tr>
                         </thead>
@@ -88,26 +88,27 @@
     <!-- end row-->
     <script>
         var columns = [
-            {"data": "payName"},
-            {"data": "payAmount"},
+            {"data": "earningsName"},
+            {"data": "earningsAmount"},
             {"data": "createTime"}
         ];
-        click('/check/pay/collect', {payType:1}, function (data) {
+        click('/check/earnings/collect', {}, function (data) {
             $("#allNum").html(data.amountAll);
             var info = [];
             for (var i = 0; i < data.info.length; i++) {
-                info.push({label: data.info[i].payName, value: data.info[i].payAmount})
+                info.push({label: data.info[i].earningsName, value: data.info[i].earningsAmount})
             }
             Morris.Donut({
                 element: "morris-donut-example",
                 resize: !0,
                 backgroundColor: "transparent",
-                colors: ["#ff3333", "#ef33eb","#239dcd","#747a80","#f3da1b"],
+                colors: ["#ff3333", "#ef33eb"],
                 data: info
             }).on('click',function (i, row) {
-                clickList('/check/pay/list', {payTypeUid:data.info[i].payUid},columns, null, "#selection-datatable");
+                clickList('/check/earnings/list', {earningsTypeUid:data.info[i].earningsUid},columns, null, "#selection-datatable");
             })
         })
+    //    ,"#239dcd","#747a80","#f3da1b"
     </script>
 </div>
 </body>
