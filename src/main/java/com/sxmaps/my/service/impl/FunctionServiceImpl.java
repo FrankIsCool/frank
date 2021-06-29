@@ -3,11 +3,13 @@ package com.sxmaps.my.service.impl;
 import com.sxmaps.my.enums.FunctionTypeEnum;
 import com.sxmaps.my.enums.StateEnum;
 import com.sxmaps.my.mapper.FuncMapper;
+import com.sxmaps.my.mapper.UsersFuncMapper;
 import com.sxmaps.my.model.Func;
 import com.sxmaps.my.service.IFunctionService;
 import com.sxmaps.my.vo.req.function.ReqFunctionCreateVO;
 import com.sxmaps.my.vo.req.function.ReqFunctionDelVO;
 import com.sxmaps.my.vo.resp.function.RespFunctionTreeVO;
+import com.sxmaps.my.vo.resp.function.RespFunctionsVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -26,6 +28,8 @@ public class FunctionServiceImpl implements IFunctionService {
     @Resource
     FuncMapper funcMapper;
 
+    @Resource
+    UsersFuncMapper usersFuncMapper;
     @Override
     public RespFunctionTreeVO getAllFunctions() {
         RespFunctionTreeVO treeVO = funcMapper.getSystem("系统",FunctionTypeEnum.FUNCTIONTYPE_3.getState());
@@ -55,6 +59,11 @@ public class FunctionServiceImpl implements IFunctionService {
         Func fatherFunction = funcMapper.selectByPrimaryKey(vo.getFunctionUid());
         fatherFunction.setDel(StateEnum.DEL.getState().byteValue());
         return funcMapper.updateByPrimaryKey(fatherFunction);
+    }
+
+    @Override
+    public List<RespFunctionsVO> getFunctions(Long userUid) {
+        return usersFuncMapper.getFunctions(userUid);
     }
 
     private RespFunctionTreeVO getFunctionsTree(RespFunctionTreeVO treeVO) {

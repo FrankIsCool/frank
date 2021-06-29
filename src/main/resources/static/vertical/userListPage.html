@@ -165,6 +165,7 @@
     var aoColumnDefs = [{
         "aTargets": [5],
         "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+            $(nTd).empty();
             var b;
             if (oData.del == 1 && oData.userType != 1) {
                 b = $('<button class="btn btn-danger btn-sm waves-effect waves-light">删除账户</button>');
@@ -184,8 +185,17 @@
                     })
                 });
             }
-            $(nTd).empty();
             $(nTd).prepend(b);
+            if (oData.del == 1 && oData.userType != 1) {
+                var authority = $('<button class="btn btn-outline-success btn-sm waves-effect waves-light mr-3">权限配置</button>');
+                authority.button();
+                authority.on('click', function () {
+                    click('/check/user/recover', {uid: oData.userUid}, function () {
+                        clickList('/check/user/list', {}, columns, aoColumnDefs)
+                    })
+                });
+                $(nTd).prepend(authority);
+            }
         }
     }];
     clickList('/check/user/list', {}, columns, aoColumnDefs,"#datatable-buttons")

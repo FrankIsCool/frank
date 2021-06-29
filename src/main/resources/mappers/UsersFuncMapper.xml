@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxmaps.my.mapper.UsersFuncMapper">
+  <resultMap id="BaseResultMap" type="com.sxmaps.my.model.UsersFunc">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="uid" jdbcType="BIGINT" property="uid" />
+    <result column="user_uid" jdbcType="BIGINT" property="userUid" />
+    <result column="function_uid" jdbcType="BIGINT" property="functionUid" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <select id="getFunctions" parameterType="long" resultType="com.sxmaps.my.vo.resp.function.RespFunctionsVO">
+    select
+        f.function_sn functionSn,
+        f.function_name functionName,
+        f.funll_name funllName,
+        f.function_path functionPath,
+        f.function_type functionType,
+        f.remark remark
+    from
+        users_func uf
+        inner join func f on uf.function_uid = f.uid
+    where
+        f.del = 1
+        and uf.user_uid = #{userUid}
+  </select>
+</mapper>

@@ -3,6 +3,9 @@ package com.sxmaps.my.service;
 import com.sxmaps.my.vo.req.function.ReqFunctionCreateVO;
 import com.sxmaps.my.vo.req.function.ReqFunctionDelVO;
 import com.sxmaps.my.vo.resp.function.RespFunctionTreeVO;
+import com.sxmaps.my.vo.resp.function.RespFunctionsVO;
+
+import java.util.List;
 
 /**
  * 类：功能
@@ -33,4 +36,11 @@ public interface IFunctionService {
      * @date 2021/6/10
      **/
     Integer delFunctions(ReqFunctionDelVO vo);
+    /**
+     * 获取用户的功能
+     * @return
+     * @author frank(付帅)
+     * @date 2021/6/10
+     **/
+    List<RespFunctionsVO> getFunctions(Long userUid);
 }

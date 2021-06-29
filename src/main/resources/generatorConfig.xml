@@ -37,7 +37,7 @@
 		<javaClientGenerator targetPackage="com.sxmaps.my.mapper"
 			targetProject="src/main/java" type="XMLMAPPER" />
 
-		<table tableName="func">
+		<table tableName="users_func">
 			<generatedKey column="uid" sqlStatement="mysql"
 				identity="true" />
 		</table>

@@ -1,10 +1,12 @@
 package com.sxmaps.my.common;
 
+import com.sxmaps.my.vo.resp.function.RespFunctionsVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * 类：当前登录人基本信息
@@ -36,4 +38,7 @@ public class UserInfoVo {
 
     @ApiModelProperty(name = "userType", value = "登录人类型", example = "1", hidden = true)
     private Integer userType;
+
+    @ApiModelProperty(name = "functionsMap", value = "登录人功能权限", example = "1", hidden = true)
+    private Map<String, RespFunctionsVO> functionsMap;
 }

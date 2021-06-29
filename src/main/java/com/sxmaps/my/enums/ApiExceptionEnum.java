@@ -16,6 +16,7 @@ public enum ApiExceptionEnum {
     PARAM("600", "参数异常"),
     PARAM_TOKEN("601", "token不能为空"),
     NOTVALID_TOKEN("601", "无效token"),
+    PARAM_FUNCTION("602", "功能码不能为空"),
 //  基础
     SAVE("5001", "保存数据失败"),
     UPDATE("5002", "修改数据失败"),

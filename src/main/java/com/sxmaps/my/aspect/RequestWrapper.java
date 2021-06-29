@@ -4,8 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.sxmaps.my.common.LoginThreadLocal;
 import com.sxmaps.my.common.UserInfoVo;
-import com.sxmaps.my.enums.ApiExceptionEnum;
-import com.sxmaps.my.exception.ApiException;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +28,7 @@ import java.util.Set;
  * 1、@PathVariable注解是REST风格url获取参数的方式，只能用在GET请求类型，通过getParameter获取参数
  * 2、@RequestParam注解支持GET和POST/PUT/DELETE/PATCH方式，Get方式通过getParameter获取参数和post方式通过getInputStream或getReader获取参数
  * 3、@RequestBody注解支持POST/PUT/DELETE/PATCH，可以通过getInputStream和getReader获取参数
+ *
  * @create: 2020/8/19
  */
 public class RequestWrapper extends HttpServletRequestWrapper {
@@ -58,12 +57,12 @@ public class RequestWrapper extends HttpServletRequestWrapper {
          */
         if (null == this.requestBody) {
             String token = request.getHeader("token");
-            if(StringUtils.isEmpty(token)){
-                throw new ApiException(ApiExceptionEnum.PARAM_TOKEN);
+            if (StringUtils.isEmpty(token)) {
+                return request.getInputStream();
             }
             this.requestBody = StreamUtils.copyToByteArray(request.getInputStream());
-            Map map = JSONObject.parseObject(new String(this.requestBody),Map.class);
-            getUserInfo(token,map);
+            Map map = JSONObject.parseObject(new String(this.requestBody), Map.class);
+            getUserInfo(token, map);
             this.requestBody = JSONObject.toJSONBytes(map);
         }
 
@@ -81,7 +80,8 @@ public class RequestWrapper extends HttpServletRequestWrapper {
             }
 
             @Override
-            public void setReadListener(ReadListener listener) {}
+            public void setReadListener(ReadListener listener) {
+            }
 
             @Override
             public int read() {
@@ -89,6 +89,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
             }
         };
     }
+
     /**
      * 根据token获取当前登录人信息
      *
@@ -97,15 +98,16 @@ public class RequestWrapper extends HttpServletRequestWrapper {
      * @author frank(付帅)
      * @date 2021/6/10
      **/
-    private void getUserInfo(String token,Map map) {
+    private void getUserInfo(String token, Map map) {
         UserInfoVo userInfo = LoginThreadLocal.getUserInfoVo(token);
         JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(userInfo));
         Set<String> keys = jsonObject.keySet();
-        for(String key : keys){
+        for (String key : keys) {
             map.put(key, jsonObject.get(key));
         }
-        logger.info("线程id: {},  登录人信息: {}",Thread.currentThread().getId(),userInfo);
+        logger.info("线程id: {},  登录人信息: {}", Thread.currentThread().getId(), userInfo);
     }
+
     public byte[] getRequestBody() {
         return requestBody;
     }

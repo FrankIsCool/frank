@@ -1,7 +1,5 @@
 package com.sxmaps.my.aspect;
 
-import com.sxmaps.my.mapper.LoginMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -16,7 +14,7 @@ import java.io.IOException;
  * 时间：2021/6/10
  */
 @Component
-@WebFilter(filterName = "channelFilter", urlPatterns = {"/check/*","/check/*"})
+@WebFilter(filterName = "channelFilter", urlPatterns = {"/*"})
 public class ChannelFilter implements Filter {
 
     @Override
