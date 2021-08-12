@@ -23,8 +23,8 @@ public class MyLoginMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-//        InterceptorRegistration registration = registry.addInterceptor(new MyInterceptor());
-//        registration.addPathPatterns("/check/**");
+        InterceptorRegistration registration = registry.addInterceptor(new MyInterceptor());
+        registration.addPathPatterns("/check/**");
     }
 
     @Override

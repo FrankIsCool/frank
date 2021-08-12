@@ -14,7 +14,10 @@ public class ApiException extends RuntimeException {
 		super(exceptionEnum.getExceptionDesc());
 		this.errorCode = exceptionEnum.getExceptionCode();
 	}
-
+	public ApiException(String desc) {
+		super(desc);
+		this.errorCode = "500";
+	}
 	public String getErrorCode() {
 		return errorCode;
 	}
