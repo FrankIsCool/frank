@@ -9,17 +9,19 @@ import java.text.DateFormat;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-/*******************************************************************************
+/**
  * 时间工具类
  *
- * @author : 刘泽
- * @chaDate: 2013-06-03
- ******************************************************************************/
+ * @author frank
+ * @module
+ * @date 2021/9/4 14:50
+ */
 public class DateUtil {
     private static final Log logger = LogFactory.getLog(DateUtil.class);
 
@@ -58,6 +60,974 @@ public class DateUtil {
     public static final String FORMAT_DATE_YYMMDD = "yyMMdd";
     public static final String FORMAT_TIME = "HH:mm:ss";
 
+//    ----------------------------------获取当前时间------------------------------------
+
+    /**
+     * 获取当前系统时间(原始格式)
+     */
+    public static Date getDate() {
+        return new Date(System.currentTimeMillis());
+    }
+
+    /**
+     * 获取当前系统时间(原始格式)-格式化
+     *
+     * @param format
+     * @return
+     */
+    public static String getDateStr(String format) {
+        return new SimpleDateFormat(format).format(getDate());
+    }
+
+    /**
+     * 获取当前系统时间(原始格式)-格式化
+     *
+     * @return
+     */
+    public static long getDateLong() {
+        return System.currentTimeMillis();
+    }
+
+    /**
+     * 获取当前系统时间(原始格式)-Instant
+     *
+     * @return
+     */
+    public static Instant getInstant() {
+        return Instant.now();
+    }
+//    ----------------------------------Date转换------------------------------------
+
+    /**
+     * Date转long
+     *
+     * @param date 时间
+     * @return
+     */
+    public static long dateToLong(Date date) {
+        return null == date ? null : date.getTime();
+    }
+
+    /**
+     * Date转成Instant
+     *
+     * @param date 时间
+     * @return
+     */
+    public static Instant dateToInstant(Date date) {
+        return null == date ? null : date.toInstant();
+    }
+    /**
+     * Date转Timestamp
+     *
+     * @param date 时间
+     * @return
+     */
+    public static Timestamp dateToTimestamp(Date date) {
+        return null == date ? null : new Timestamp(date.getTime());
+    }
+    /**
+     * Date转成String
+     *
+     * @param date 时间
+     * @return
+     */
+    public static String dateToStr(Date date) {
+        return null == date ? null : dateToStr(date, ALL_DATES1);
+    }
+
+    /**
+     * Date转成String
+     *
+     * @param date 时间
+     * @return
+     */
+    public static String dateToStr(Date date, String format) {
+        return null == date ? null : new SimpleDateFormat(format).format(date);
+    }
+//    ----------------------------------long转换------------------------------------
+
+    /**
+     * long转Date
+     *
+     * @param date 时间戳
+     * @return
+     */
+    public static Date longToDate(long date) {
+        return new Date(date);
+    }
+
+    /**
+     * long转成Instant
+     *
+     * @param date 时间
+     * @return
+     */
+    public static Instant longToInstant(long date) {
+        return longToDate(date).toInstant();
+    }
+    /**
+     * long转成Timestamp
+     *
+     * @param date 时间
+     * @return
+     */
+    public static Timestamp longToTimestamp(long date) {
+        return new Timestamp(date);
+    }
+    /**
+     * long转成String
+     *
+     * @param date 时间
+     * @return
+     */
+    public static String longToStr(long date) {
+        return longToStr(date, ALL_DATES1);
+    }
+
+    /**
+     * long转成String
+     *
+     * @param date   时间
+     * @param format 时间格式
+     * @return
+     */
+    public static String longToStr(long date, String format) {
+        return new SimpleDateFormat(format).format(longToDate(date));
+    }
+
+
+//    ----------------------------------String转换------------------------------------
+
+    /**
+     * String转Date
+     *
+     * @param data   日期字符串
+     * @param format 时间格式
+     * @return
+     */
+    public static Date strToDate(String data, String format) {
+        try {
+            return new SimpleDateFormat(format).parse(data);
+        } catch (ParseException e) {
+            throw new RuntimeException("date string to date fail");
+        }
+    }
+
+    /**
+     * String转Date
+     *
+     * @param data 日期字符串
+     * @return
+     */
+    public static Date strToDate(String data) {
+        return strToDate(data, ALL_DATES1);
+    }
+    /**
+     * string转成Instant
+     *
+     * @param date 时间
+     * @param format 时间格式
+     * @return
+     */
+    public static Instant strToInstant(String date, String format) {
+        return strToDate(date,format).toInstant();
+    }
+    /**
+     * string转成Instant
+     *
+     * @param date 时间
+     * @return
+     */
+    public static Instant strToInstant(String date) {
+        return strToDate(date).toInstant();
+    }
+    /**
+     * string转成Long
+     *
+     * @param date 时间
+     * @param format 时间格式
+     * @return
+     */
+    public static long strToLong(String date, String format) {
+        return strToDate(date,format).getTime();
+    }
+    /**
+     * string转成Long
+     *
+     * @param date 时间
+     * @return
+     */
+    public static long strToLong(String date) {
+        return strToDate(date).getTime();
+    }
+    /**
+     * string转成Timestamp
+     *
+     * @param date 时间
+     * @param format 时间格式
+     * @return
+     */
+    public static Timestamp longToTimestamp(String date, String format) {
+        return new Timestamp(strToDate(date,format).getTime());
+    }
+    /**
+     * string转成Timestamp
+     *
+     * @param date 时间
+     * @return
+     */
+    public static Timestamp longToTimestamp(String date) {
+        return new Timestamp(strToDate(date).getTime());
+    }
+//    ----------------------------------Instant转换------------------------------------
+
+    /**
+     * Instant转成Date
+     *
+     * @param date 时间戳
+     * @return
+     */
+    public static Date instantToDate(Instant date) {
+        return null == date ? null : Date.from(date);
+    }
+
+
+    /**
+     * Instant转成Long
+     *
+     * @param date 时间
+     * @return
+     */
+    public static long instantToLong(Instant date) {
+        return null == date ? null : instantToDate(date).getTime();
+    }
+    /**
+     * Instant转成Timestamp
+     *
+     * @param date 时间
+     * @return
+     */
+    public static Timestamp InstantToTimestamp(Instant date) {
+        return null == date ? null : new Timestamp(instantToDate(date).getTime());
+    }
+    /**
+     * Instant转成String
+     *
+     * @param date 时间
+     * @return
+     */
+    public static String instantToStr(Instant date) {
+        return null == date ? null : instantToStr(date, ALL_DATES1);
+    }
+
+    /**
+     * Instant转成String
+     *
+     * @param date   时间
+     * @param format 时间格式
+     * @return
+     */
+    public static String instantToStr(Instant date, String format) {
+        return null == date ? null : new SimpleDateFormat(format).format(instantToDate(date));
+    }
+
+
+
+    //    ----------------------------------Timestamp转换------------------------------------
+
+    /**
+     * Timestamp转成Date
+     *
+     * @param date 时间戳
+     * @return
+     */
+    public static Date timestampToDate(Timestamp date) {
+        return null == date ? null : longToDate(date.getTime());
+    }
+
+
+    /**
+     * Timestamp转成Long
+     *
+     * @param date 时间
+     * @return
+     */
+    public static long timestampToLong(Timestamp date) {
+        return null == date ? null : date.getTime();
+    }
+    /**
+     * Timestamp转成Timestamp
+     *
+     * @param date 时间
+     * @return
+     */
+    public static Instant timestampToInstant(Timestamp date) {
+        return null == date ? null : date.toInstant();
+    }
+    /**
+     * Timestamp转成String
+     *
+     * @param date 时间
+     * @return
+     */
+    public static String timestampToStr(Timestamp date) {
+        return null == date ? null : dateToStr(date);
+    }
+
+    /**
+     * Timestamp转成String
+     *
+     * @param date   时间
+     * @param format 时间格式
+     * @return
+     */
+    public static String timestampToStr(Timestamp date, String format) {
+        return null == date ? null : new SimpleDateFormat(format).format(dateToStr(date));
+    }
+
+
+
+
+    /**
+     * 某个日期增加时间
+     *
+     * @param date  日期
+     * @param years 增加时间
+     * @return 返回增加后的日期
+     */
+    private static Date addTime(Date date, int years, int months, int days, int hours, int minutes, int seconds, int milliSecond) {
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(date);
+        cal.add(Calendar.YEAR, years);
+        cal.add(Calendar.MONTH, months);
+        cal.add(Calendar.DATE, days);
+        cal.add(Calendar.HOUR, hours);
+        cal.add(Calendar.MINUTE, minutes);
+        cal.add(Calendar.SECOND, seconds);
+        cal.add(Calendar.MILLISECOND, milliSecond);
+        return cal.getTime();
+    }
+
+
+    /**
+     * 某个日期增加时间
+     *
+     * @param date  日期
+     * @param times 增加时间
+     * @return 返回增加后的日期
+     */
+    public static Date addTime(Date date, int... times) {
+        if (null == times) {
+            return date;
+        }
+        if (times.length > 7) {
+            throw new RuntimeException("times length max 6");
+        }
+        return addTime(date, times[0], times[1], times[2], times[3], times[4], times[5], times[6]);
+    }
+
+    /**
+     * 某个时间戳增加时间
+     *
+     * @param date  日期
+     * @param times 增加时间
+     * @return 返回增加后的日期
+     */
+    public static Date addTime(long date, int... times) {
+        Date dates = longToDate(date);
+        if (null == times) {
+            return dates;
+        }
+        if (times.length > 6) {
+            throw new RuntimeException("times length max 6");
+        }
+        return addTime(dates, times[0], times[1], times[2], times[3], times[4], times[5], times[6]);
+    }
+
+    /**
+     * 当前时间增加时间
+     *
+     * @param times 增加时间
+     * @return 返回增加后的日期
+     */
+    public static Date addTime(int... times) {
+        return addTime(getDate(), times);
+    }
+
+    /**
+     * 当前时间增加年
+     *
+     * @param years 增加年数值
+     * @return 返回增加后的日期
+     */
+    public static Date addYear(int years) {
+        return addTime(getDate(), years, 0, 0, 0, 0, 0, 0);
+    }
+
+    /**
+     * 当前时间增加月
+     *
+     * @param months 增加月数值
+     * @return 返回增加后的日期
+     */
+    public static Date addMonth(int months) {
+        return addTime(getDate(), 0, months, 0, 0, 0, 0, 0);
+    }
+
+    /**
+     * 当前时间增加日
+     *
+     * @param days 增加天数值
+     * @return 返回增加后的日期
+     */
+    public static Date addDay(int days) {
+        return addTime(getDate(), 0, 0, days, 0, 0, 0, 0);
+    }
+
+    /**
+     * 当前时间增加小时
+     *
+     * @param hours 增加小时数值
+     * @return 返回增加后的日期
+     */
+    public static Date addHour(int hours) {
+        return addTime(getDate(), 0, 0, 0, hours, 0, 0, 0);
+    }
+
+    /**
+     * 当前时间增加分钟
+     *
+     * @param minutes 增加分钟数值
+     * @return 返回增加后的日期
+     */
+    public static Date addMinute(int minutes) {
+        return addTime(getDate(), 0, 0, 0, 0, minutes, 0, 0);
+    }
+
+    /**
+     * 当前时间增加秒
+     *
+     * @param seconds 增加秒数值
+     * @return 返回增加后的日期
+     */
+    public static Date addSecond(int seconds) {
+        return addTime(getDate(), 0, 0, 0, 0, 0, seconds, 0);
+    }
+
+    /**
+     * 当前时间增加毫秒
+     *
+     * @param milliSecond 增加毫秒数值
+     * @return 返回增加后的日期
+     */
+    public static Date addMilliSecond(int milliSecond) {
+        return addTime(getDate(), 0, 0, 0, 0, 0, 0, milliSecond);
+    }
+
+    /**
+     * 某个日期增加年
+     *
+     * @param date  日期
+     * @param years 增加年数值
+     * @return 返回增加后的日期
+     */
+    public static Date addYear(long date, int years) {
+        return addTime(longToDate(date), years, 0, 0, 0, 0, 0, 0);
+    }
+
+    /**
+     * 某个日期增加月
+     *
+     * @param date   日期
+     * @param months 增加月数值
+     * @return 返回增加后的日期
+     */
+    public static Date addMonth(long date, int months) {
+        return addTime(longToDate(date), 0, months, 0, 0, 0, 0, 0);
+    }
+
+    /**
+     * 某个日期增加日
+     *
+     * @param date 日期
+     * @param days 增加天数值
+     * @return 返回增加后的日期
+     */
+    public static Date addDay(long date, int days) {
+        return addTime(longToDate(date), 0, 0, days, 0, 0, 0, 0);
+    }
+
+    /**
+     * 某个日期增加小时
+     *
+     * @param date  日期
+     * @param hours 增加小时数值
+     * @return 返回增加后的日期
+     */
+    public static Date addHour(long date, int hours) {
+        return addTime(longToDate(date), 0, 0, 0, hours, 0, 0, 0);
+    }
+
+    /**
+     * 某个日期增加分钟
+     *
+     * @param date    日期
+     * @param minutes 增加分钟数值
+     * @return 返回增加后的日期
+     */
+    public static Date addMinute(long date, int minutes) {
+        return addTime(longToDate(date), 0, 0, 0, 0, minutes, 0, 0);
+    }
+
+    /**
+     * 某个日期增加秒
+     *
+     * @param date    日期
+     * @param seconds 增加秒数值
+     * @return 返回增加后的日期
+     */
+    public static Date addSecond(long date, int seconds) {
+        return addTime(longToDate(date), 0, 0, 0, 0, 0, seconds, 0);
+    }
+
+    /**
+     * 某个日期增加毫秒
+     *
+     * @param date        日期
+     * @param milliSecond 增加毫秒数值
+     * @return 返回增加后的日期
+     */
+    public static Date addMilliSecond(long date, int milliSecond) {
+        return addTime(longToDate(date), 0, 0, 0, 0, 0, 0, milliSecond);
+    }
+
+    /**
+     * 某个日期增加年
+     *
+     * @param date  日期
+     * @param years 增加年数值
+     * @return 返回增加后的日期
+     */
+    public static Date addYear(Date date, int years) {
+        return addTime(date, years, 0, 0, 0, 0, 0);
+    }
+
+    /**
+     * 某个日期增加月
+     *
+     * @param date   日期
+     * @param months 增加月数值
+     * @return 返回增加后的日期
+     */
+    public static Date addMonth(Date date, int months) {
+        return addTime(date, 0, months, 0, 0, 0, 0);
+    }
+
+    /**
+     * 某个日期增加日
+     *
+     * @param date 日期
+     * @param days 增加天数值
+     * @return 返回增加后的日期
+     */
+    public static Date addDay(Date date, int days) {
+        return addTime(date, 0, 0, days, 0, 0, 0);
+    }
+
+    /**
+     * 某个日期增加小时
+     *
+     * @param date  日期
+     * @param hours 增加小时数值
+     * @return 返回增加后的日期
+     */
+    public static Date addHour(Date date, int hours) {
+        return addTime(date, 0, 0, 0, hours, 0, 0);
+    }
+
+    /**
+     * 某个日期增加分钟
+     *
+     * @param date    日期
+     * @param minutes 增加分钟数值
+     * @return 返回增加后的日期
+     */
+    public static Date addMinute(Date date, int minutes) {
+        return addTime(date, 0, 0, 0, 0, minutes, 0);
+    }
+
+    /**
+     * 某个日期增加秒
+     *
+     * @param date    日期
+     * @param seconds 增加秒数值
+     * @return 返回增加后的日期
+     */
+    public static Date addSecond(Date date, int seconds) {
+        return addTime(date, 0, 0, 0, 0, 0, seconds);
+    }
+
+    /**
+     * 某个日期增加毫秒
+     *
+     * @param date        日期
+     * @param milliSecond 增加毫秒数值
+     * @return 返回增加后的日期
+     */
+    public static Date addMilliSecond(Date date, int milliSecond) {
+        return addTime(date, 0, 0, 0, 0, 0, 0, milliSecond);
+    }
+
+    /**
+     * 获取日期中的某个数值
+     *
+     * @param date     日期
+     * @param dateType 1：年，2：月，7：周，:5：日，11：时，12：分，13：秒，14：毫秒
+     * @return
+     */
+    private static Integer getTime(Date date, int dateType) {
+        if (null == date) {
+            return null;
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(dateType);
+    }
+
+    /**
+     * 获取日期:年
+     *
+     * @param date 日期
+     * @return 年份
+     */
+    public static Integer getYear(Date date) {
+        return getTime(date, Calendar.YEAR);
+    }
+
+    /**
+     * 获取日期:月
+     *
+     * @param date 日期
+     * @return 月份
+     */
+    public static Integer getMonth(Date date) {
+        return getTime(date, Calendar.MONTH);
+    }
+
+    /**
+     * 获取日期:日
+     *
+     * @param date 日期
+     * @return 日
+     */
+    public static Integer getDay(Date date) {
+        return getTime(date, Calendar.DAY_OF_MONTH);
+    }
+
+    /**
+     * 获取日期:星期几
+     *
+     * @param date
+     * @return
+     */
+    public static Integer getWeek(Date date) {
+        return getTime(date, Calendar.DAY_OF_WEEK);
+    }
+
+    /**
+     * 获取日期:时
+     *
+     * @param date 日期
+     * @return 小时
+     */
+    public static Integer getHour(Date date) {
+        return getTime(date, Calendar.HOUR_OF_DAY);
+    }
+
+    /**
+     * 获取日期:分
+     *
+     * @param date 日期
+     * @return 分钟
+     */
+    public static Integer getMinute(Date date) {
+        return getTime(date, Calendar.MINUTE);
+    }
+
+    /**
+     * 获取日期:秒
+     *
+     * @param date 日期
+     * @return 秒
+     */
+    public static Integer getSecond(Date date) {
+        return getTime(date, Calendar.SECOND);
+    }
+
+    /**
+     * 获取日期:毫秒
+     *
+     * @param date 日期
+     * @return 毫秒
+     */
+    public static Integer getMillisecond(Date date) {
+        return getTime(date, Calendar.MILLISECOND);
+    }
+
+    /**
+     * 当前日期:年
+     *
+     * @return
+     */
+    public static Integer getYear() {
+        return getYear(getDate());
+    }
+
+    /**
+     * 当前日期:月
+     *
+     * @return
+     */
+    public static Integer getMonth() {
+        return getMonth(getDate());
+    }
+
+    /**
+     * 当前日期:日
+     *
+     * @return
+     */
+    public static Integer getDay() {
+        return getDay(getDate());
+    }
+
+    /**
+     * 当前日期:星期几
+     *
+     * @return
+     */
+    public static Integer getWeek() {
+        return getWeek(getDate());
+    }
+
+    /**
+     * 当前日期:时
+     *
+     * @return
+     */
+    public static Integer getHour() {
+        return getHour(getDate());
+    }
+
+    /**
+     * 当前日期:分
+     *
+     * @return
+     */
+    public static Integer getMinute() {
+        return getMinute(getDate());
+    }
+
+    /**
+     * 当前日期:秒
+     *
+     * @return
+     */
+    public static Integer getSecond() {
+        return getSecond(getDate());
+    }
+
+    /**
+     * 当前日期:毫秒
+     *
+     * @return
+     */
+    public static Integer getMillisecond() {
+        return getMillisecond(getDate());
+    }
+
+    /**
+     * 获取日期:年
+     *
+     * @param data   时间字符串
+     * @param format 时间格式
+     * @return
+     */
+    public static Integer getYear(String data, String format) {
+        return getYear(toDate(data, format));
+    }
+
+
+    /**
+     * 获取日期:月
+     *
+     * @param data   时间字符串
+     * @param format 时间格式
+     * @return
+     */
+    public static Integer getMonth(String data, String format) {
+        return getMonth(toDate(data, format));
+    }
+
+
+    /**
+     * 获取日期:日
+     *
+     * @param data   时间字符串
+     * @param format 时间格式
+     * @return
+     */
+    public static Integer getDay(String data, String format) {
+        return getDay(toDate(data, format));
+    }
+
+
+    /**
+     * 获取日期:星期几
+     *
+     * @param data   时间字符串
+     * @param format 时间格式
+     * @return
+     */
+    public static Integer getWeek(String data, String format) {
+        return getWeek(toDate(data, format));
+    }
+
+
+    /**
+     * 获取日期:时
+     *
+     * @param data   时间字符串
+     * @param format 时间格式
+     * @return
+     */
+    public static Integer getHour(String data, String format) {
+        return getHour(toDate(data, format));
+    }
+
+
+    /**
+     * 获取日期:分
+     *
+     * @param data   时间字符串
+     * @param format 时间格式
+     * @return
+     */
+    public static Integer getMinute(String data, String format) {
+        return getMinute(toDate(data, format));
+    }
+
+
+    /**
+     * 获取日期:秒
+     *
+     * @param data   时间字符串
+     * @param format 时间格式
+     * @return
+     */
+    public static Integer getSecond(String data, String format) {
+        return getSecond(toDate(data, format));
+    }
+
+    /**
+     * 获取日期:毫秒
+     *
+     * @param data   时间字符串
+     * @param format 时间格式
+     * @return
+     */
+    public static Integer getMillisecond(String data, String format) {
+        return getMillisecond(toDate(data, format));
+    }
+
+    /**
+     * 获取日期:年
+     *
+     * @param data 时间字符串
+     * @return
+     */
+    public static Integer getYear(String data) {
+        return getYear(toDate(data));
+    }
+
+
+    /**
+     * 获取日期:月
+     *
+     * @param data 时间字符串
+     * @return
+     */
+    public static Integer getMonth(String data) {
+        return getMonth(toDate(data));
+    }
+
+
+    /**
+     * 获取日期:日
+     *
+     * @param data 时间字符串
+     * @return
+     */
+    public static Integer getDay(String data) {
+        return getDay(toDate(data));
+    }
+
+
+    /**
+     * 获取日期:星期几
+     *
+     * @param data 时间字符串
+     * @return
+     */
+    public static Integer getWeek(String data) {
+        return getWeek(toDate(data));
+    }
+
+
+    /**
+     * 获取日期:时
+     *
+     * @param data 时间字符串
+     * @return
+     */
+    public static Integer getHour(String data) {
+        return getHour(toDate(data));
+    }
+
+
+    /**
+     * 获取日期:分
+     *
+     * @param data 时间字符串
+     * @return
+     */
+    public static Integer getMinute(String data) {
+        return getMinute(toDate(data));
+    }
+
+
+    /**
+     * 获取日期:秒
+     *
+     * @param data 时间字符串
+     * @return
+     */
+    public static Integer getSecond(String data) {
+        return getSecond(toDate(data));
+    }
+
+    /**
+     * 获取日期:毫秒
+     *
+     * @param data 时间字符串
+     * @return
+     */
+    public static Integer getMillisecond(String data) {
+        return getMillisecond(toDate(data));
+    }
+
+
     /**
      * 字符串转Timestamp
      *
@@ -77,55 +1047,6 @@ public class DateUtil {
     }
 
     /**
-     * 在日期上增加年份
-     *
-     * @param date  日期
-     * @param years 增加年数值
-     * @return 返回增加后的日期
-     */
-    public static Date addYear(Date date, int years) {
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(date);
-        cal.add(Calendar.YEAR, years);
-        return cal.getTime();
-    }
-
-    public static Date addMinute(Date date, int minutes) {
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(date);
-        cal.add(Calendar.MINUTE, minutes);
-        return cal.getTime();
-    }
-
-    /**
-     * 增加月份
-     *
-     * @param date   日期
-     * @param months 增加月份数
-     * @return 返回增加后日期
-     */
-    public static Date addMonth(Date date, int months) {
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(date);
-        cal.add(Calendar.MONTH, months);
-        return cal.getTime();
-    }
-
-    /**
-     * 增加天数
-     *
-     * @param date 日期
-     * @param days 增加天数
-     * @return 返回增加后日期
-     */
-    public static Date addDay(Date date, int days) {
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(date);
-        cal.add(Calendar.DAY_OF_YEAR, days);
-        return cal.getTime();
-    }
-
-    /**
      * 判断两个日期合法性，日期1是否在日期2之后
      *
      * @param date1 日期1
@@ -142,60 +1063,6 @@ public class DateUtil {
         return getMonthYear(date2) + "~" + getMonthYear(date1);
     }
 
-    /**
-     * 格式化日期并返回字符串(yyyy-MM)
-     *
-     * @param date 日期
-     * @return 返回字符串
-     */
-    public static String getMonthYear(Date date) {
-        SimpleDateFormat formate = new SimpleDateFormat(MONTH_YEAR);
-        return formate.format(date);
-    }
-
-    /**
-     * 格式化日期并返回字符串(yyyy-MM-dd)
-     *
-     * @param date 日期
-     * @return 返回字符串
-     */
-    public static String getDayMonthYear(Date date) {
-        SimpleDateFormat formate = new SimpleDateFormat(DAY_MONTH_YEAR);
-        return formate.format(date);
-    }
-
-    /**
-     * 格式化日期并返回字符串(yyyy-MM-dd HH:mm:ss)
-     *
-     * @param date 日期
-     * @return 返回字符串
-     */
-    public static String getDayMonthYearYYYYmmdd1(Date date) {
-        SimpleDateFormat formate = new SimpleDateFormat(ALL_DATES1);
-        return formate.format(date);
-    }
-
-    /**
-     * 格式化日期并返回字符串(yyyy/MM/dd HH:mm:ss)
-     *
-     * @param date 日期
-     * @return 返回字符串
-     */
-    public static String getDayMonthYearYYYYmmdd2(Date date) {
-        SimpleDateFormat formate = new SimpleDateFormat(ALL_DATES7);
-        return formate.format(date);
-    }
-
-    /**
-     * 格式化日期并返回HH:mm:ss格式字符串
-     *
-     * @param date 日期
-     * @return 返回字符串
-     */
-    public static String getHourMinuteSecondHHmmss(Date date) {
-        SimpleDateFormat formate = new SimpleDateFormat(HOUR_MINUTE_SECOND);
-        return formate.format(date);
-    }
 
     /**
      * 根据输入的日期字符串 和 提前天数 ， 获得 指定日期提前几天的日期对象
@@ -241,15 +1108,6 @@ public class DateUtil {
         return 0;
     }
 
-    /**
-     * 获取格式化后的字符日期
-     *
-     * @param format
-     * @return
-     */
-    public static String getCurrDate(String format) {
-        return new SimpleDateFormat(format).format(new Date());
-    }
 
     /**
      * @param @param  format 格式
@@ -337,46 +1195,6 @@ public class DateUtil {
         return value;
     }
 
-    /**
-     * 将字符串转换成一个日期(yyyyMMdd)
-     *
-     * @return 返回格式化后的日期
-     */
-    public static String strToDate5(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat(ALL_DATES5);
-        return sdf.format(date);
-    }
-
-    /**
-     * 将字符串转换成一个日期(yyyy/MM/dd)
-     *
-     * @return 返回格式化后的日期
-     */
-    public static String strToDate6(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat(ALL_DATES6);
-        return sdf.format(date);
-    }
-
-    /**
-     * 精确到日期,如20111212
-     *
-     * @param date 日期
-     * @return 返回格式化后的日期
-     */
-    public static String formatDate5(Object date) {
-        DateFormat sdf = new SimpleDateFormat("HHmmss");
-        String value = "";
-        if (date != null) {
-            try {
-                value = sdf.format(date);
-            } catch (Exception e) {
-                value = sdf.format(new Date());
-            }
-        } else {
-            value = sdf.format(new Date());
-        }
-        return value;
-    }
 
     /**
      * 计算两个日期时间相差多少时间
@@ -439,14 +1257,6 @@ public class DateUtil {
     }
 
     /**
-     * 获取当前系统时间(原始格式)
-     */
-    public static Date getCurrentDate() {
-        Date date = new Date(System.currentTimeMillis());
-        return date;
-    }
-
-    /**
      * 将字符串转换成一个日期(yyyy-MM-dd HH:mm:ss)
      *
      * @return 返回格式化后的日期
@@ -462,171 +1272,6 @@ public class DateUtil {
         return dt;
     }
 
-    /**
-     * 将字符串转换成一个日期(yyyyMMddHHmmss)
-     *
-     * @return 返回格式化后的日期
-     */
-    public static String strToDate2(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat(ALL_DATES2);
-        return sdf.format(date);
-    }
-
-    /**
-     * 将字符串转换成一个日期(yyyyMMddHHmmssSS)
-     *
-     * @return 返回格式化后的日期
-     */
-    public static String strToDate3(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat(ALL_DATES3);
-        return sdf.format(date);
-    }
-
-    /**
-     * 将字符串转换成一个日期(yyMMddHHmmssSS)
-     *
-     * @return 返回格式化后的日期
-     */
-    public static String strToDate4(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat(ALL_DATES4);
-        return sdf.format(date);
-    }
-
-    /**
-     * 将字符串转换成一个日期(yyyy/MM/dd HH:mm:ss)
-     *
-     * @return 返回格式化后的日期
-     */
-    public static Date strToDate5(String date) {
-        Date dt = null;
-        SimpleDateFormat sdf = new SimpleDateFormat(ALL_DATES7);
-        try {
-            dt = sdf.parse(date);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return dt;
-    }
-
-    /**
-     * 将字符串转换成一个日期(yyyy-MM-dd HH:mm:ss)
-     *
-     * @return 返回格式化后的日期
-     */
-    public static Date strToDate8(String date) {
-        Date dt = null;
-        SimpleDateFormat sdf = new SimpleDateFormat(ALL_DATES8);
-        try {
-            dt = sdf.parse(date);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return dt;
-    }
-
-    /**
-     * 将字符串转换成一个日期(yyyy/MM/dd)
-     *
-     * @return 返回格式化后的日期
-     */
-    public static Date strToDate6(String date) {
-        Date dt = null;
-        SimpleDateFormat sdf = new SimpleDateFormat(SIMPLE_DATE_FORMAT_VIRGULE_STR);
-        try {
-            dt = sdf.parse(date);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return dt;
-    }
-
-    /**
-     * 格式化日期并返回字符串
-     *
-     * @param date 日期 dd/MM/yyyy
-     * @return 返回字符串
-     */
-    public static String getDayMonthYear1(Date date) {
-        SimpleDateFormat formate = new SimpleDateFormat(DAY_MONTH_YEAR1);
-        return formate.format(date);
-    }
-
-    /**
-     * 将字符串转换成一个日期(yyyy-MM-dd HH:mm:ss)
-     *
-     * @return 返回格式化后的日期
-     */
-    public static Date strToDateHH(String date) {
-        Date dt = null;
-        SimpleDateFormat sdf = new SimpleDateFormat(ALL_DATESHH);
-        ;
-        try {
-            dt = sdf.parse(date);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return dt;
-    }
-
-    /**
-     * 将字符串转换成一个日期(yyyy-MM-dd)
-     *
-     * @return 返回格式化后的日期
-     */
-    public static Date strToDate2(String date) {
-        Date dt = null;
-        SimpleDateFormat sdf = new SimpleDateFormat(DAY_MONTH_YEAR);
-        try {
-            dt = sdf.parse(date);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return dt;
-    }
-
-    /**
-     * 去除日期后面的HH：MM：SS
-     *
-     * @param date
-     * @return
-     */
-    public static String splitDateToString(String date) {
-        if (date != null) {
-            return date.trim().substring(0, 10);
-        }
-        return "";
-    }
-
-    public static String dateToStrLong(java.util.Date dateDate) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dateString = formatter.format(dateDate);
-        return dateString;
-    }
-
-    public static String getBssDate1(String dd) {
-        StringBuffer sb = new StringBuffer();
-        sb.append(dd.substring(5, 7)).append("/");
-        sb.append(dd.substring(8, 10)).append("/");
-        sb.append(dd.substring(0, 4));
-        return sb.toString();
-    }
-
-    public static String getBssDate2(String dd) {
-        StringBuffer sb = new StringBuffer();
-        sb.append(dd.substring(0, 4)).append("-");
-        sb.append(dd.substring(5, 7)).append("-");
-        sb.append(dd.substring(8, 10)).append(" ");
-        sb.append("00:00:00");
-        return sb.toString();
-    }
-
-    public static String getUssDate3(String dd) {
-        StringBuffer sb = new StringBuffer();
-        sb.append(dd.substring(0, 4)).append("-");
-        sb.append(dd.substring(5, 7)).append("-");
-        sb.append(dd.substring(8, 10));
-        return sb.toString();
-    }
 
     /**
      * 计算两个日期之间相差的天数
@@ -717,23 +1362,6 @@ public class DateUtil {
         return cal.getActualMaximum(Calendar.DATE);
     }
 
-    /**
-     * 获取当前时间 yyyy-MM-dd HH:mm:ss
-     *
-     * @return
-     */
-    public static String getNowDateTime() {
-        return DateUtil.toString(new Date(), DateUtil.FORMAT_DATE_TIME);
-    }
-
-    /**
-     * 获取当前日期 yyyy-MM-dd
-     *
-     * @return
-     */
-    public static String getNowDate() {
-        return DateUtil.toString(new Date(), DateUtil.FORMAT_DATE);
-    }
 
     /**
      * 前天天
@@ -783,96 +1411,6 @@ public class DateUtil {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, 1);
         return getDateFormat(format).format(calendar.getTime());
-    }
-
-    /**
-     * 当前日期
-     *
-     * @return
-     */
-    public static Date currentDate() {
-
-        return new Date();
-    }
-
-    /**
-     * 当前日期:年
-     *
-     * @return
-     */
-    public static int currentYear() {
-
-        return getYear(currentDate());
-    }
-
-    /**
-     * 当前日期:月
-     *
-     * @return
-     */
-    public static int currentMonth() {
-
-        return getMonth(currentDate());
-    }
-
-    /**
-     * 当前日期:日
-     *
-     * @return
-     */
-    public static int currentDay() {
-
-        return getDay(currentDate());
-    }
-
-    /**
-     * 当前日期:星期几
-     *
-     * @return
-     */
-    public static int currentWeek() {
-
-        return getWeek(currentDate());
-    }
-
-    /**
-     * 当前日期:时
-     *
-     * @return
-     */
-    public static int currentHour() {
-
-        return getHour(currentDate());
-    }
-
-    /**
-     * 当前日期:分
-     *
-     * @return
-     */
-    public static int currentMinute() {
-
-        return getMinute(currentDate());
-    }
-
-    /**
-     * 当前日期:秒
-     *
-     * @return
-     */
-    public static int currentSecond() {
-
-        return getSecond(currentDate());
-    }
-
-    /**
-     * 当前日期:毫秒
-     *
-     * @return
-     */
-    public static int currentMillisecond() {
-
-        return getMillisecond(currentDate());
     }
 
     /**
@@ -1130,231 +1668,6 @@ public class DateUtil {
         return !isLeapYear(date);
     }
 
-    /**
-     * 解析日期字符串返回日期对象(不含时分秒)
-     *
-     * @param str
-     * @param format
-     * @return
-     */
-    public static Date parseDate(String str, String format) {
-
-        try {
-            if (!StringUtils.isEmpty(str)) {
-                DateFormat dateFormat = getDateFormat(format);
-                str = reformat(str, format);
-                return dateFormat.parse(str);
-            }
-            return null;
-        } catch (Exception e) {
-            logger.warn(e);
-        }
-        return null;
-    }
-
-    /**
-     * 获取日期中的某个数值
-     *
-     * @param date
-     * @param dateType
-     * @return
-     */
-    public static Integer get(Date date, int dateType) {
-
-        if (null == date) {
-
-            return null;
-        }
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        return calendar.get(dateType);
-    }
-
-    /**
-     * 获取日期:年
-     *
-     * @param str
-     * @param format
-     * @return
-     */
-    public static Integer getYear(String str, String format) {
-
-        return getYear(toDate(str, format));
-    }
-
-    /**
-     * 获取日期:年
-     *
-     * @param date
-     * @return
-     */
-    public static Integer getYear(Date date) {
-
-        return get(date, Calendar.YEAR);
-    }
-
-    /**
-     * 获取日期:月
-     *
-     * @param str
-     * @param format
-     * @return
-     */
-    public static Integer getMonth(String str, String format) {
-
-        return getMonth(toDate(str, format));
-    }
-
-    /**
-     * 获取日期:月
-     *
-     * @param date
-     * @return
-     */
-    public static Integer getMonth(Date date) {
-
-        Integer month = get(date, Calendar.MONTH);
-        return null == month ? null : month + 1;
-    }
-
-    /**
-     * 获取日期:日
-     *
-     * @param str
-     * @param format
-     * @return
-     */
-    public static Integer getDay(String str, String format) {
-
-        return getDay(toDate(str, format));
-    }
-
-    /**
-     * 获取日期:日
-     *
-     * @param date
-     * @return
-     */
-    public static Integer getDay(Date date) {
-
-        return get(date, Calendar.DAY_OF_MONTH);
-    }
-
-    /**
-     * 获取日期:星期几
-     *
-     * @param str
-     * @param format
-     * @return
-     */
-    public static Integer getWeek(String str, String format) {
-
-        return getWeek(toDate(str, format));
-    }
-
-    /**
-     * 获取日期:星期几
-     *
-     * @param date
-     * @return
-     */
-    public static Integer getWeek(Date date) {
-
-        Integer week = get(date, Calendar.DAY_OF_WEEK);
-        return null == week ? null : week - 1;
-    }
-
-    /**
-     * 获取日期:时
-     *
-     * @param str
-     * @param format
-     * @return
-     */
-    public static Integer getHour(String str, String format) {
-
-        return getHour(toDate(str, format));
-    }
-
-    /**
-     * 获取日期:时
-     *
-     * @param date
-     * @return
-     */
-    public static Integer getHour(Date date) {
-
-        return get(date, Calendar.HOUR_OF_DAY);
-    }
-
-    /**
-     * 获取日期:分
-     *
-     * @param str
-     * @param format
-     * @return
-     */
-    public static Integer getMinute(String str, String format) {
-
-        return getMinute(toDate(str, format));
-    }
-
-    /**
-     * 获取日期:分
-     *
-     * @param date
-     * @return
-     */
-    public static Integer getMinute(Date date) {
-
-        return get(date, Calendar.MINUTE);
-    }
-
-    /**
-     * 获取日期:秒
-     *
-     * @param str
-     * @param format
-     * @return
-     */
-    public static Integer getSecond(String str, String format) {
-
-        return getSecond(toDate(str, format));
-    }
-
-    /**
-     * 获取日期:秒
-     *
-     * @param date
-     * @return
-     */
-    public static Integer getSecond(Date date) {
-
-        return get(date, Calendar.SECOND);
-    }
-
-    /**
-     * 获取日期:毫秒
-     *
-     * @param str
-     * @param format
-     * @return
-     */
-    public static Integer getMillisecond(String str, String format) {
-
-        return getMillisecond(toDate(str, format));
-    }
-
-    /**
-     * 获取日期:毫秒
-     *
-     * @param date
-     * @return
-     */
-    public static Integer getMillisecond(Date date) {
-
-        return get(date, Calendar.MILLISECOND);
-    }
 
     /**
      * 设置日期中的某个数值
@@ -1372,7 +1685,7 @@ public class DateUtil {
         }
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        calendar.add(dateType, amount);
+        calendar.set(dateType, amount);
         return calendar.getTime();
     }
 
@@ -1746,50 +2059,6 @@ public class DateUtil {
         return new Timestamp(calendar.getTimeInMillis());
     }
 
-    /**
-     * 将日期对象转换为时间戳对象
-     *
-     * @param date
-     * @return
-     */
-    public static Timestamp toTimestamp(Date date) {
-
-        return null == date ? null : new Timestamp(date.getTime());
-    }
-
-    /**
-     * 将指定日期格式的字符串转换为时间戳对象
-     *
-     * @param str
-     * @param format
-     * @return
-     */
-    public static Timestamp toTimestamp(String str, String format) {
-
-        return toTimestamp(toDate(str, format));
-    }
-
-    /**
-     * 将指定日期格式的字符串转换为日期对象
-     *
-     * @param str
-     * @param format
-     * @return
-     */
-    public static Date toDate(String str, String format) {
-
-        if (ValidatorUtil.isNotAllEmptyIgnoreBlank(str, format)) {
-
-            try {
-
-                return getDateFormat(format).parse(str);
-            } catch (Exception e) {
-
-                logger.warn(e);
-            }
-        }
-        return null;
-    }
 
     /**
      * 将日期对象转换为指定日期格式的日期对象
@@ -1799,7 +2068,6 @@ public class DateUtil {
      * @return
      */
     public static Date toDate(Date date, String format) {
-
         return toDate(toString(date, format), format);
     }
 
@@ -2420,7 +2688,6 @@ public class DateUtil {
 
     //
     private static SimpleDateFormat getDateFormat(String format) {
-
         return new SimpleDateFormat(format);
     }
 }

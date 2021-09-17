@@ -6,7 +6,7 @@ import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.bean.result.WxPayOrderQueryV3Result;
 import com.github.binarywang.wxpay.constant.WxPayConstants;
 import com.github.binarywang.wxpay.exception.WxPayException;
-import com.sxmaps.netschool.api.wx.WxPayConfiguration;
+import com.github.binarywang.wxpay.service.WxPayService;
 import org.apache.kafka.common.errors.ApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +33,7 @@ public class WeChatPayApi {
     private final Logger log = LoggerFactory.getLogger(WeChatPayApi.class);
 
     @Autowired
-    private WxPayConfiguration payService;
+    private WxPayService payService;
 
     /**
      * 创建支付二维码
@@ -55,7 +55,7 @@ public class WeChatPayApi {
         //构建金额信息
         request.setTotalFee(payAmount.multiply(BigDecimal.valueOf(100)).intValue());
         try {
-            WxPayNativeOrderResult order = this.payService.wxService().createOrder(WxPayConstants.TradeType.Specific.NATIVE, request);
+            WxPayNativeOrderResult order = this.payService.createOrder(WxPayConstants.TradeType.Specific.NATIVE, request);
             if (null != order && null != order.getCodeUrl()) {
                 return order.getCodeUrl();
             }
@@ -78,7 +78,7 @@ public class WeChatPayApi {
         WxPayOrderQueryV3Request request = new WxPayOrderQueryV3Request();
         request.setOutTradeNo(payNo);
         try {
-            return this.payService.wxService().queryOrderV3(request);
+            return this.payService.queryOrderV3(request);
         } catch (WxPayException e) {
             log.error("【微信】创建支付二维码错误：{}", e.getCustomErrorMsg());
             throw new ApiException("【微信】创建支付二维码错误：" + e.getCustomErrorMsg());

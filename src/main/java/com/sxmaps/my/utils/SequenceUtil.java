@@ -31,7 +31,7 @@ public class SequenceUtil {
 		try {
 			lock.readLock().lock();
 			final IdGen gen = IdGen.getInStance();
-			return gen.nextId() + "";
+			return gen.getId() + "";
 		} finally {
 			lock.readLock().unlock();
 		}
