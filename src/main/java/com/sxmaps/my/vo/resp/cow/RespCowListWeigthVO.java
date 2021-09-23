@@ -1,6 +1,5 @@
 package com.sxmaps.my.vo.resp.cow;
 
-import com.sxmaps.my.utils.DateUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -19,6 +18,6 @@ public class RespCowListWeigthVO {
 	private String createTime;
 
 	public void setCreateTime(String createTime) {
-		this.createTime = DateUtil.toString(DateUtil.toDate(createTime,DateUtil.FORMAT_DATE),DateUtil.FORMAT_DATE);
+		this.createTime = createTime;
 	}
 }

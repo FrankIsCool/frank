@@ -1,5 +1,8 @@
 package com.sxmaps.my.service.impl;
 
+import com.franks.util.date.DateProperties;
+import com.franks.util.date.DateUtil;
+import com.franks.util.date.StrDateUtil;
 import com.sxmaps.my.mapper.CowMapper;
 import com.sxmaps.my.mapper.FarmersMapper;
 import com.sxmaps.my.mapper.KindCollectMapper;
@@ -8,7 +11,6 @@ import com.sxmaps.my.model.Farmers;
 import com.sxmaps.my.model.Kind;
 import com.sxmaps.my.model.KindCollect;
 import com.sxmaps.my.service.IScheduleService;
-import com.sxmaps.my.utils.DateUtil;
 import com.sxmaps.my.vo.resp.cow.RespCowCollectVO;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +41,8 @@ public class ScheduleServiceImpl implements IScheduleService {
 
     @Override
     public void kind() {
-        String lastTime = DateUtil.getDateForMonth(DateUtil.FORMAT_DATE, 1)+" 00:00:00";
+//        DateUtil.getDateForMonth(DateUtil.FORMAT_DATE, 1)
+        String lastTime = " 00:00:00";
         List<Farmers> farmers = farmersMapper.getFarmersAll(lastTime);
         if(null == farmers || farmers.size()<1){
             return;
@@ -55,7 +58,7 @@ public class ScheduleServiceImpl implements IScheduleService {
         cowCountCollect.stream().forEach(cowCount->{
             map.put(cowCount.getFarmersUid()+"&"+cowCount.getKindUid(),cowCount.getNum());
         });
-        Date date = DateUtil.toDate(lastTime, DateUtil.FORMAT_DATE);
+        Date date = StrDateUtil.toDate(lastTime, DateProperties.DATE_1_ALL);
         List<KindCollect> kindCollects = new ArrayList<>();
         farmers.stream().forEach(farmer -> {
             kinds.stream().forEach(kind -> {

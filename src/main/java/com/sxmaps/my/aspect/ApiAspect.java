@@ -1,6 +1,6 @@
 package com.sxmaps.my.aspect;
 
-import com.sxmaps.my.utils.IpUtil;
+import com.franks.util.ip.IpUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
@@ -8,7 +8,6 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -45,7 +44,7 @@ public class ApiAspect {
 		ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 		HttpServletRequest request = attributes.getRequest();
 		logger.info("线程id: {},  请求地址:{}, 请求参数:{},  请求类型:{}, 请求ip:{}",Thread.currentThread().getId(), request.getRequestURL().toString(),
-				Arrays.asList(joinPoint.getArgs()), request.getMethod(), IpUtil.getIpAddr(request));
+				Arrays.asList(joinPoint.getArgs()), request.getMethod(), IpUtil.getIp(request));
 	}
 
 	/**

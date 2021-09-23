@@ -1,6 +1,7 @@
 package com.sxmaps.my.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.franks.util.date.DateUtil;
 import com.sxmaps.my.common.FunctionsThreadLocal;
 import com.sxmaps.my.common.LoginThreadLocal;
 import com.sxmaps.my.common.UserInfoVo;
@@ -16,7 +17,6 @@ import com.sxmaps.my.model.Login;
 import com.sxmaps.my.model.User;
 import com.sxmaps.my.service.IFunctionService;
 import com.sxmaps.my.service.ILoginService;
-import com.sxmaps.my.utils.DateUtil;
 import com.sxmaps.my.utils.UUIDUtil;
 import com.sxmaps.my.vo.req.login.ReqLoginVO;
 import com.sxmaps.my.vo.resp.function.RespFunctionsVO;
@@ -27,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -88,7 +87,7 @@ public class LoginServiceImpl implements ILoginService {
         if (vo.getIsRemember()) {
             addDateNum = 7;
         }
-        newLogin.setValidTime(DateUtil.addDay(new Date(), addDateNum));
+        newLogin.setValidTime(DateUtil.addDay(addDateNum));
         UserInfoVo infoVo = new UserInfoVo();
         infoVo.setUserUid(user.getUid());
         infoVo.setUserName(user.getUserName());

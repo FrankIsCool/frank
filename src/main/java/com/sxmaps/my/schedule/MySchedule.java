@@ -1,7 +1,7 @@
 package com.sxmaps.my.schedule;
 
+import com.franks.util.date.DateUtil;
 import com.sxmaps.my.service.IScheduleService;
-import com.sxmaps.my.utils.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -26,7 +26,7 @@ public class MySchedule {
     //每月一号，凌晨1点开始统计
     @Scheduled(cron = "* * 1 1 * ?")
     private void kinds() {
-        logger.info("开始统计-种类每月增长数："+ DateUtil.getNowDate());
+        logger.info("开始统计-种类每月增长数：" + DateUtil.getDate());
         iScheduleService.kind();
         logger.info("开始统计-种类每月增长数：统计结束！");
     }

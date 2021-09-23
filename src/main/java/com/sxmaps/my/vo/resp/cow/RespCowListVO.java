@@ -1,10 +1,10 @@
 package com.sxmaps.my.vo.resp.cow;
 
+import com.franks.util.date.DateUtil;
 import com.sxmaps.my.enums.CowFetationEnum;
 import com.sxmaps.my.enums.CowIllEnum;
 import com.sxmaps.my.enums.CowLifeEnum;
 import com.sxmaps.my.enums.SexEnum;
-import com.sxmaps.my.utils.DateUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -85,11 +85,11 @@ public class RespCowListVO {
     }
 
     public void setCowBirth(String cowBirth) {
-        this.cowBirth = DateUtil.toString(DateUtil.toDate(cowBirth, DateUtil.FORMAT_DATE), DateUtil.FORMAT_DATE);
+        this.cowBirth = cowBirth;
     }
 
     public void setLairageTime(String lairageTime) {
         this.lairageTime = lairageTime;
-        this.lairageAge = DateUtil.dateDiff(lairageTime, DateUtil.dateToStrLong(new Date()), DateUtil.DAY_MONTH_YEAR);
+        this.lairageAge = "0";
     }
 }
