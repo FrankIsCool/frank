@@ -1,7 +1,7 @@
 package com.sxmaps.my.common;
 
+import com.franks.util.exception.ApiException;
 import com.sxmaps.my.enums.ApiExceptionEnum;
-import com.sxmaps.my.exception.ApiException;
 import com.sxmaps.my.vo.resp.function.RespFunctionsVO;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +30,7 @@ public class FunctionsThreadLocal {
      **/
     public static Boolean clickFunction(String functionSn, Long userUid) {
         if (!functionsMap.containsKey(functionSn)) {
-            throw new ApiException(ApiExceptionEnum.NOTFOUND);
+            throw new ApiException(ApiExceptionEnum.NOTFOUND.getExceptionCode(),ApiExceptionEnum.NOTFOUND.getExceptionCode());
         }
         Map<Long, Boolean> user = functionsMap.get(functionSn);
         if (user.containsKey(userUid)) {

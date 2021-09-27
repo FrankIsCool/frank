@@ -1,5 +1,6 @@
 package com.sxmaps.my.vo.resp.user;
 
+import com.franks.util.encrypt.PhoneEncrypt;
 import com.sxmaps.my.enums.StateEnum;
 import com.sxmaps.my.enums.UserTypeEnum;
 import io.swagger.annotations.ApiModel;
@@ -20,6 +21,7 @@ public class RespUserVO implements Serializable {
 	private String userName;
 
 	@ApiModelProperty(name = "phone", value = "手机号", example = "15074446434")
+	@PhoneEncrypt
 	private String phone;
 
 	@ApiModelProperty(name = "userType", value = "用户类型：1，商户主账号,2，商户子账户，3，系统主账户，4，系统子账户", example = "1")

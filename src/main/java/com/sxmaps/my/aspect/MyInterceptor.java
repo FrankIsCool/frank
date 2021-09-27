@@ -1,11 +1,11 @@
 package com.sxmaps.my.aspect;
 
+import com.franks.util.exception.ApiException;
 import com.sxmaps.my.common.FunctionsThreadLocal;
 import com.sxmaps.my.common.LoginThreadLocal;
 import com.sxmaps.my.common.UserInfoVo;
 import com.sxmaps.my.enums.ApiExceptionEnum;
 import com.sxmaps.my.enums.UserTypeEnum;
-import com.sxmaps.my.exception.ApiException;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,11 +28,11 @@ public class MyInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String token = request.getHeader("token");
         if (StringUtils.isEmpty(token)) {
-            throw new ApiException(ApiExceptionEnum.PARAM_TOKEN);
+            throw new ApiException(ApiExceptionEnum.PARAM_TOKEN.getExceptionCode(),ApiExceptionEnum.PARAM_TOKEN.getExceptionDesc());
         }
         String functionsSn = request.getHeader("functionsSn");
         if(StringUtils.isEmpty(functionsSn)){
-            throw new ApiException(ApiExceptionEnum.PARAM_FUNCTION);
+            throw new ApiException(ApiExceptionEnum.PARAM_FUNCTION.getExceptionCode(),ApiExceptionEnum.PARAM_FUNCTION.getExceptionDesc());
         }
         UserInfoVo userInfo = LoginThreadLocal.getUserInfoVo(token);
         if(userInfo.getUserType()== UserTypeEnum.USERTYP_3.getState()){

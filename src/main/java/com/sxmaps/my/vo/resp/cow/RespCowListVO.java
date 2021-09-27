@@ -1,6 +1,5 @@
 package com.sxmaps.my.vo.resp.cow;
 
-import com.franks.util.date.DateUtil;
 import com.sxmaps.my.enums.CowFetationEnum;
 import com.sxmaps.my.enums.CowIllEnum;
 import com.sxmaps.my.enums.CowLifeEnum;
@@ -9,7 +8,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.util.Date;
 import java.util.List;
 
 @Data

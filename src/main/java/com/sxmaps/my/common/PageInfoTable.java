@@ -33,7 +33,7 @@ public class PageInfoTable<T> {
      *
      * @param pageInfo
      */
-    public void setPage(PageInfo pageInfo, HttpServletRequest req) {
+    public PageInfoTable<T> setPage(PageInfo pageInfo, HttpServletRequest req) {
         String draw = req.getParameter("draw");
         if(null != draw && !"".equals(draw)){
             this.setDraw(Integer.valueOf(draw));
@@ -43,5 +43,6 @@ public class PageInfoTable<T> {
         this.setTotal(pageInfo.getTotal());
         this.setRecordsFiltered(pageInfo.getTotal());
         this.setData(pageInfo.getList());
+        return this;
     }
 }

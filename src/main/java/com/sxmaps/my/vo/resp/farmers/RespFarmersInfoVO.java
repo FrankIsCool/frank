@@ -1,5 +1,6 @@
 package com.sxmaps.my.vo.resp.farmers;
 
+import com.franks.util.encrypt.PhoneEncrypt;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -29,5 +30,6 @@ public class RespFarmersInfoVO {
 	private String farmersUserName;
 
 	@ApiModelProperty(value = "牧场主手机号")
+	@PhoneEncrypt
 	private String farmersUserPhone;
 }

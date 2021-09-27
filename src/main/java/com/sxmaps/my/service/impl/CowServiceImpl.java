@@ -1,10 +1,10 @@
 package com.sxmaps.my.service.impl;
 
+import com.franks.util.exception.ApiException;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sxmaps.my.common.UserInfoVo;
 import com.sxmaps.my.enums.*;
-import com.sxmaps.my.exception.ApiException;
 import com.sxmaps.my.mapper.*;
 import com.sxmaps.my.model.*;
 import com.sxmaps.my.service.ICowService;
@@ -63,7 +63,7 @@ public class CowServiceImpl implements ICowService {
     public Integer cowDie(ReqCowIdVO vo) {
         Cow cow = cowMapper.getCow(vo.getCowUid(),vo.getFarmersUid());
         if (null == cow) {
-            throw new ApiException(ApiExceptionEnum.NOTCOW);
+            throw new ApiException(ApiExceptionEnum.NOTCOW.getExceptionCode(),ApiExceptionEnum.NOTCOW.getExceptionCode());
         }
         cow.setCowLife(CowLifeEnum.LIFE_2.getState().byteValue());
         cow.setUpdateTime(new Date());
@@ -75,7 +75,7 @@ public class CowServiceImpl implements ICowService {
     public Integer cowIll(ReqCowIdVO vo) {
         Cow cow = cowMapper.getCow(vo.getCowUid(),vo.getFarmersUid());
         if (null == cow) {
-            throw new ApiException(ApiExceptionEnum.NOTCOW);
+            throw new ApiException(ApiExceptionEnum.NOTCOW.getExceptionCode(),ApiExceptionEnum.NOTCOW.getExceptionCode());
         }
         CowIllLog log = new CowIllLog();
         log.setCowUid(cow.getUid());
@@ -92,11 +92,11 @@ public class CowServiceImpl implements ICowService {
     public Integer cowCure(ReqCowIdVO vo) {
         Cow cow = cowMapper.getCow(vo.getCowUid(),vo.getFarmersUid());
         if (null == cow) {
-            throw new ApiException(ApiExceptionEnum.NOTCOW);
+            throw new ApiException(ApiExceptionEnum.NOTCOW.getExceptionCode(),ApiExceptionEnum.NOTCOW.getExceptionCode());
         }
         CowIllLog illLog = cowIllLogMapper.getIllLog(cow.getUid());
         if (null == illLog) {
-            throw new ApiException(ApiExceptionEnum.DB);
+            throw new ApiException(ApiExceptionEnum.DB.getExceptionCode(),ApiExceptionEnum.DB.getExceptionCode());
         }
         illLog.setCureTime(new Date());
         illLog.setUpdateTime(new Date());
@@ -109,7 +109,7 @@ public class CowServiceImpl implements ICowService {
     public Integer cowFetation(ReqCowIdVO vo) {
         Cow cow = cowMapper.getCow(vo.getCowUid(),vo.getFarmersUid());
         if (null == cow) {
-            throw new ApiException(ApiExceptionEnum.NOTCOW);
+            throw new ApiException(ApiExceptionEnum.NOTCOW.getExceptionCode(),ApiExceptionEnum.NOTCOW.getExceptionCode());
         }
         cow.setFetationState(CowFetationEnum.FETATION_2.getState().byteValue());
         cow.setUpdateTime(new Date());
@@ -121,7 +121,7 @@ public class CowServiceImpl implements ICowService {
     public Integer cowChildbirth(ReqCowChildbirthVO vo) {
         Cow cow = cowMapper.getCow(vo.getCowUid(),vo.getFarmersUid());
         if (null == cow) {
-            throw new ApiException(ApiExceptionEnum.NOTCOW);
+            throw new ApiException(ApiExceptionEnum.NOTCOW.getExceptionCode(),ApiExceptionEnum.NOTCOW.getExceptionCode());
         }
         cow.setFetationState(CowFetationEnum.FETATION_1.getState().byteValue());
         cow.setUpdateTime(new Date());
@@ -142,7 +142,7 @@ public class CowServiceImpl implements ICowService {
     public Integer cowSale(ReqCowSaleVO vo) {
         Cow cow = cowMapper.getCow(vo.getCowUid(),vo.getFarmersUid());
         if (null == cow) {
-            throw new ApiException(ApiExceptionEnum.NOTCOW);
+            throw new ApiException(ApiExceptionEnum.NOTCOW.getExceptionCode(),ApiExceptionEnum.NOTCOW.getExceptionCode());
         }
         cow.setCowLife(CowLifeEnum.LIFE_3.getState().byteValue());
         cow.setUpdateTime(new Date());
@@ -160,11 +160,11 @@ public class CowServiceImpl implements ICowService {
     public Integer cowCreate(ReqCowCreateVO vo) {
         Cow cow = cowMapper.getCowByNum(vo.getCowNum(),vo.getFarmersUid());
         if (null != cow) {
-            throw new ApiException(ApiExceptionEnum.COWNUM);
+            throw new ApiException(ApiExceptionEnum.COWNUM.getExceptionCode(),ApiExceptionEnum.COWNUM.getExceptionCode());
         }
         Kind kind = kindMapper.selectByPrimaryKey(vo.getCowKindUid());
         if(null == kind){
-            throw new ApiException(ApiExceptionEnum.COWNUM);
+            throw new ApiException(ApiExceptionEnum.COWNUM.getExceptionCode(),ApiExceptionEnum.COWNUM.getExceptionCode());
         }
         cow = new Cow();
         cow.setNum(vo.getCowNum());
@@ -215,16 +215,16 @@ public class CowServiceImpl implements ICowService {
     public Integer cowCreateWeight(ReqCowCreateWeightVO vo) {
         Cow cow = cowMapper.selectByPrimaryKey(vo.getCowUid());
         if (null == cow) {
-            throw new ApiException(ApiExceptionEnum.NOTCOW);
+            throw new ApiException(ApiExceptionEnum.NOTCOW.getExceptionCode(),ApiExceptionEnum.NOTCOW.getExceptionCode());
         }
         if (cow.getFarmersUid()!=vo.getFarmersUid()) {
-            throw new ApiException(ApiExceptionEnum.NOTGETCOW);
+            throw new ApiException(ApiExceptionEnum.NOTGETCOW.getExceptionCode(),ApiExceptionEnum.NOTGETCOW.getExceptionCode());
         }
         if (cow.getCowLife().intValue()== CowLifeEnum.LIFE_3.getState()) {
-            throw new ApiException(ApiExceptionEnum.COWSALE);
+            throw new ApiException(ApiExceptionEnum.COWSALE.getExceptionCode(),ApiExceptionEnum.COWSALE.getExceptionCode());
         }
         if (cow.getCowLife().intValue()== CowLifeEnum.LIFE_2.getState()) {
-            throw new ApiException(ApiExceptionEnum.COWDIE);
+            throw new ApiException(ApiExceptionEnum.COWDIE.getExceptionCode(),ApiExceptionEnum.COWDIE.getExceptionCode());
         }
         cow.setWeight(vo.getWeigth().toString());
         cow.setUpdateTime(new Date());

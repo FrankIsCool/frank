@@ -1,6 +1,5 @@
 package com.sxmaps.my.vo.resp.cow;
 
-import com.franks.util.respBody.EncryptField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -15,7 +14,6 @@ public class RespCowInfoVO {
 	private String cowUid;
 
 	@ApiModelProperty(value = "耳钉号")
-	@EncryptField
 	private String cowNum;
 
 	@ApiModelProperty(value = "性别：1，公，2：母")

@@ -1,12 +1,12 @@
 package com.sxmaps.my.service.impl;
 
+import com.franks.util.exception.ApiException;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sxmaps.my.common.LoginThreadLocal;
 import com.sxmaps.my.enums.ApiExceptionEnum;
 import com.sxmaps.my.enums.StateEnum;
 import com.sxmaps.my.enums.UserTypeEnum;
-import com.sxmaps.my.exception.ApiException;
 import com.sxmaps.my.mapper.UserMapper;
 import com.sxmaps.my.model.User;
 import com.sxmaps.my.service.ILoginService;
@@ -44,7 +44,7 @@ public class UserServiceImpl implements IUserService {
     @Transactional
     public Integer createUser(ReqUserCreateVO vo) {
         if(null == UserTypeEnum.getEnum(vo.getUserType())){
-            throw new ApiException(ApiExceptionEnum.NOTUSERTYPE);
+            throw new ApiException(ApiExceptionEnum.NOTUSERTYPE.getExceptionCode(),ApiExceptionEnum.NOTUSERTYPE.getExceptionCode());
         }
         User user = new User();
         user.setCreateTime(new Date());
@@ -80,7 +80,7 @@ public class UserServiceImpl implements IUserService {
     public Integer updateUser(ReqUsersUpdateVO vo) {
         User users = userMapper.selectByPrimaryKey(vo.getUid());
         if(users.getFarmersUid()!=vo.getFarmersUid()){
-            throw new ApiException(ApiExceptionEnum.NOTFARMERSUSER);
+            throw new ApiException(ApiExceptionEnum.NOTFARMERSUSER.getExceptionCode(),ApiExceptionEnum.NOTFARMERSUSER.getExceptionCode());
         }
         users.setUserName(vo.getName());
         users.setPhone(vo.getPhone());
@@ -93,7 +93,7 @@ public class UserServiceImpl implements IUserService {
     public Integer delUser(ReqUsersUidVO vo) {
         User users = userMapper.selectByPrimaryKey(vo.getUid());
         if(users.getUserType().intValue()==UserTypeEnum.USERTYP_1.getState()){
-            throw new ApiException(ApiExceptionEnum.EXCEPTION);
+            throw new ApiException(ApiExceptionEnum.EXCEPTION.getExceptionCode(),ApiExceptionEnum.EXCEPTION.getExceptionCode());
         }
         List<Long> userUids = new ArrayList<>();
         userUids.add(users.getUid());

@@ -1,7 +1,7 @@
 package com.sxmaps.my.common;
 
+import com.franks.util.exception.ApiException;
 import com.sxmaps.my.enums.ApiExceptionEnum;
-import com.sxmaps.my.exception.ApiException;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -41,14 +41,14 @@ public class LoginThreadLocal {
      **/
     public static UserInfoVo getUserInfoVo(String token){
         if(!userInfoVoMap.containsKey(token)){
-            throw new ApiException(ApiExceptionEnum.NOTVALID_TOKEN);
+            throw new ApiException(ApiExceptionEnum.NOTVALID_TOKEN.getExceptionCode(),ApiExceptionEnum.NOTVALID_TOKEN.getExceptionCode());
         }
         UserInfoVo userInfoVo = userInfoVoMap.get(token);
         if(userInfoVo.getValidTime().compareTo(new Date())>0){
             return userInfoVoMap.get(token);
         }
         removeUserInfoVo(token);
-        throw new ApiException(ApiExceptionEnum.NOTVALIDTIME);
+        throw new ApiException(ApiExceptionEnum.NOTVALIDTIME.getExceptionCode(),ApiExceptionEnum.NOTVALIDTIME.getExceptionCode());
     }
     /**
      * 缓存token信息

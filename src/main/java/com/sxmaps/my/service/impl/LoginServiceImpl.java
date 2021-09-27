@@ -2,13 +2,13 @@ package com.sxmaps.my.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.franks.util.date.DateUtil;
+import com.franks.util.exception.ApiException;
 import com.sxmaps.my.common.FunctionsThreadLocal;
 import com.sxmaps.my.common.LoginThreadLocal;
 import com.sxmaps.my.common.UserInfoVo;
 import com.sxmaps.my.enums.ApiExceptionEnum;
 import com.sxmaps.my.enums.StateEnum;
 import com.sxmaps.my.enums.UserTypeEnum;
-import com.sxmaps.my.exception.ApiException;
 import com.sxmaps.my.mapper.FarmersMapper;
 import com.sxmaps.my.mapper.LoginMapper;
 import com.sxmaps.my.mapper.UserMapper;
@@ -17,7 +17,6 @@ import com.sxmaps.my.model.Login;
 import com.sxmaps.my.model.User;
 import com.sxmaps.my.service.IFunctionService;
 import com.sxmaps.my.service.ILoginService;
-import com.sxmaps.my.utils.UUIDUtil;
 import com.sxmaps.my.vo.req.login.ReqLoginVO;
 import com.sxmaps.my.vo.resp.function.RespFunctionsVO;
 import com.sxmaps.my.vo.resp.login.RespLoginVO;
@@ -27,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -57,13 +57,13 @@ public class LoginServiceImpl implements ILoginService {
 //        获取用户基本信息
         User user = userMapper.getUserByPhone(vo.getPhone());
         if (null == user) {
-            throw new ApiException(ApiExceptionEnum.NOTUSER);
+            throw new ApiException(ApiExceptionEnum.NOTUSER.getExceptionCode(),ApiExceptionEnum.NOTUSER.getExceptionCode());
         }
         if (!user.getPassword().equals(vo.getPassword())) {
-            throw new ApiException(ApiExceptionEnum.PASSWORDERROR);
+            throw new ApiException(ApiExceptionEnum.PASSWORDERROR.getExceptionCode(),ApiExceptionEnum.PASSWORDERROR.getExceptionCode());
         }
         if (StateEnum.DEL.getState() == user.getDel().intValue()) {
-            throw new ApiException(ApiExceptionEnum.DELUSER);
+            throw new ApiException(ApiExceptionEnum.DELUSER.getExceptionCode(),ApiExceptionEnum.DELUSER.getExceptionCode());
         }
 //      获取用户是否已经登录
         Login login = loginMapper.getLoginByUserUid(user.getUid());
@@ -81,7 +81,7 @@ public class LoginServiceImpl implements ILoginService {
         Login newLogin = new Login();
         newLogin.setUserUid(user.getUid());
         newLogin.setDel(StateEnum.NOTDEL.getState().byteValue());
-        newLogin.setToken(UUIDUtil.getUUID());
+        newLogin.setToken(UUID.randomUUID().toString());
         newLogin.setCreateTime(new Date());
         int addDateNum = 1;
         if (vo.getIsRemember()) {
