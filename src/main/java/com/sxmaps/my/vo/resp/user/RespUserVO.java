@@ -1,6 +1,6 @@
 package com.sxmaps.my.vo.resp.user;
 
-import com.franks.util.encrypt.PhoneEncrypt;
+import com.franks.util.param.encrypt.annotation.PhoneEncrypt;
 import com.sxmaps.my.enums.StateEnum;
 import com.sxmaps.my.enums.UserTypeEnum;
 import io.swagger.annotations.ApiModel;

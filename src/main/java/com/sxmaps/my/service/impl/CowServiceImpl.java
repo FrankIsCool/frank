@@ -157,6 +157,7 @@ public class CowServiceImpl implements ICowService {
     }
 
     @Override
+    @Transactional
     public Integer cowCreate(ReqCowCreateVO vo) {
         Cow cow = cowMapper.getCowByNum(vo.getCowNum(),vo.getFarmersUid());
         if (null != cow) {
@@ -183,13 +184,12 @@ public class CowServiceImpl implements ICowService {
         cow.setKind(kind.getKindName());
         cow.setMonNum(vo.getCowMonNum());
         cow.setLairageTime(new Date());
-
+        cowMapper.insert(cow);
         Weight weight = new Weight();
         weight.setWeight(vo.getWeigth());
         weight.setCowUid(cow.getUid());
         weight.setCreateTime(new Date());
-        weightMapper.insert(weight);
-        return cowMapper.insert(cow);
+        return weightMapper.insert(weight);
     }
 
     @Override

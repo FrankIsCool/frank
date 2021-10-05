@@ -1,6 +1,6 @@
 package com.sxmaps.my.vo.resp.farmers;
 
-import com.franks.util.encrypt.PhoneEncrypt;
+import com.franks.util.param.encrypt.annotation.PhoneEncrypt;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

@@ -1,11 +1,11 @@
 package com.sxmaps.my.advice;
 
 import com.franks.util.empty.EmptyUtil;
-import com.franks.util.encrypt.EncryptField;
-import com.franks.util.encrypt.EncryptParamUtil;
-import com.franks.util.encrypt.IDCardEncryptUtil;
-import com.franks.util.encrypt.PhoneEncryptUtil;
 import com.franks.util.model.ApiResponse;
+import com.franks.util.param.ParamAdvice;
+import com.franks.util.param.encrypt.advice.IDCardEncryptAdvice;
+import com.franks.util.param.encrypt.advice.PhoneEncryptAdvice;
+import com.franks.util.param.encrypt.annotation.EncryptField;
 import com.franks.util.sign.SignUtils;
 import com.github.pagehelper.PageInfo;
 import com.sxmaps.my.common.PageInfoTable;
@@ -59,9 +59,11 @@ public class ResponseMessageAdvice implements ResponseBodyAdvice<Object> {
         } else if (!(object instanceof ApiResponse)) {
             object = ApiResponse.success(object);
         }
-        EncryptParamUtil.encryptField(object, EncryptField.class, s -> SignUtils.MD5.createSign(s, "frank", "utf-8"));
-        IDCardEncryptUtil.encryptField(object);
-        PhoneEncryptUtil.encryptField(object);
+        ParamAdvice.encryptField(object, EncryptField.class, s -> SignUtils.MD5.createSign(s, "frank", "utf-8"));
+        IDCardEncryptAdvice.encryptField(object);
+        PhoneEncryptAdvice.encryptField(object);
+//        PhoneValidAdvice.validField(object);
+//        IDCardValidAdvice.validField(object);
         return object;
     }
 

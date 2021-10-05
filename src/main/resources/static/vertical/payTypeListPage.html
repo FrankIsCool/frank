@@ -123,9 +123,16 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="payTypeName">支付名称</label>
-                        <input class="form-control" type="text" id="payTypeName" required=""
+                        <label for="payName">支付名称</label>
+                        <input class="form-control" type="text" id="payName" required=""
                                placeholder="请输入种类名称">
+                    </div>
+                    <div class="form-group">
+                        <label for="payTypeName">支付类型</label>
+                        <select class="custom-select" id="payTypeName">
+                            <option selected="0" value="1">消耗品</option>
+                            <option value="2">固定资产</option>
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -176,7 +183,8 @@
     });
     $("#add").click(function () {
         click('/check/pay/type/create', {
-            payName: $("#payTypeName").val()
+            payName: $("#payName").val(),
+            payType: $("#payTypeName").val()
         }, function () {
             $("#notAdd").click();
             refresh();
