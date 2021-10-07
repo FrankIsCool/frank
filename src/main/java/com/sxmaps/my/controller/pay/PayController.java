@@ -2,10 +2,7 @@ package com.sxmaps.my.controller.pay;
 
 import com.github.pagehelper.PageInfo;
 import com.sxmaps.my.service.IPayService;
-import com.sxmaps.my.vo.req.pay.ReqPayCollectVO;
-import com.sxmaps.my.vo.req.pay.ReqPayListVO;
-import com.sxmaps.my.vo.req.pay.ReqPayTypeCreateVO;
-import com.sxmaps.my.vo.req.pay.ReqPayTypeListVO;
+import com.sxmaps.my.vo.req.pay.*;
 import com.sxmaps.my.vo.resp.pay.RespPayCollectVO;
 import com.sxmaps.my.vo.resp.pay.RespPayListVO;
 import com.sxmaps.my.vo.resp.pay.RespPayTypeAllVO;
@@ -44,6 +41,16 @@ public class PayController {
     @ApiImplicitParam(name = "vo", value = "新增消费类型接口", dataType = "ReqPayTypeCreateVO")
     public Integer payTypeCreate(@RequestBody @Validated ReqPayTypeCreateVO vo) {
         return payTypeService.addPayType(vo);
+    }
+    /**
+     * 新增消费类型接口
+     * @return
+     */
+    @PostMapping(value = "/create",produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(notes = "新增消费接口", value = "新增消费接口",response = Integer.class)
+    @ApiImplicitParam(name = "vo", value = "新增消费接口", dataType = "ReqPayCreateVO")
+    public Integer payCreate(@RequestBody @Validated ReqPayCreateVO vo) {
+        return payTypeService.addPay(vo);
     }
     /**
      * 所有消费类型接口

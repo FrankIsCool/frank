@@ -48,7 +48,7 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
             <div class="card card-animate">
                 <div class="card-body">
                     <h4 class="card-title d-inline-block">收益总计</h4>
@@ -64,10 +64,10 @@
                 </div>
             </div>
         </div> <!-- end col -->
-        <div class="col-lg-8">
-            <div class="card">
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
+            <div class="card ">
                 <div class="card-body">
-                    <table id="selection-datatable" class="table table-hover nowrap">
+                    <table id="datatable-buttons" class="table table-striped dt-responsive nowrap">
                         <thead>
                         <tr>
                             <th>收益名称</th>
@@ -105,10 +105,15 @@
                 colors: ["#ff3333", "#ef33eb"],
                 data: info
             }).on('click',function (i, row) {
-                clickList('/check/earnings/list', {earningsTypeUid:data.info[i].earningsUid},columns, null, "#selection-datatable");
+                clickList('/check/earnings/list', {earningsTypeUid:data.info[i].earningsUid},columns, null, "#datatable-buttons");
             })
         })
     //    ,"#239dcd","#747a80","#f3da1b"
+
+
+
+
+
     </script>
 </div>
 </body>

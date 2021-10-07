@@ -45,7 +45,7 @@
     <script src="assets/js/theme.js"></script>
     <script src="assets/js/my.js"></script>
     <script src="assets/js/jquery.cookie.js"></script>
-<style>
+    <style>
     .dropdown-menu>li>a {
         display: block;
         padding: 3px 20px;
@@ -63,7 +63,10 @@
         padding: 15px;
         width: 100px;
     }
-</style>
+
+
+
+    </style>
 </head>
 <body>
 
@@ -79,7 +82,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-2">
+        <div class="col-xl-2">
             <div class="card">
                 <div class="card-body">
                     <div class="row m-3">
@@ -130,19 +133,23 @@
                     <label>类别</label>
                     <div>
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" id="functionType1" value=1 name="functionType" class="custom-control-input">
+                            <input type="radio" id="functionType1" value=1 name="functionType"
+                                   class="custom-control-input">
                             <label class="custom-control-label" for="functionType1">页面</label>
                         </div>
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" id="functionType2" value=2 name="functionType" class="custom-control-input">
+                            <input type="radio" id="functionType2" value=2 name="functionType"
+                                   class="custom-control-input">
                             <label class="custom-control-label" for="functionType2">功能</label>
                         </div>
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" id="functionType3" value=3 name="functionType" class="custom-control-input">
+                            <input type="radio" id="functionType3" value=3 name="functionType"
+                                   class="custom-control-input">
                             <label class="custom-control-label" for="functionType3">系统</label>
                         </div>
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" id="functionType4" value=4 name="functionType" class="custom-control-input">
+                            <input type="radio" id="functionType4" value=4 name="functionType"
+                                   class="custom-control-input">
                             <label class="custom-control-label" for="functionType4">菜单</label>
                         </div>
                     </div>
@@ -250,6 +257,9 @@
                 ,functionSn:$("#functionSn").val(),functionPath:$("#functionPath").val(),remark:$("#remark").val(), functionType: $("input[name='functionType']:checked").val()},null)
         })
     });
+
+
+
 </script>
 
 </body>

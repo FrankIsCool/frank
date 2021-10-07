@@ -48,6 +48,11 @@
     .table th, .table td {
         vertical-align: middle;
     }
+
+
+
+
+
 </style>
 <body>
 
@@ -55,7 +60,7 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-xl-8">
                     <form class="form-inline">
                         <div class="form-group">
                             <label for="searchPayTypeName" class="mr-2">支付名称</label>
@@ -63,7 +68,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-xl-4">
                     <div class="text-lg-right mt-3 mt-lg-0">
                         <button type="button" class="btn btn-success mr-1" id="search"><i class="mdi mdi-magnify">搜索</i>
                         </button>
@@ -77,10 +82,11 @@
     <!-- Modal -->
 
     <div class="row">
-        <div class="col-8">
+
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
             <div class="card">
                 <div class="card-body">
-                    <table id="selection-datatable" class="table table-hover nowrap">
+                    <table id="datatable-buttons" class="table table-striped dt-responsive nowrap">
                         <thead>
                         <tr>
                             <th>#</th>
@@ -97,9 +103,9 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </div> <!-- end card body-->
-        <div class="col-4">
+            </div> <!-- end card body-->
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title" id="cowWeightChart"></h4>
@@ -107,8 +113,9 @@
 
                     <div id="morris-line-example" class="morris-chart"></div>
                 </div>
-            </div> <!-- end card -->
-        </div><!-- end col-->
+            </div><!-- end col-->
+        </div>
+
     </div>
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -176,7 +183,7 @@
     $("#search").click(function () {
         clickList('/check/pay/type/list', {
             payName: $("#searchPayTypeName").val()
-        }, columns, aoColumnDefs,"#selection-datatable")
+        }, columns, aoColumnDefs,"#datatable-buttons")
     });
     $('table tbody').on('mouseover', 'tr', function () {
         $(this).find("td .kind").click();
@@ -204,8 +211,13 @@
         })
     }
     function refresh() {
-        clickList('/check/pay/type/list', {}, columns, aoColumnDefs, "#selection-datatable")
+        clickList('/check/pay/type/list', {}, columns, aoColumnDefs, "#datatable-buttons")
     }
+
+
+
+
+
 </script>
 
 </body>

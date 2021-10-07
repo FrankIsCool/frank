@@ -4,10 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.sxmaps.my.common.UserInfoVo;
 import com.sxmaps.my.vo.req.kind.ReqKindCreateVO;
 import com.sxmaps.my.vo.req.kind.ReqKindListVO;
-import com.sxmaps.my.vo.req.pay.ReqPayCollectVO;
-import com.sxmaps.my.vo.req.pay.ReqPayListVO;
-import com.sxmaps.my.vo.req.pay.ReqPayTypeCreateVO;
-import com.sxmaps.my.vo.req.pay.ReqPayTypeListVO;
+import com.sxmaps.my.vo.req.pay.*;
 import com.sxmaps.my.vo.resp.kind.RespKindAllVO;
 import com.sxmaps.my.vo.resp.kind.RespKindVO;
 import com.sxmaps.my.vo.resp.pay.RespPayCollectVO;
@@ -33,6 +30,13 @@ public interface IPayService {
      * @date 2021/6/10
      **/
     Integer addPayType(ReqPayTypeCreateVO vo);
+    /**
+     * 新增类型
+     * @return
+     * @author frank(付帅)
+     * @date 2021/6/10
+     **/
+    Integer addPay(ReqPayCreateVO vo);
     /**
      * 所有类型
      * @return

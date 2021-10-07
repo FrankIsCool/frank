@@ -43,7 +43,7 @@ function click(url, param, success) {
     })
 };
 
-function clickList(url, param,columns,aoColumnDefs,tableName) {
+function clickList(url, param,columns,aoColumnDefs,tableName,functions) {
     //提示信息
     var lang = {
         "sProcessing": "处理中...",
@@ -147,7 +147,10 @@ function clickList(url, param,columns,aoColumnDefs,tableName) {
             });
         },
         //列表表头字段
-        columns: columns
+        columns: columns,
+        initComplete: function(settings, json) {
+            $('table tbody tr:first .init').click();
+        }
     }).api();
     $("body").delegate('#showrule_table .doshow', 'click', function () { });
     //此处需调用api()方法,否则返回的是JQuery对象而不是DataTables的API对象

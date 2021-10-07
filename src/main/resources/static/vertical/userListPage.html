@@ -56,7 +56,7 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-xl-8">
                     <form class="form-inline">
                         <div class="form-group">
                             <label for="searchPhone" class="mr-2">手机号</label>
@@ -76,7 +76,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-xl-4">
                     <div class="text-lg-right mt-3 mt-lg-0">
                         <button type="button" class="btn btn-success mr-1" id="search"><i class="mdi mdi-magnify">搜索</i>
                         </button>
@@ -88,10 +88,10 @@
         </div>
     </div>
     <!-- Modal -->
-    <div class="card">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-12">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="card">
+                <div class="card-body">
                     <table id="datatable-buttons" class="table table-striped dt-responsive nowrap">
                         <thead>
                         <tr>
@@ -109,10 +109,9 @@
 
                         </tbody>
                     </table>
-
-                </div> <!-- end card body-->
-            </div> <!-- end card -->
-        </div><!-- end col-->
+                </div> <!-- end card -->
+            </div><!-- end col-->
+        </div> <!-- end card body-->
     </div>
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -216,6 +215,10 @@
             del: $("#status-select").val()
         }, columns, aoColumnDefs,"#datatable-buttons")
     });
+
+
+
+
 </script>
 
 </body>

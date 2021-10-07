@@ -18,6 +18,11 @@ public class Pay {
      */
     @Column(name = "pay_uid")
     private Long payUid;
+    /**
+     * 支付类型
+     */
+    @Column(name = "farmers_uid")
+    private Long farmersUid;
 
     /**
      * 支付金额
@@ -51,6 +56,14 @@ public class Pay {
      */
     public void setUid(Long uid) {
         this.uid = uid;
+    }
+
+    public Long getFarmersUid() {
+        return farmersUid;
+    }
+
+    public void setFarmersUid(Long farmersUid) {
+        this.farmersUid = farmersUid;
     }
 
     /**

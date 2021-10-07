@@ -33,42 +33,7 @@
 
 <div class="container-fluid">
     <div class="row">
-
-        <div class="col-lg-8">
-            <div class="card card-animate">
-                <div class="card-body">
-                    <div class="dropdown float-right position-relative">
-                        <a href="#" class="dropdown-toggle h4 text-muted" data-toggle="dropdown"
-                           aria-expanded="false">
-                            <i class="mdi mdi-dots-vertical"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-right">
-                            <li><a href="#" class="dropdown-item">Action</a></li>
-                            <li><a href="#" class="dropdown-item">Another action</a></li>
-                            <li><a href="#" class="dropdown-item">Something else here</a></li>
-                            <li class="dropdown-divider"></li>
-                            <li><a href="#" class="dropdown-item">Separated link</a></li>
-                        </ul>
-                    </div>
-                    <h4 class="card-title d-inline-block">Total Revenue</h4>
-
-                    <div id="morris-line-example" class="morris-chart" style="height: 320px;"></div>
-
-                    <div class="row text-center mt-4">
-                        <div class="col-6">
-                            <h4></h4>
-                            <p class="text-muted mb-0">母牛数</p>
-                        </div>
-                        <div class="col-6">
-                            <h4></h4>
-                            <p class="text-muted mb-0">公牛数</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> <!-- end col -->
-
-        <div class="col-lg-4">
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
             <div class="card card-animate">
                 <div class="card-body">
                     <div class="dropdown float-right position-relative">
@@ -103,8 +68,41 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div> <!-- end col -->
+            </div> <!-- end col -->
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
+            <div class="card card-animate">
+                <div class="card-body">
+                    <div class="dropdown float-right position-relative">
+                        <a href="#" class="dropdown-toggle h4 text-muted" data-toggle="dropdown"
+                           aria-expanded="false">
+                            <i class="mdi mdi-dots-vertical"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a href="#" class="dropdown-item">Action</a></li>
+                            <li><a href="#" class="dropdown-item">Another action</a></li>
+                            <li><a href="#" class="dropdown-item">Something else here</a></li>
+                            <li class="dropdown-divider"></li>
+                            <li><a href="#" class="dropdown-item">Separated link</a></li>
+                        </ul>
+                    </div>
+                    <h4 class="card-title d-inline-block">Total Revenue</h4>
+
+                    <div id="morris-line-example" class="morris-chart" style="height: 320px;"></div>
+
+                    <div class="row text-center mt-4">
+                        <div class="col-6">
+                            <h4></h4>
+                            <p class="text-muted mb-0">母牛数</p>
+                        </div>
+                        <div class="col-6">
+                            <h4></h4>
+                            <p class="text-muted mb-0">公牛数</p>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- end col -->
+        </div>
     </div>
     <!-- end row-->
     <script>
@@ -125,6 +123,11 @@
                     {label: "售卖", value: data.cowSaleCount}]
             })
         })
+
+
+
+
+
     </script>
 </div>
 </body>

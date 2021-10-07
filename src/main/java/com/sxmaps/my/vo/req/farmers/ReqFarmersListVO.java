@@ -13,7 +13,7 @@ import javax.validation.constraints.Min;
 public class ReqFarmersListVO extends QueryInfoVO {
 
 	@ApiModelProperty(value = "牧场名称")
-	private String farmersName;
+	private String searchFarmersName;
 
 	@ApiModelProperty(value = "牧场状态")
 	@Max(value = 2,message = "状态只能为：1，正常，2：已删除")

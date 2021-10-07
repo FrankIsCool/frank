@@ -4,12 +4,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sxmaps.my.mapper.PayMapper;
 import com.sxmaps.my.mapper.PayTypeMapper;
+import com.sxmaps.my.model.Pay;
 import com.sxmaps.my.model.PayType;
 import com.sxmaps.my.service.IPayService;
-import com.sxmaps.my.vo.req.pay.ReqPayCollectVO;
-import com.sxmaps.my.vo.req.pay.ReqPayListVO;
-import com.sxmaps.my.vo.req.pay.ReqPayTypeCreateVO;
-import com.sxmaps.my.vo.req.pay.ReqPayTypeListVO;
+import com.sxmaps.my.vo.req.pay.*;
 import com.sxmaps.my.vo.resp.pay.*;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +40,15 @@ public class PayServiceImpl implements IPayService {
         payType.setPayName(vo.getPayName());
         payType.setCreateTime(new Date());
         return payTypeMapper.insert(payType);
+    }
+
+    @Override
+    public Integer addPay(ReqPayCreateVO vo) {
+        Pay pay = new Pay();
+        pay.setPayUid(vo.getPayTypeUid());
+        pay.setAmount(vo.getAmount());
+        pay.setFarmersUid(vo.getFarmersUid());
+        return payMapper.insert(pay);
     }
 
     @Override
