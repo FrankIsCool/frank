@@ -30,5 +30,11 @@ public class MySchedule {
         iScheduleService.kind();
         logger.info("开始统计-种类每月增长数：统计结束！");
     }
-
+    //每天，凌晨1点开始统计
+    @Scheduled(cron = "* * 1 * * ?")
+    private void cowAdd() {
+        logger.info("开始统计-牛每日新增情况：" + DateUtil.getDate());
+        iScheduleService.cowAdd();
+        logger.info("开始统计-牛每日新增情况：统计结束！");
+    }
 }

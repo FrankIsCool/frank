@@ -1,6 +1,7 @@
 package com.sxmaps.my.controller.home;
 
 import com.sxmaps.my.common.UserInfoVo;
+import com.sxmaps.my.mapper.StatisticsAddMapper;
 import com.sxmaps.my.service.ICowService;
 import com.sxmaps.my.service.IScheduleService;
 import com.sxmaps.my.vo.resp.home.RespHomeCowVO;
@@ -53,5 +54,16 @@ public class HomeController {
     @ApiImplicitParam(name = "vo", value = "牛只总数")
     public void kinds() {
         iScheduleService.kind();
+    }
+    /**
+     * 牛只总数
+     *
+     * @return
+     */
+    @PostMapping(value = "cowAdd", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(notes = "牛只总数", value = "牛只总数")
+    @ApiImplicitParam(name = "vo", value = "牛只总数")
+    public void cowAdd() {
+        iScheduleService.cowAdd();
     }
 }

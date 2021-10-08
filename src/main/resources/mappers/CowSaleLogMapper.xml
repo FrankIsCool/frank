@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxmaps.my.mapper.CowSaleLogMapper">
+  <resultMap id="BaseResultMap" type="com.sxmaps.my.model.CowSaleLog">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="uid" jdbcType="BIGINT" property="uid" />
+    <result column="farmers_uid" jdbcType="BIGINT" property="farmersUid" />
+    <result column="cow_uid" jdbcType="BIGINT" property="cowUid" />
+    <result column="sale_time" jdbcType="DATE" property="saleTime" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+</mapper>

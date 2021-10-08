@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxmaps.my.mapper.StatisticsNumMapper">
+    <resultMap id="BaseResultMap" type="com.sxmaps.my.model.StatisticsNum">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="uid" jdbcType="BIGINT" property="uid"/>
+        <result column="farmers_uid" jdbcType="BIGINT" property="farmersUid"/>
+        <result column="die" jdbcType="INTEGER" property="die"/>
+        <result column="ill" jdbcType="INTEGER" property="ill"/>
+        <result column="cure" jdbcType="INTEGER" property="cure"/>
+        <result column="sale" jdbcType="INTEGER" property="sale"/>
+        <result column="fetation" jdbcType="INTEGER" property="fetation"/>
+        <result column="birth" jdbcType="INTEGER" property="birth"/>
+        <result column="buy" jdbcType="INTEGER" property="buy"/>
+    </resultMap>
+    <select id="getStatisticsNum" parameterType="Long" resultMap="BaseResultMap">
+        select
+        *
+        from
+        statistics_num
+        where
+        farmers_uid = #{farmersUid}
+    </select>
+    <update id="addDieNum" parameterType="Long">
+        UPDATE
+            statistics_num
+        SET
+            die = die + 1
+        WHERE
+            farmers_uid = #{farmersUid}
+    </update>
+    <update id="addIllNum" parameterType="Long">
+        UPDATE
+        statistics_num
+        SET
+        ill = ill + 1
+        WHERE
+        farmers_uid = #{farmersUid}
+    </update>
+    <update id="addCureNum" parameterType="Long">
+        UPDATE
+        statistics_num
+        SET
+        cure = cure + 1
+        WHERE
+        farmers_uid = #{farmersUid}
+    </update>
+    <update id="addSaleNum" parameterType="Long">
+        UPDATE
+        statistics_num
+        SET
+        sale = sale + 1
+        WHERE
+        farmers_uid = #{farmersUid}
+    </update>
+    <update id="addFetationNum" parameterType="Long">
+        UPDATE
+        statistics_num
+        SET
+        fetation = fetation + 1
+        WHERE
+        farmers_uid = #{farmersUid}
+    </update>
+    <update id="addBirthNum" parameterType="Long">
+        UPDATE
+        statistics_num
+        SET
+        birth = birth + 1
+        WHERE
+        farmers_uid = #{farmersUid}
+    </update>
+    <update id="addBuyNum" parameterType="Long">
+        UPDATE
+        statistics_num
+        SET
+        buy = buy + 1
+        WHERE
+        farmers_uid = #{farmersUid}
+    </update>
+</mapper>

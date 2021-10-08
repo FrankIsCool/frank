@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxmaps.my.mapper.StatisticsAddMapper">
+    <resultMap id="BaseResultMap" type="com.sxmaps.my.model.StatisticsAdd">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="uid" jdbcType="BIGINT" property="uid"/>
+        <result column="farmers_uid" jdbcType="BIGINT" property="farmersUid"/>
+        <result column="date_time" jdbcType="DATE" property="dateTime"/>
+        <result column="add_die" jdbcType="INTEGER" property="addDie"/>
+        <result column="add_ill" jdbcType="INTEGER" property="addIll"/>
+        <result column="add_cure" jdbcType="INTEGER" property="addCure"/>
+        <result column="add_fetation" jdbcType="INTEGER" property="addFetation"/>
+        <result column="add_birth" jdbcType="INTEGER" property="addBirth"/>
+        <result column="add_buy" jdbcType="INTEGER" property="addBuy"/>
+    </resultMap>
+    <select id="getYesterdayData" parameterType="Long" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+            statistics_add
+        WHERE
+            farmers_uid = #{farmersUid}
+            ORDER BY
+            date_time DESC
+            LIMIT 1
+    </select>
+</mapper>

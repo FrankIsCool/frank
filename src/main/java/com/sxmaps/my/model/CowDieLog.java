@@ -3,19 +3,21 @@ package com.sxmaps.my.model;
 import java.util.Date;
 import javax.persistence.*;
 
-@Table(name = "cow_ill_log")
-public class CowIllLog {
+@Table(name = "cow_die_log")
+public class CowDieLog {
     /**
      * uid
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uid;
+
     /**
      * 牧场uid
      */
     @Column(name = "farmers_uid")
     private Long farmersUid;
+
     /**
      * 牛只uid
      */
@@ -23,16 +25,10 @@ public class CowIllLog {
     private Long cowUid;
 
     /**
-     * 生病时间
+     * 死亡时间
      */
-    @Column(name = "ill_time")
-    private Date illTime;
-
-    /**
-     * 治愈时间
-     */
-    @Column(name = "cure_time")
-    private Date cureTime;
+    @Column(name = "die_time")
+    private Date dieTime;
 
     /**
      * 备注
@@ -69,10 +65,20 @@ public class CowIllLog {
         this.uid = uid;
     }
 
+    /**
+     * 获取牧场uid
+     *
+     * @return farmers_uid - 牧场uid
+     */
     public Long getFarmersUid() {
         return farmersUid;
     }
 
+    /**
+     * 设置牧场uid
+     *
+     * @param farmersUid 牧场uid
+     */
     public void setFarmersUid(Long farmersUid) {
         this.farmersUid = farmersUid;
     }
@@ -96,39 +102,21 @@ public class CowIllLog {
     }
 
     /**
-     * 获取生病时间
+     * 获取死亡时间
      *
-     * @return ill_time - 生病时间
+     * @return die_time - 死亡时间
      */
-    public Date getIllTime() {
-        return illTime;
+    public Date getDieTime() {
+        return dieTime;
     }
 
     /**
-     * 设置生病时间
+     * 设置死亡时间
      *
-     * @param illTime 生病时间
+     * @param dieTime 死亡时间
      */
-    public void setIllTime(Date illTime) {
-        this.illTime = illTime;
-    }
-
-    /**
-     * 获取治愈时间
-     *
-     * @return cure_time - 治愈时间
-     */
-    public Date getCureTime() {
-        return cureTime;
-    }
-
-    /**
-     * 设置治愈时间
-     *
-     * @param cureTime 治愈时间
-     */
-    public void setCureTime(Date cureTime) {
-        this.cureTime = cureTime;
+    public void setDieTime(Date dieTime) {
+        this.dieTime = dieTime;
     }
 
     /**

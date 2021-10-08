@@ -3,19 +3,21 @@ package com.sxmaps.my.model;
 import java.util.Date;
 import javax.persistence.*;
 
-@Table(name = "cow_ill_log")
-public class CowIllLog {
+@Table(name = "cow_fetation_log")
+public class CowFetationLog {
     /**
      * uid
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uid;
+
     /**
      * 牧场uid
      */
     @Column(name = "farmers_uid")
     private Long farmersUid;
+
     /**
      * 牛只uid
      */
@@ -23,16 +25,16 @@ public class CowIllLog {
     private Long cowUid;
 
     /**
-     * 生病时间
+     * 怀孕时间
      */
-    @Column(name = "ill_time")
-    private Date illTime;
+    @Column(name = "fetation_time")
+    private Date fetationTime;
 
     /**
-     * 治愈时间
+     * 分娩时间
      */
-    @Column(name = "cure_time")
-    private Date cureTime;
+    @Column(name = "childbirth_time")
+    private Date childbirthTime;
 
     /**
      * 备注
@@ -69,10 +71,20 @@ public class CowIllLog {
         this.uid = uid;
     }
 
+    /**
+     * 获取牧场uid
+     *
+     * @return farmers_uid - 牧场uid
+     */
     public Long getFarmersUid() {
         return farmersUid;
     }
 
+    /**
+     * 设置牧场uid
+     *
+     * @param farmersUid 牧场uid
+     */
     public void setFarmersUid(Long farmersUid) {
         this.farmersUid = farmersUid;
     }
@@ -96,39 +108,39 @@ public class CowIllLog {
     }
 
     /**
-     * 获取生病时间
+     * 获取怀孕时间
      *
-     * @return ill_time - 生病时间
+     * @return fetation_time - 怀孕时间
      */
-    public Date getIllTime() {
-        return illTime;
+    public Date getFetationTime() {
+        return fetationTime;
     }
 
     /**
-     * 设置生病时间
+     * 设置怀孕时间
      *
-     * @param illTime 生病时间
+     * @param fetationTime 怀孕时间
      */
-    public void setIllTime(Date illTime) {
-        this.illTime = illTime;
+    public void setFetationTime(Date fetationTime) {
+        this.fetationTime = fetationTime;
     }
 
     /**
-     * 获取治愈时间
+     * 获取分娩时间
      *
-     * @return cure_time - 治愈时间
+     * @return childbirth_time - 分娩时间
      */
-    public Date getCureTime() {
-        return cureTime;
+    public Date getChildbirthTime() {
+        return childbirthTime;
     }
 
     /**
-     * 设置治愈时间
+     * 设置分娩时间
      *
-     * @param cureTime 治愈时间
+     * @param childbirthTime 分娩时间
      */
-    public void setCureTime(Date cureTime) {
-        this.cureTime = cureTime;
+    public void setChildbirthTime(Date childbirthTime) {
+        this.childbirthTime = childbirthTime;
     }
 
     /**

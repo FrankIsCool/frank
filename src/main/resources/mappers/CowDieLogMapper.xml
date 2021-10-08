@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxmaps.my.mapper.CowDieLogMapper">
+    <resultMap id="BaseResultMap" type="com.sxmaps.my.model.CowDieLog">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="uid" jdbcType="BIGINT" property="uid"/>
+        <result column="farmers_uid" jdbcType="BIGINT" property="farmersUid"/>
+        <result column="cow_uid" jdbcType="BIGINT" property="cowUid"/>
+        <result column="die_time" jdbcType="DATE" property="dieTime"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+  <select id="statisticsDie" parameterType="String" resultType="com.sxmaps.my.vo.resp.cow.RespCowAddVO">
+    SELECT
+      farmers_uid farmersUid,
+      count(1) num
+    FROM
+      cow_die_log
+    WHERE
+      die_time = #{day}
+      GROUP BY farmers_uid
+  </select>
+</mapper>

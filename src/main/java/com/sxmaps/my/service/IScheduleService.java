@@ -15,4 +15,12 @@ public interface IScheduleService {
      * @date 2021/6/19
      **/
     void kind();
+    /**
+     * 统计每日新增牛只情况
+     * @param
+     * @return
+     * @author frank(付帅)
+     * @date 2021/6/19
+     **/
+    void cowAdd();
 }

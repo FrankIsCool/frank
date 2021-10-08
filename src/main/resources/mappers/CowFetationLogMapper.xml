@@ -1,45 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sxmaps.my.mapper.CowIllLogMapper">
-    <resultMap id="BaseResultMap" type="com.sxmaps.my.model.CowIllLog">
+<mapper namespace="com.sxmaps.my.mapper.CowFetationLogMapper">
+    <resultMap id="BaseResultMap" type="com.sxmaps.my.model.CowFetationLog">
         <!--
           WARNING - @mbg.generated
         -->
         <id column="uid" jdbcType="BIGINT" property="uid"/>
+        <result column="farmers_uid" jdbcType="BIGINT" property="farmersUid"/>
         <result column="cow_uid" jdbcType="BIGINT" property="cowUid"/>
-        <result column="ill_time" jdbcType="DATE" property="illTime"/>
-        <result column="cure_time" jdbcType="DATE" property="cureTime"/>
+        <result column="fetation_time" jdbcType="DATE" property="fetationTime"/>
+        <result column="childbirth_time" jdbcType="DATE" property="childbirthTime"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     </resultMap>
-    <select id="getIllLog" parameterType="long" resultMap="BaseResultMap">
+    <select id="getFetationLog" parameterType="long" resultMap="BaseResultMap">
         select
             *
         from
-            cow_ill_log
+            cow_fetation_log
         where
             cow_uid = #{cowUid}
-            and cure_time is null
+            and childbirth_time is null
     </select>
-    <select id="statisticsIll" parameterType="String" resultType="com.sxmaps.my.vo.resp.cow.RespCowAddVO">
+    <select id="statisticsFetation" parameterType="String" resultType="com.sxmaps.my.vo.resp.cow.RespCowAddVO">
         SELECT
             farmers_uid farmersUid,
             count(1) num
         FROM
-            cow_ill_log
+            cow_fetation_log
         WHERE
-            ill_time = #{day}
+            fetation_time = #{day}
             GROUP BY farmers_uid
     </select>
-    <select id="statisticsCure" parameterType="String" resultType="com.sxmaps.my.vo.resp.cow.RespCowAddVO">
+    <select id="statisticsChildbirth" parameterType="String" resultType="com.sxmaps.my.vo.resp.cow.RespCowAddVO">
         SELECT
             farmers_uid farmersUid,
             count(1) num
         FROM
-            cow_ill_log
+            cow_fetation_log
         WHERE
-            cure_time = #{day}
+            childbirth_time = #{day}
             GROUP BY farmers_uid
     </select>
 </mapper>

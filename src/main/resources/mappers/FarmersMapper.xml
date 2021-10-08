@@ -37,6 +37,8 @@
             farmers f
         where
             f.del = 1
-            or (f.del = 2 and update_time > #{lastTime})
+            <if test="lastTime !=null and lastTime != ''">
+                or (f.del = 2 and update_time > #{lastTime})
+            </if>
     </select>
 </mapper>

@@ -1,21 +1,24 @@
 package com.sxmaps.my.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.*;
 
-@Table(name = "cow_ill_log")
-public class CowIllLog {
+@Table(name = "cow_sale_log")
+public class CowSaleLog {
     /**
      * uid
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uid;
+
     /**
      * 牧场uid
      */
     @Column(name = "farmers_uid")
     private Long farmersUid;
+
     /**
      * 牛只uid
      */
@@ -23,16 +26,15 @@ public class CowIllLog {
     private Long cowUid;
 
     /**
-     * 生病时间
+     * 售卖时间
      */
-    @Column(name = "ill_time")
-    private Date illTime;
+    @Column(name = "sale_time")
+    private Date saleTime;
 
     /**
-     * 治愈时间
+     * 售卖金额
      */
-    @Column(name = "cure_time")
-    private Date cureTime;
+    private BigDecimal amount;
 
     /**
      * 备注
@@ -69,10 +71,20 @@ public class CowIllLog {
         this.uid = uid;
     }
 
+    /**
+     * 获取牧场uid
+     *
+     * @return farmers_uid - 牧场uid
+     */
     public Long getFarmersUid() {
         return farmersUid;
     }
 
+    /**
+     * 设置牧场uid
+     *
+     * @param farmersUid 牧场uid
+     */
     public void setFarmersUid(Long farmersUid) {
         this.farmersUid = farmersUid;
     }
@@ -96,39 +108,39 @@ public class CowIllLog {
     }
 
     /**
-     * 获取生病时间
+     * 获取售卖时间
      *
-     * @return ill_time - 生病时间
+     * @return sale_time - 售卖时间
      */
-    public Date getIllTime() {
-        return illTime;
+    public Date getSaleTime() {
+        return saleTime;
     }
 
     /**
-     * 设置生病时间
+     * 设置售卖时间
      *
-     * @param illTime 生病时间
+     * @param saleTime 售卖时间
      */
-    public void setIllTime(Date illTime) {
-        this.illTime = illTime;
+    public void setSaleTime(Date saleTime) {
+        this.saleTime = saleTime;
     }
 
     /**
-     * 获取治愈时间
+     * 获取售卖金额
      *
-     * @return cure_time - 治愈时间
+     * @return amount - 售卖金额
      */
-    public Date getCureTime() {
-        return cureTime;
+    public BigDecimal getAmount() {
+        return amount;
     }
 
     /**
-     * 设置治愈时间
+     * 设置售卖金额
      *
-     * @param cureTime 治愈时间
+     * @param amount 售卖金额
      */
-    public void setCureTime(Date cureTime) {
-        this.cureTime = cureTime;
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
     }
 
     /**
